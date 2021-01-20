@@ -6,6 +6,9 @@
 package Models;
 
 import CamadaAcessoDados.DALContasPagar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -94,8 +97,12 @@ public class ContasPagar {
     public void setValor_pago(double valor_pago) {
         this.valor_pago = valor_pago;
     }
+     public String getEmissao() throws ParseException {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        return formato.format(emissao);
 
-    public Date getEmissao() {
+    }
+    public Date getEmissaoDate() {
         return emissao;
     }
 
@@ -110,8 +117,12 @@ public class ContasPagar {
     public void setData_pago(Date data_pago) {
         this.data_pago = data_pago;
     }
+     public String getVencimento() throws ParseException {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        return formato.format(vencimento);
 
-    public Date getVencimento() {
+    }
+    public Date getVencimentoDate() {
         return vencimento;
     }
 
@@ -203,6 +214,14 @@ public class ContasPagar {
     public boolean salvar(ContasPagar cp) {
         return dal.salvar(cp);
 
+    }
+
+    public boolean verificarParcelaPaga(int codigo) {
+        return false;
+    }
+
+    public List<ContasPagar> getParcDespesas(int codigo) {
+        return dal.getParcDespesas(codigo);
     }
 
 }

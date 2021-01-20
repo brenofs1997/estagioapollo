@@ -33,6 +33,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -40,6 +41,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -82,32 +84,32 @@ public class TelaLancarDespesasController implements Initializable {
     private TableColumn<ContasPagar, Date> colvenc;
     @FXML
     private TableColumn<ContasPagar, Double> colvalor;
-    public static List<ContasPagar> listaParcrlad=new ArrayList();
+    public static List<ContasPagar> listaParcela = new ArrayList();
     Erros msg = new Erros();
 
     public static ContasPagar desp;
-     public static ContasPagar getDesp() {
+
+    public static ContasPagar getDesp() {
         return desp;
     }
 
     public static void setDesp(ContasPagar desp) {
-        DespesasConsultaController.desp = desp;
+        TelaLancarDespesasController.desp = desp;
     }
-    
-    
+
     public static List<ContasPagar> getListaParcrlad() {
-        return listaParcrlad;
+        return listaParcela;
     }
 
     public static void setListaParcrlad(List<ContasPagar> listaParcrlad) {
-        TelaLancarDespesasController.listaParcrlad = listaParcrlad;
+        TelaLancarDespesasController.listaParcela = listaParcrlad;
     }
     ContasPagarController controller = new ContasPagarController();
     @FXML
     private JFXButton btGerar;
     @FXML
     private JFXComboBox<TipoDespesa> cbTipo;
-     public static Funcionario func;
+    public static Funcionario func;
 
     public static Funcionario getFunc() {
         return func;
@@ -120,6 +122,7 @@ public class TelaLancarDespesasController implements Initializable {
     private JFXTextField txDias;
     @FXML
     private Pane pnconteudo;
+
     /**
      * Initializes the controller class.
      */
@@ -129,24 +132,55 @@ public class TelaLancarDespesasController implements Initializable {
         colvalor.setCellValueFactory(new PropertyValueFactory("valor"));
         colvenc.setCellValueFactory(new PropertyValueFactory("vencimento"));
         MaskFieldUtil.monetaryField(txValor);
-         CarregaCondPgto();
-        
+        estadoInicial();
+
     }
+
+    private void estadoInicial() {
+        pnconteudo.setDisable(true);
+        btFinalizar.setDisable(true);
+        btConsultar.setDisable(false);
+        btCancelar.setDisable(false);
+        btNovo.setDisable(false);
+        btExcluir.setDisable(true);
+
+        if (tabela != null) {
+            tabela.getItems().clear();
+        }
+
+        ObservableList<Node> componentes = pnconteudo.getChildren();//”limpa” os componentes
+        for (Node n : componentes) {
+            if (n instanceof TextInputControl)//textfield, textarea e htmleditor
+            {
+                ((TextInputControl) n).setText("");
+            }
+        }
+        cbCondPgto.getItems().clear();
+        cbTipo.getItems().clear();
+        dtEmissao.setValue(LocalDate.now());
+        dtDtvenc.setValue(LocalDate.now());
+        CarregaCondPgto();
+        CarregaTipo();
+    }
+
     public void CarregaCondPgto() {
         cbCondPgto.setItems(FXCollections.observableArrayList(controller.CarregaCondPgto()));
     }
+
     @FXML
     private void CarregaTipo() {
         cbTipo.setItems(FXCollections.observableArrayList(controller.CarregaTipo()));
     }
+
     public void limparLabel() {
         txDias.setText("");
         txQuant.setText("");
         txValor.setText("");
         cbCondPgto.resetValidation();
         cbTipo.resetValidation();
-       
+
     }
+
     private void estadoEdicao() {
         limparLabel();
         pnconteudo.setDisable(false);
@@ -162,43 +196,50 @@ public class TelaLancarDespesasController implements Initializable {
         tabela.setDisable(false);
 
     }
+
     @FXML
     private void Novo(ActionEvent event) {
         estadoEdicao();
-        
+
     }
 
     @FXML
     private void Cosnultar(ActionEvent event) throws IOException {
-         Parent inicial = FXMLLoader.load(getClass().getResource("DespesasConsulta.fxml"));
+        Parent inicial = FXMLLoader.load(getClass().getResource("DespesasConsulta.fxml"));
         Scene scene = new Scene(inicial);
 
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("BEM-VINDO: A BUSCA DE DESPESAS");
-       
+
         stage.showAndWait();
-         try {
-            ObservableList<ContasPagar> contr;
-            listaParcrlad.clear();
-            listaParcrlad.add(desp);
-            contr = FXCollections.observableArrayList(listaParcrlad);
-            tabela.setItems(contr);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
-        
+        controller.carregaCampos(getDesp(), cbCondPgto, cbTipo, txValor, dtEmissao, dtDtvenc, txDias, txQuant, txcodigo, btFinalizar, btExcluir, btNovo, tabela);
+
+//         try {
+//            ObservableList<ContasPagar> contr;
+//            listaParcrlad.clear();
+//            listaParcrlad.add(desp);
+//            contr = FXCollections.observableArrayList(listaParcrlad);
+//            tabela.setItems(contr);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 
     @FXML
     private void Cancelar(ActionEvent event) {
-         btCancelar.getScene().getWindow().hide();//fecha a janela
+        if (!pnconteudo.isDisabled())//encontra em estado de edição
+        {
+            estadoInicial();
+        } else {
+            btCancelar.getScene().getWindow().hide();//fecha a janela
+        }
+
     }
 
     @FXML
     private void Excluir(ActionEvent event) {
-      Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setContentText("Confirma a exclusão");
 //        if (a.showAndWait().get() == ButtonType.OK) {
 //            if (!contaspagar.verificaPagamento(contaspagar)) {
@@ -214,7 +255,7 @@ public class TelaLancarDespesasController implements Initializable {
 //                msg.Error("Erro ao excluir!", "Há parcelas pagas!");
 //            }
 //        }
-        
+
     }
 
     @FXML
@@ -225,22 +266,21 @@ public class TelaLancarDespesasController implements Initializable {
         } catch (NumberFormatException e) {
             cod = 0;
         }
-        if (listaParcrlad.isEmpty()) {
+        if (listaParcela.isEmpty()) {
             erro++;
         }
         if (erro == 0) {
             if (cod == 0) {
-                if (controller.gravar(listaParcrlad)) {
-                     msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
+                if (controller.gravar(listaParcela)) {
+                    msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
                 } else {
-                   msg.Error("Erro ", "Gravação não realizada");
-                        
-                       
+                    msg.Error("Erro ", "Gravação não realizada");
+
                 }
             } else {
                 if (controller.apagar(tabela)) {
-                    if (controller.gravar(listaParcrlad)) {
-                         msg.Affirmation("Apollo Informa:", "Alteração feita com sucesso");
+                    if (controller.gravar(listaParcela)) {
+                        msg.Affirmation("Apollo Informa:", "Alteração feita com sucesso");
                     } else {
                         msg.Error("Erro ", "Alteração não realizada");
                     }
@@ -249,41 +289,39 @@ public class TelaLancarDespesasController implements Initializable {
         }
 
     }
-     private void atualizarTabela() {
+
+    private void atualizarTabela() {
         try {
             ObservableList<ContasPagar> contr;
-            contr = FXCollections.observableArrayList(listaParcrlad);
+            contr = FXCollections.observableArrayList(listaParcela);
             tabela.setItems(contr);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
     @FXML
     private void Gerar(ActionEvent event) {
-        Double total=0.0;
-        int dias=0,quant=0,cod=0;
+        Double total = 0.0;
+        int dias = 0, quant = 0, cod = 0;
         NumberFormat nf = new DecimalFormat("#,###.00");
         try {
-            cod=Integer.parseInt(txcodigo.getText());
+            cod = Integer.parseInt(txcodigo.getText());
         } catch (NumberFormatException e) {
-            cod=0;
+            cod = 0;
         }
-        
+
         try {
-             total = nf.parse(txValor.getText()).doubleValue();
-             dias =Integer.parseInt(txDias.getText());
-             quant =Integer.parseInt(txQuant.getText());
-             
-             
-            listaParcrlad.clear();
-            listaParcrlad=controller.gerarParcelas(cbCondPgto, cbTipo,total, dtEmissao, dtDtvenc,dias , quant, cod, func);
-             atualizarTabela();
+            total = nf.parse(txValor.getText()).doubleValue();
+            dias = Integer.parseInt(txDias.getText());
+            quant = Integer.parseInt(txQuant.getText());
+
+            listaParcela.clear();
+            listaParcela = controller.gerarParcelas(cbCondPgto, cbTipo, total, dtEmissao, dtDtvenc, dias, quant, cod, func);
+            atualizarTabela();
         } catch (ParseException ex) {
             Logger.getLogger(TelaLancarDespesasController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-   
-   
 
 }

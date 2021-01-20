@@ -62,7 +62,8 @@ public class DespesasConsultaController implements Initializable {
         colparc.setCellValueFactory(new PropertyValueFactory("parcela"));
         colvalor.setCellValueFactory(new PropertyValueFactory("valor"));
         colvenc.setCellValueFactory(new PropertyValueFactory("vencimento"));
-        coldesc.setCellValueFactory(new PropertyValueFactory("descricao"));
+        coldesc.setCellValueFactory(new PropertyValueFactory("tipo_despesa"));
+         controller.carregaTabela("", tabela);
     }    
 
     @FXML

@@ -6,7 +6,6 @@
 package Models;
 
 import CamadaAcessoDados.DALTipoDespesa;
-import com.jfoenix.controls.JFXTextField;
 import java.util.List;
 
 public class TipoDespesa {

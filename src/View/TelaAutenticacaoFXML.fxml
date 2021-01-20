@@ -50,11 +50,11 @@
                         </RadialGradient>
                      </ripplerFill>
                   </JFXButton>
-                  <JFXTextField fx:id="txtNome" focusColor="BLACK" labelFloat="true" layoutX="102.0" layoutY="24.0" prefHeight="39.0" prefWidth="417.0" promptText="Digite o Nome*" style="-fx-text-inner-color: #4d4d4d; -fx-prompt-text-fill: #4d4d4d; -fx-background-color: WHITE;">
+                  <JFXTextField fx:id="txtNome" focusColor="BLACK" labelFloat="true" layoutX="102.0" layoutY="24.0" prefHeight="39.0" prefWidth="417.0" promptText="Digite o Nome*" style="-fx-text-inner-color: #4d4d4d; -fx-prompt-text-fill: #4d4d4d; -fx-background-color: WHITE;" text="GG">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXTextField>
-                  <JFXPasswordField fx:id="txtSenha" focusColor="BLACK" labelFloat="true" layoutX="102.0" layoutY="110.0" prefHeight="39.0" prefWidth="417.0" promptText="Digite a Senha*" style="-fx-text-inner-color: #4d4d4d; -fx-prompt-text-fill: #4d4d4d; -fx-background-color: WHITE;">
+                  <JFXPasswordField fx:id="txtSenha" focusColor="BLACK" labelFloat="true" layoutX="102.0" layoutY="110.0" prefHeight="39.0" prefWidth="417.0" promptText="Digite a Senha*" style="-fx-text-inner-color: #4d4d4d; -fx-prompt-text-fill: #4d4d4d; -fx-background-color: WHITE;" text="123">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
