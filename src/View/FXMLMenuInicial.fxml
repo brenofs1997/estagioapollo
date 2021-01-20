@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="1080.0" prefWidth="1980.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.FXMLMenuInicialController">
+   <children>
+      <BorderPane layoutX="2.0" layoutY="1.0" prefHeight="1080.0" prefWidth="1974.0">
+         <top>
+            <HBox prefHeight="431.0" prefWidth="1974.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TitledPane fx:id="tpCadastro" prefHeight="430.0" prefWidth="324.0" text="Cadastros">
+                     <content>
+                        <VBox prefHeight="299.0" prefWidth="322.0">
+                           <children>
+                              <JFXButton fx:id="cadCliente" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#cadCliente" prefHeight="286.0" prefWidth="324.0" text="CLIENTE">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="PLUS" size="2em" stroke="WHITE" wrappingWidth="30.0">
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="catCategoria" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#cadCat" prefHeight="286.0" prefWidth="324.0" text="CATEGORIA">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="CUBES" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="CadnivFunc" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#cadNivelFunc" prefHeight="286.0" prefWidth="324.0" text="NÍVEL FUNCIONÁRIO">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="LIST_OL" lineSpacing="1.0" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="CadtpDesp" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#cadDesp" prefHeight="286.0" prefWidth="324.0" text="TIPOS DE DESPESA ">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="CLIPBOARD" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="CadFunc" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#funCad" prefHeight="286.0" prefWidth="324.0" text="FUNCIONÁRIO">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="USER_PLUS" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="CadEmpresa" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#Empresa" prefHeight="286.0" prefWidth="324.0" text="EMPRESA">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="BUILDING" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="cadProduto" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#Produto" prefHeight="286.0" prefWidth="324.0" text="PRODUTO">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="BUILDING" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </TitledPane>
+                  <TitledPane fx:id="tpCompras" expanded="false" prefHeight="430.0" prefWidth="218.0" text="Compras">
+                     <content>
+                        <VBox prefHeight="270.0" prefWidth="216.0">
+                           <children>
+                              <JFXButton fx:id="CadCompra" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="COMPRAS">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="SHOPPING_CART" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></TitledPane>
+                  <TitledPane fx:id="tpFluxo" expanded="false" prefHeight="430.0" prefWidth="218.0" text="Fluxo de Caixa">
+                     <content>
+                        <VBox prefHeight="270.0" prefWidth="216.0">
+                           <children>
+                              <JFXButton fx:id="CadContasPagar" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="CONTAS A PAGAR">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton fx:id="CadContasReceber" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="CONTAS A RECEBER">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton fx:id="CadLancarDespesas" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#lancarDespesas" prefHeight="30.0" prefWidth="200.0" text="LANÇAR DESPESAS">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton fx:id="CadReceberFiado" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="RECEBER FIADO">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></TitledPane>
+                  <TitledPane fx:id="tpVendas" expanded="false" prefHeight="431.0" prefWidth="218.0" text="Vendas">
+                     <content>
+                        <VBox prefHeight="270.0" prefWidth="216.0">
+                           <children>
+                              <JFXButton fx:id="CadVendas" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="VENDAS">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="SHOPPING_CART" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></TitledPane>
+                  <TitledPane fx:id="tpBack" expanded="false" prefHeight="352.0" prefWidth="202.0" text="Backup">
+                     <content>
+                        <VBox prefHeight="270.0" prefWidth="216.0">
+                           <children>
+                              <JFXButton fx:id="CadBackup" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="BACKUP">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="CLOUD_DOWNLOAD" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton fx:id="CadRestore" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="RESTORE">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="CLOUD_UPLOAD" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></TitledPane>
+                  <TitledPane fx:id="tpAjuda" expanded="false" prefHeight="364.0" prefWidth="202.0" text="Ajuda">
+                     <content>
+                        <VBox prefHeight="293.0" prefWidth="230.0">
+                           <children>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="40.0" prefWidth="212.0" text="MANUAL DO USUÁRIO">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="BOOK" size="2em" wrappingWidth="15.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></TitledPane>
+                  <TitledPane fx:id="tpRelatorio" expanded="false" prefHeight="364.0" prefWidth="202.0" text="Relatório">
+                     <content>
+                        <VBox prefHeight="270.0" prefWidth="216.0">
+                           <children>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="COMPRAS">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="SHOPPING_CART" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></TitledPane>
+                  <TitledPane fx:id="tpRelatorio1" expanded="false" prefHeight="286.0" prefWidth="327.0" text="Sair">
+                     <content>
+                        <VBox prefHeight="270.0" prefWidth="216.0">
+                           <children>
+                              <JFXButton fx:id="btnsair" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#Sair" prefHeight="30.0" prefWidth="200.0" text="SAIR">
+                                 <graphic>
+                                    <FontAwesomeIcon iconName="SHOPPING_CART" size="2em" wrappingWidth="30.0">
+                                       <fill>
+                                          <LinearGradient endX="1.0" endY="1.0">
+                                             <stops>
+                                                <Stop color="#ff3f34" />
+                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
+                                                <Stop color="#bc1717" offset="0.40849673202614384" />
+                                                <Stop color="RED" offset="1.0" />
+                                             </stops>
+                                          </LinearGradient>
+                                       </fill>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </FontAwesomeIcon>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </TitledPane>
+               </children>
+            </HBox>
+         </top>
+         <bottom>
+            <Pane prefHeight="95.0" prefWidth="1540.0" style="-fx-border-width: 1px 1px 1px; -fx-border-color: black;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="522.0" layoutY="38.0" text="BRENO FERNANDES DOS SANTOS Copyright© 2020 - 2021">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </bottom>
+         <center>
+            <Pane prefHeight="336.0" prefWidth="1540.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.testapps.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.image.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="539.0" prefWidth="620.0" style="-fx-background-color: #f1f2f6;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TelaAutenticacaoFXMLController">
+   <children>
+      <VBox prefHeight="539.0" prefWidth="620.0">
+         <children>
+            <Pane prefHeight="149.0" prefWidth="620.0">
+               <children>
+                  <JFXButton fx:id="btnSair" layoutX="467.0" layoutY="26.0" onAction="#sair" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #FF3D00;" text="SAIR" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <ripplerFill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop color="BLACK" />
+                              <Stop color="#400c00" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </ripplerFill>
+                  </JFXButton>
+               </children>
+            </Pane>
+            <Pane prefHeight="298.0" prefWidth="620.0">
+               <children>
+                  <JFXButton fx:id="btnEntrar" layoutX="99.0" layoutY="190.0" onAction="#entrar" onKeyPressed="#btnEntrarPressed" prefHeight="55.0" prefWidth="417.0" style="-fx-background-color: #FF3D00;" text="ENTRAR" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <ripplerFill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop color="#0000005c" />
+                              <Stop color="#ff3c00" offset="0.8986928104575165" />
+                              <Stop color="#400c00" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </ripplerFill>
+                  </JFXButton>
+                  <JFXTextField fx:id="txtNome" focusColor="BLACK" labelFloat="true" layoutX="102.0" layoutY="24.0" prefHeight="39.0" prefWidth="417.0" promptText="Digite o Nome*" style="-fx-text-inner-color: #4d4d4d; -fx-prompt-text-fill: #4d4d4d; -fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></JFXTextField>
+                  <JFXPasswordField fx:id="txtSenha" focusColor="BLACK" labelFloat="true" layoutX="102.0" layoutY="110.0" prefHeight="39.0" prefWidth="417.0" promptText="Digite a Senha*" style="-fx-text-inner-color: #4d4d4d; -fx-prompt-text-fill: #4d4d4d; -fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXPasswordField>
+               </children>
+            </Pane>
+            <Pane prefHeight="93.0" prefWidth="620.0" style="-fx-border-width: 1px 0px 0px 0px;">
+               <children>
+                  <Pane layoutX="42.0" layoutY="1.0" prefHeight="16.0" prefWidth="243.0" style="-fx-border-width: 1px 0px 0px 0px; -fx-border-color: #ff3d00;" />
+                  <Pane layoutX="340.0" layoutY="1.0" prefHeight="16.0" prefWidth="243.0" style="-fx-border-width: 1px 0px 0px 0px; -fx-border-color: #ff3d00;" />
+                  <Label alignment="CENTER" layoutX="295.0" layoutY="-18.0" text="OU" textFill="#ff3d00">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="inscrever" layoutX="222.0" layoutY="29.0" mnemonicParsing="false" onAction="#btnInscrever" prefHeight="55.0" prefWidth="174.0" style="-fx-background-color: #FF3D00;" text="INSCREVA-SE" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="235.0" layoutY="29.0" style="-fx-background-color: #000063;" text="INSCREVA-SE" visible="false">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
