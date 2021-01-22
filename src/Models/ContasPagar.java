@@ -8,6 +8,7 @@ package Models;
 import CamadaAcessoDados.DALContasPagar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -215,13 +216,21 @@ public class ContasPagar {
         return dal.salvar(cp);
 
     }
-
-    public boolean verificarParcelaPaga(int codigo) {
-        return false;
+    
+    public boolean verificarParcelaPaga(ContasPagar contaspagar) {
+       
+        DALContasPagar conta = new DALContasPagar();
+        List<ContasPagar> aux = new ArrayList();
+        aux = getParcDespesas(contaspagar.getFlag_despesa());
+        return conta.verificaPagamento(aux);
     }
 
     public List<ContasPagar> getParcDespesas(int codigo) {
         return dal.getParcDespesas(codigo);
+    }
+
+    public boolean apagar(ContasPagar desp, List<ContasPagar> listaParcela) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

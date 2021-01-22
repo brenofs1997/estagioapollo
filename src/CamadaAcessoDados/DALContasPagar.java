@@ -24,11 +24,11 @@ public class DALContasPagar {
     public boolean salvar(ContasPagar c) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/LLLL/yyyy");
-        
+
         String sql = "insert into contas_pagar (flag_despesa,parcela,valor,"
                 + "valor_pago,emissao,data_pago,funcionario,cond_pgto,tipo_despesa,qtde_parcelas,dias_entreparc,status,fornecedor,compra,vencimento) "
                 + "values(#A,'#B',#C,#D,'#E','#F',#H,#I,#J,#L,#M,'#N',#O,#P,'#G')";
-      
+
         sql = sql.replace("#A", "" + c.getFlag_despesa());
         sql = sql.replace("#B", c.getParcela());
         sql = sql.replace("#C", "" + c.getValor());
@@ -77,6 +77,23 @@ public class DALContasPagar {
         sql = sql.replace("#O", "" + c.getFornecedor().getCodigo());
         sql = sql.replace("#P", "" + c.getCompra().getCodigo());
         return Banco.getCon().manipular(sql);
+    }
+
+    public boolean apagar(ContasPagar cp, List<ContasPagar> Receber) {
+        boolean aux = false;
+
+        if (Receber != null) {
+            for (ContasPagar receber : Receber) {
+                if (receber.getFlag_despesa() == cp.getFlag_despesa()) {
+                    aux = Banco.getCon().manipular("delete from contas_pagar where flag_despesa=" + cp.getFlag_despesa());
+                    aux = true;
+                } else {
+                    aux = false;
+                }
+            }
+
+        }
+        return aux;
     }
 
     public boolean apagar(int cod) {
@@ -163,6 +180,24 @@ public class DALContasPagar {
 
         }
         return cp;
+    }
+
+    public boolean verificaPagamento(List<ContasPagar> aux) {
+        boolean auxC = false;
+        if (aux != null) {
+            for (ContasPagar receber : aux) {
+                ResultSet rs = Banco.getCon().consultar("select codigo from contas_pagar where codigo= " + receber.getCodigo() + " and data_pago is not null");
+                try {
+                    while (rs.next()) {
+                        return true;
+                    }
+                } catch (SQLException ex) {
+
+                }
+            }
+
+        }
+        return auxC;
     }
 
 }

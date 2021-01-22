@@ -137,7 +137,7 @@ public class TelaLancarDespesasController implements Initializable {
     }
 
     private void estadoInicial() {
-        pnconteudo.setDisable(true);
+
         btFinalizar.setDisable(true);
         btConsultar.setDisable(false);
         btCancelar.setDisable(false);
@@ -155,12 +155,14 @@ public class TelaLancarDespesasController implements Initializable {
                 ((TextInputControl) n).setText("");
             }
         }
+        limparLabel();
         cbCondPgto.getItems().clear();
         cbTipo.getItems().clear();
         dtEmissao.setValue(LocalDate.now());
         dtDtvenc.setValue(LocalDate.now());
         CarregaCondPgto();
         CarregaTipo();
+        pnconteudo.setDisable(true);
     }
 
     public void CarregaCondPgto() {
@@ -173,6 +175,7 @@ public class TelaLancarDespesasController implements Initializable {
     }
 
     public void limparLabel() {
+        txcodigo.setText("");
         txDias.setText("");
         txQuant.setText("");
         txValor.setText("");
@@ -213,7 +216,9 @@ public class TelaLancarDespesasController implements Initializable {
         stage.setTitle("BEM-VINDO: A BUSCA DE DESPESAS");
 
         stage.showAndWait();
-        controller.carregaCampos(getDesp(), cbCondPgto, cbTipo, txValor, dtEmissao, dtDtvenc, txDias, txQuant, txcodigo, btFinalizar, btExcluir, btNovo, tabela);
+        if (getDesp() != null) {
+            controller.carregaCampos(pnconteudo, getDesp(), cbCondPgto, cbTipo, txValor, dtEmissao, dtDtvenc, txDias, txQuant, txcodigo, btFinalizar, btExcluir, btNovo, tabela);
+        }
 
 //         try {
 //            ObservableList<ContasPagar> contr;
@@ -241,20 +246,20 @@ public class TelaLancarDespesasController implements Initializable {
     private void Excluir(ActionEvent event) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setContentText("Confirma a exclusão");
-//        if (a.showAndWait().get() == ButtonType.OK) {
-//            if (!contaspagar.verificaPagamento(contaspagar)) {
-//                if (crllancardes.excluir(contaspagar)) {
-//                    msg.Affirmation("Excluido com sucesso", "Despesa excluida!");
-//                    contaspagar = null;
-//                    estadoInicial();
-//                } else {
-//                    msg.Error("Erro ao excluir!", "Problemas ao excluir");
-//
-//                }
-//            } else {
-//                msg.Error("Erro ao excluir!", "Há parcelas pagas!");
-//            }
-//        }
+        if (a.showAndWait().get() == ButtonType.OK) {
+            if (!desp.verificarParcelaPaga(desp)) {
+                if (controller.excluir(desp)) {
+                    msg.Affirmation("Excluido com sucesso", "Despesa excluida!");
+                    desp = null;
+                    estadoInicial();
+                } else {
+                    msg.Error("Erro ao excluir!", "Problemas ao excluir");
+
+                }
+            } else {
+                msg.Error("Erro ao excluir!", "Há parcelas pagas!");
+            }
+        }
 
     }
 
@@ -273,6 +278,7 @@ public class TelaLancarDespesasController implements Initializable {
             if (cod == 0) {
                 if (controller.gravar(listaParcela)) {
                     msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
+                     estadoInicial();
                 } else {
                     msg.Error("Erro ", "Gravação não realizada");
 
@@ -281,8 +287,10 @@ public class TelaLancarDespesasController implements Initializable {
                 if (controller.apagar(tabela)) {
                     if (controller.gravar(listaParcela)) {
                         msg.Affirmation("Apollo Informa:", "Alteração feita com sucesso");
+                        estadoInicial();
                     } else {
                         msg.Error("Erro ", "Alteração não realizada");
+                        
                     }
                 }
             }
@@ -321,6 +329,20 @@ public class TelaLancarDespesasController implements Initializable {
             atualizarTabela();
         } catch (ParseException ex) {
             Logger.getLogger(TelaLancarDespesasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void habilitaCampos(ActionEvent event) {
+        String cond = "";
+
+        if (cbCondPgto.getSelectionModel().getSelectedItem() != null) {
+            cond = cbCondPgto.getSelectionModel().getSelectedItem().getDescricao();
+            if (cond.toUpperCase().equals("DINHEIRO")) {
+                txDias.setDisable(true);
+                txQuant.setDisable(true);
+            }
+
         }
     }
 

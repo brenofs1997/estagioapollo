@@ -34,6 +34,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
 import javafx.util.StringConverter;
 
 /**
@@ -41,19 +42,19 @@ import javafx.util.StringConverter;
  * @author paulo
  */
 public class ContasPagarController {
-
+    
     Erros msg = new Erros();
     NumberFormat nf = new DecimalFormat("#,###.00");
-
+    
     public void carregaTabela(String Filtro, TableView<ContasPagar> tabela) {
-
+        
         ContasPagar tip = new ContasPagar();
         List<ContasPagar> res = tip.get(Filtro);
         ObservableList<ContasPagar> modelo;
         modelo = FXCollections.observableArrayList(res);
         tabela.setItems(modelo);
     }
-
+    
     public void atualizarReceber(TableView<ContasPagar> tabelaReceber) {
         try {
             tabelaReceber.setVisible(true);
@@ -64,19 +65,19 @@ public class ContasPagarController {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public List<CondicaoPagamento> CarregaCondPgto() {
         CondicaoPagamento cp = new CondicaoPagamento();
         List<CondicaoPagamento> Lista = cp.get("");//Lista de Tipos de despesa
         return Lista;
     }
-
+    
     public List<TipoDespesa> CarregaTipo() {
         TipoDespesa cp = new TipoDespesa();
         List<TipoDespesa> Lista = cp.get("");//Lista de Tipos de despesa
         return Lista;
     }
-
+    
     public boolean gravar(List<ContasPagar> cp) {
         boolean aux = false;
         int flag_cod = 1, rows = 0;
@@ -98,24 +99,25 @@ public class ContasPagarController {
         }
         return aux;
     }
-
+    
     public boolean apagar(TableView<ContasPagar> tabela) {
         ContasPagar aux = new ContasPagar();
-        aux = tabela.getSelectionModel().getSelectedItem();
+     
+        aux = aux.get(tabela.getItems().get(0).getCodigo());
         return aux.apagar(aux.getFlag_despesa());
     }
-
+    
     public void clkPesquisar(String filtro, TableView<ContasPagar> tabela) {
         carregaTabela(filtro, tabela);
     }
-
+    
     public void carregarCategoria(JFXComboBox<Categoria> cbCategoria) {
         Categoria cat = new Categoria();
         List<Categoria> lista = cat.get("");
         cbCategoria.setItems(FXCollections.observableArrayList(lista));
         cbCategoria.getSelectionModel().select(0);
     }
-
+    
     public boolean alterar(List<ContasPagar> cp) {
         boolean aux = false;
         for (ContasPagar contasPagar : cp) {
@@ -123,12 +125,12 @@ public class ContasPagarController {
         }
         return aux;
     }
-
-    public void carregaCampos(ContasPagar desp, JFXComboBox<CondicaoPagamento> cbCondPgto, JFXComboBox<TipoDespesa> cbTipo,
+    
+    public void carregaCampos(Pane pnconteudo, ContasPagar desp, JFXComboBox<CondicaoPagamento> cbCondPgto, JFXComboBox<TipoDespesa> cbTipo,
             JFXTextField txValor, DatePicker dpemissao, DatePicker dtVenc, JFXTextField txDias, JFXTextField txQuant,
             JFXTextField txcodigo, JFXButton btFinalizar, JFXButton btExcluir, JFXButton btNovo, TableView<ContasPagar> tabela) {
-
-        if (desp.verificarParcelaPaga(desp.getCodigo())) {
+        
+        if (desp.verificarParcelaPaga(desp)) {
             btFinalizar.setDisable(true);
             btExcluir.setDisable(true);
             msg.Error("Apollo Informa", "Essa despesa possui parcelas pagas!");
@@ -138,44 +140,45 @@ public class ContasPagarController {
             cv.converter(desp.getEmissaoDate(), dpemissao);
             cv.converter(desp.getVencimentoDate(), dtVenc);
             txValor.setText(nf.format(desp.getValor()));
-
+            
             txDias.setText(String.valueOf(desp.getDias_entreparc()));
             txQuant.setText(String.valueOf(desp.getQtde_parcelas()));
             txcodigo.setText(String.valueOf(desp.getCodigo()));
-
+            
             cbTipo.getSelectionModel().select(0);
             cbTipo.getSelectionModel().select(desp.getTipo_despesa());
             cbCondPgto.getSelectionModel().select(0);
             cbCondPgto.getSelectionModel().select(desp.getCond_pgto());
-
+            
             listaParcela.clear();
             listaParcela.addAll(desp.getParcDespesas(desp.getFlag_despesa()));
             atualizarReceber(tabela);
             btNovo.setDisable(true);
             btFinalizar.setDisable(false);
             btExcluir.setDisable(false);
+            pnconteudo.setDisable(false);
         }
     }
-
+    
     public List<ContasPagar> gerarParcelas(JFXComboBox<CondicaoPagamento> cbCondPgto,
             JFXComboBox<TipoDespesa> cbTipo, Double total, DatePicker dpemissao,
             DatePicker dpvencimento, int diasentreparc, int qtde, int cod,
             Funcionario func) throws ParseException {
-
+        
         List<ContasPagar> rec = new ArrayList();
         CondicaoPagamento condpagto = cbCondPgto.getSelectionModel().getSelectedItem();
         TipoDespesa tipo = cbTipo.getSelectionModel().getSelectedItem();
         ContasPagar parcela;
         Double valor = 0.0, valorpago = 0.0, parcelaResto = 0.0;
         LocalDate emissao = dpemissao.getValue();
-
+        
         Calendar hoje = Calendar.getInstance();
 //        if (dtprazo != null) {
 //            hoje.set(dtprazo.getYear(), dtprazo.getMonthValue() - 1, dtprazo.getDayOfMonth());
 //        }
 
         Date vencimento = java.sql.Date.valueOf(dpvencimento.getValue());
-
+        
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         Date resultVencimento = formato.parse(formato.format(vencimento));
         String num_boletoaux = "";
@@ -187,7 +190,7 @@ public class ContasPagarController {
         Double valorfinal = 0.00;
         Double valor_pen = 0.00;
         NumberFormat nf = new DecimalFormat("#,###.00");
-
+        
         if (condpagto.getDescricao().toLowerCase().equals("Dinheiro")) {
             valorpago = valor;
             datapago = java.sql.Date.valueOf(emissao);
@@ -196,7 +199,7 @@ public class ContasPagarController {
         } else if (condpagto.getDescricao().toLowerCase().equals("cheque") || condpagto.getDescricao().toLowerCase().equals("boleto")) {
             resultVencimento = formato.parse(formato.format(vencimento));
             valor_pen = valor;
-
+            
         } else {
             hoje.setTime(vencimento);
 //            if (!txdiasentreparc.getText().isEmpty()) {
@@ -205,15 +208,15 @@ public class ContasPagarController {
             resultVencimento = hoje.getTime();
         }
         for (int i = 0; i < qtde; i++) {
-
+            
             if (i == 0) { // primeira parcela é diferente
                 valor = Double.parseDouble(String.format("%.2f", valor).replaceAll(",", "."));
                 if (qtde > 1) {
                     valor_pen = valor;
                 }
-
+                
                 parcela = new ContasPagar(cod, 0, String.valueOf(i + 1) + "/" + String.valueOf(qtde), valor, valorpago, java.sql.Date.valueOf(emissao), datapago, resultVencimento, func, condpagto, tipo, qtde, diasentreparc, status, new Fornecedor(), new Compra());
-
+                
             } else {
                 hoje.add(hoje.DAY_OF_MONTH, diasentreparc);
                 resultVencimento = hoje.getTime();
@@ -233,12 +236,21 @@ public class ContasPagarController {
                         java.sql.Date.valueOf(emissao), datapago, resultVencimento,
                         func, condpagto, tipo, qtde, diasentreparc, status,
                         new Fornecedor(), new Compra());
-
+                
             }
             rec.add(parcela);
         }
-
+        
         return rec;
     }
-
+    
+    public boolean excluir(ContasPagar desp) {
+        if (desp != null) {
+            if (desp.apagar(desp.getFlag_despesa())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }

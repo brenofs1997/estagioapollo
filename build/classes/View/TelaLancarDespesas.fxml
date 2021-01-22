@@ -30,7 +30,7 @@
                   <Pane layoutX="41.0" layoutY="235.0" prefHeight="224.0" prefWidth="600.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@../apollo/utils/styles.css">
                      <children>
                         <DatePicker fx:id="dtDtvenc" layoutX="14.0" layoutY="39.0" nodeOrientation="LEFT_TO_RIGHT" promptText=" --/--/--" />
-                        <JFXComboBox fx:id="cbCondPgto" focusColor="#7c7b78" labelFloat="true" layoutX="289.0" layoutY="39.0" prefHeight="31.0" prefWidth="290.0" promptText="Condição de Pagamento*" />
+                        <JFXComboBox fx:id="cbCondPgto" focusColor="#7c7b78" labelFloat="true" layoutX="289.0" layoutY="39.0" onAction="#habilitaCampos" prefHeight="31.0" prefWidth="290.0" promptText="Condição de Pagamento*" />
                         <JFXTextField fx:id="txQuant" focusColor="#7c7b78" labelFloat="true" layoutX="289.0" layoutY="112.0" prefHeight="31.0" prefWidth="290.0" promptText="Quantidade de Parcelas" />
                         <Label layoutX="14.0" layoutY="14.0" text="Data Vencimento">
                            <font>
@@ -50,7 +50,7 @@
                           <columns>
                             <TableColumn fx:id="colparc" prefWidth="75.0" text="Parcela" />
                             <TableColumn fx:id="colvenc" prefWidth="75.0" text="Vencimento" />
-                              <TableColumn fx:id="colvalor" prefWidth="75.0" text="Valor" />
+                              <TableColumn fx:id="colvalor" prefWidth="75.0" text="Valor(R$)" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
