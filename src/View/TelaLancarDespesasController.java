@@ -315,14 +315,20 @@ public class TelaLancarDespesasController implements Initializable {
         NumberFormat nf = new DecimalFormat("#,###.00");
         try {
             cod = Integer.parseInt(txcodigo.getText());
+            dias = Integer.parseInt(txDias.getText());
+            quant = Integer.parseInt(txQuant.getText());
         } catch (NumberFormatException e) {
             cod = 0;
+            dias = 0;
+            quant=1;
+            txDias.setText("0");
+            txQuant.setText("0");
         }
 
         try {
+            
             total = nf.parse(txValor.getText()).doubleValue();
-            dias = Integer.parseInt(txDias.getText());
-            quant = Integer.parseInt(txQuant.getText());
+            
 
             listaParcela.clear();
             listaParcela = controller.gerarParcelas(cbCondPgto, cbTipo, total, dtEmissao, dtDtvenc, dias, quant, cod, func);

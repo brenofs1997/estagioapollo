@@ -191,7 +191,7 @@ public class ContasPagarController {
         Double valor_pen = 0.00;
         NumberFormat nf = new DecimalFormat("#,###.00");
         
-        if (condpagto.getDescricao().toLowerCase().equals("Dinheiro")) {
+        if (condpagto.getDescricao().toLowerCase().equals("dinheiro")) {
             valorpago = valor;
             datapago = java.sql.Date.valueOf(emissao);
             resultVencimento = formato.parse(formato.format(vencimento));

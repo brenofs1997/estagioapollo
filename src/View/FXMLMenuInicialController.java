@@ -283,4 +283,23 @@ public class FXMLMenuInicialController implements Initializable {
         }
     }
 
+    @FXML
+    private void comprarProdutos(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaCompra2.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: AO COMPRA DE PRODUTOS");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

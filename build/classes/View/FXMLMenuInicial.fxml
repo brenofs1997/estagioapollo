@@ -181,11 +181,11 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </TitledPane>
-                  <TitledPane fx:id="tpCompras" expanded="false" prefHeight="430.0" prefWidth="218.0" text="Compras">
+                  <TitledPane fx:id="tpCompras" prefHeight="430.0" prefWidth="218.0" text="Compras">
                      <content>
                         <VBox prefHeight="270.0" prefWidth="216.0">
                            <children>
-                              <JFXButton fx:id="CadCompra" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="COMPRAS">
+                              <JFXButton fx:id="CadCompra" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#comprarProdutos" prefHeight="30.0" prefWidth="200.0" text="COMPRAS">
                                  <graphic>
                                     <FontAwesomeIcon iconName="SHOPPING_CART" size="2em" wrappingWidth="30.0">
                                        <fill>

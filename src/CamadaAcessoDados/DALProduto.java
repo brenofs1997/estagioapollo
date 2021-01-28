@@ -65,6 +65,25 @@ public class DALProduto {
         }
         return des;
     }
+    public List<Produto> getCategoriasFornecedor(int codigo) {
+        List<Produto> des = new ArrayList();
+        Categoria cat = new Categoria();
+        String sql = "select p.* from produto p,categoria c,categorias_fornecedor cf "
+                + "where p.cod_categoria=c.codigo and cf.cod_categoria=c.codigo and cf.cod_fornecedor=" + codigo+" and p.ativo=true";
+        
+        sql+=" order by descricao";
+        ResultSet rs = Banco.getCon().consultar(sql);
+        try {
+            while (rs.next()) {
+                cat=cat.get(rs.getInt("cod_categoria"));
+                des.add(new Produto(rs.getInt("codigo"), rs.getString("descricao"), rs.getDouble("preco"),rs.getInt("qtde"),rs.getBoolean("ativo"),cat));
+            }
+
+        } catch (SQLException ex) {
+
+        }
+        return des;
+    }
 
     public static Produto get(int codigo) {
         Categoria cat = new Categoria();

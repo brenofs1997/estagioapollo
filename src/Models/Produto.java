@@ -82,6 +82,9 @@ public class Produto {
     public List<Produto> get(String filtro){
         return dal.get(filtro);
     }
+    public List<Produto> getCategoriasFornecedor(int codigoFornecedor){
+        return dal.getCategoriasFornecedor(codigoFornecedor);
+    }
     public Produto get(int codigo){
         return dal.get(codigo);
     }

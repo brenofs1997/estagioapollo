@@ -6,6 +6,7 @@
 package Models;
 
 import CamadaAcessoDados.DALFornecedor;
+import java.util.List;
 
 /**
  *
@@ -24,14 +25,14 @@ public class Fornecedor {
     private String razaosocial;
     private String cep;
     private String telefonecontato;
-    private Categoria Categoria;
+   
     private Cidade Cidade;
     DALFornecedor dal= new DALFornecedor();
 
     public Fornecedor() {
     }
 
-    public Fornecedor(int codigo, String nomefantasia, String cnpj, String ativo, String endereco, String bairro, String numero, String email, String razaosocial, String cep, String telefonecontato, Categoria Categoria, Cidade Cidade) {
+    public Fornecedor(int codigo, String nomefantasia, String cnpj, String ativo, String endereco, String bairro, String numero, String email, String razaosocial, String cep, String telefonecontato, Cidade Cidade) {
         this.codigo = codigo;
         this.nomefantasia = nomefantasia;
         this.cnpj = cnpj;
@@ -43,7 +44,7 @@ public class Fornecedor {
         this.razaosocial = razaosocial;
         this.cep = cep;
         this.telefonecontato = telefonecontato;
-        this.Categoria = Categoria;
+       
         this.Cidade = Cidade;
     }
 
@@ -135,14 +136,6 @@ public class Fornecedor {
         this.telefonecontato = telefonecontato;
     }
 
-    public Categoria getCategoria() {
-        return Categoria;
-    }
-
-    public void setCategoria(Categoria Categoria) {
-        this.Categoria = Categoria;
-    }
-
     public Cidade getCidade() {
         return Cidade;
     }
@@ -153,6 +146,15 @@ public class Fornecedor {
      public Fornecedor get(int codigo) {
         return dal.get(codigo);
     }
+       public List<Fornecedor> get(String filtro) {
+        return dal.get(filtro);
+    }
+
+    @Override
+    public String toString() {
+        return nomefantasia;
+    }
+      
     
    
     
