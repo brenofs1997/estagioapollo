@@ -11,13 +11,21 @@ import Models.CondicaoPagamento;
 import Models.ContasPagar;
 import Models.Fornecedor;
 import Models.Produto;
+import Models.itens_Compra;
 import apollo.utils.MaskFieldUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,8 +47,6 @@ import javafx.scene.layout.Pane;
  */
 public class FXMLTelaCompraController implements Initializable {
 
-    @FXML
-    private TableColumn<?, ?> coldesc;
     @FXML
     private JFXButton btNovo;
     @FXML
@@ -88,24 +94,33 @@ public class FXMLTelaCompraController implements Initializable {
     @FXML
     private JFXTextField txQuant;
     @FXML
-    private TableView<?> tabelaProd;
+    private TableView<itens_Compra> tabelaProd;
     @FXML
-    private TableColumn<?, ?> colquant;
+    private TableColumn<itens_Compra, Integer> colquant;
     @FXML
-    private TableColumn<?, ?> colunitario;
+    private TableColumn<itens_Compra, Double> colunitario;
     @FXML
-    private TableColumn<?, ?> coltotal;
+    private TableColumn<itens_Compra, Double> coltotal;
+    @FXML
+    private TableColumn<itens_Compra, String> coldesc;
+    private static List<itens_Compra> itensCompra = new ArrayList();
     CompraController controller = new CompraController();
     ContasPagarController controllerCP = new ContasPagarController();
+    NumberFormat nf = new DecimalFormat("#,###.00");
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        colquant.setCellValueFactory(new PropertyValueFactory("quantidade"));
+        colunitario.setCellValueFactory(new PropertyValueFactory("unitario"));
+        coltotal.setCellValueFactory(new PropertyValueFactory("total"));
+        coldesc.setCellValueFactory(new PropertyValueFactory("produto"));
         colparc.setCellValueFactory(new PropertyValueFactory("parcela"));
         colvalor.setCellValueFactory(new PropertyValueFactory("valor"));
         colvenc.setCellValueFactory(new PropertyValueFactory("vencimento"));
+
         MaskFieldUtil.monetaryField(txValor);
         estadoInicial();
     }
@@ -171,7 +186,7 @@ public class FXMLTelaCompraController implements Initializable {
     }
 
     public void CarregaProdutos(int codFonecedor) {
-         cbProduto.setItems(FXCollections.observableArrayList(controller.CarregarProduto(codFonecedor)));
+        cbProduto.setItems(FXCollections.observableArrayList(controller.CarregarProduto(codFonecedor)));
     }
 
     @FXML
@@ -220,10 +235,29 @@ public class FXMLTelaCompraController implements Initializable {
 
     @FXML
     private void AddProduto(ActionEvent event) {
+        Double uni = 0.0;
+        int quant=0;
+        if (!txValor.getText().isEmpty()) {
+            try {
+                uni = nf.parse(txValor.getText()).doubleValue();
+            } catch (ParseException ex) {
+                Logger.getLogger(FXMLTelaCompraController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (!txQuant.getText().isEmpty()) {
+          quant=Integer.parseInt(txQuant.getText());
+        }
+        controller.addProduto(itensCompra, cbProduto.getSelectionModel().getSelectedItem(), tabelaProd, quant, uni);
+        
     }
 
     @FXML
     private void carregarProdutos(ActionEvent event) {
+
+        if (cbProduto.getSelectionModel().getSelectedItem() != null) {
+            txValor.setText(nf.format(cbProduto.getSelectionModel().getSelectedItem().getPreco()));
+
+        }
     }
 
     @FXML
@@ -235,7 +269,6 @@ public class FXMLTelaCompraController implements Initializable {
             txValor.setDisable(false);
             CarregaProdutos(cbFornecedor.getSelectionModel().getSelectedItem().getCodigo());
         }
-         
 
     }
 
