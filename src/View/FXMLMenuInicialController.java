@@ -111,6 +111,7 @@ public class FXMLMenuInicialController implements Initializable {
             tpRelatorio.setDisable(true);
         }
         TelaLancarDespesasController.setFunc(funcionario);
+        FXMLTelaCompraController.setFunc(funcionario);
     }
 
     @FXML

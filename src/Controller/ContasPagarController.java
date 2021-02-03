@@ -167,7 +167,10 @@ public class ContasPagarController {
         
         List<ContasPagar> rec = new ArrayList();
         CondicaoPagamento condpagto = cbCondPgto.getSelectionModel().getSelectedItem();
-        TipoDespesa tipo = cbTipo.getSelectionModel().getSelectedItem();
+         TipoDespesa tipo = new TipoDespesa();
+        if(cbTipo!=null)
+            tipo = cbTipo.getSelectionModel().getSelectedItem();
+        
         ContasPagar parcela;
         Double valor = 0.0, valorpago = 0.0, parcelaResto = 0.0;
         LocalDate emissao = dpemissao.getValue();

@@ -6,6 +6,9 @@
 package Models;
 
 import CamadaAcessoDados.DALCompra;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -14,24 +17,28 @@ import java.util.List;
  * @author paulo
  */
 public class Compra {
+
     private int codigo;
     private Date emissao;
     private Fornecedor fornecedor;
     private CondicaoPagamento cond_pgto;
     private double total;
 
-    
-    DALCompra dal =new DALCompra();
+    DALCompra dal = new DALCompra();
 
     public Compra() {
     }
 
-    public Compra(int codigo, Date emissao, Fornecedor fornecedor, CondicaoPagamento cond_pgto,double total) {
+    public Compra(int codigo) {
+        this.codigo = codigo;
+    }
+
+    public Compra(int codigo, Date emissao, Fornecedor fornecedor, CondicaoPagamento cond_pgto, double total) {
         this.codigo = codigo;
         this.emissao = emissao;
         this.fornecedor = fornecedor;
         this.cond_pgto = cond_pgto;
-        this.total=total;
+        this.total = total;
     }
 
     public int getCodigo() {
@@ -42,7 +49,12 @@ public class Compra {
         this.codigo = codigo;
     }
 
-    public Date getEmissao() {
+    public String getEmissao() throws ParseException {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        return formato.format(emissao);
+
+    }
+    public Date getEmissaoDate() {
         return emissao;
     }
 
@@ -65,6 +77,7 @@ public class Compra {
     public void setCond_pgto(CondicaoPagamento cond_pgto) {
         this.cond_pgto = cond_pgto;
     }
+
     public double getTotal() {
         return total;
     }
@@ -72,6 +85,7 @@ public class Compra {
     public void setTotal(double total) {
         this.total = total;
     }
+
     public List<Compra> get(String filtro) {
         return dal.get(filtro);
     }
@@ -85,7 +99,7 @@ public class Compra {
     }
 
     public boolean alterar(Compra c) {
-            
+
         return dal.salvar(c);
     }
 
@@ -93,9 +107,27 @@ public class Compra {
         return dal.salvar(cp);
 
     }
+
+    public boolean salvarItens(List<itens_Compra> itensCompra) {
+        boolean aux = false;
+        for (itens_Compra compra : itensCompra) {
+            if (dal.salvarItens(compra)) {
+                aux = true;
+            }
+
+        }
+
+        return aux;
+    }
+
+    public boolean verificarParcelaPaga(Compra compra) {
+        return false;
+    }
+
+   public List<itens_Compra> getProdutos(int codigo) {
+         return dal.getItens(codigo);
+    }
+
     
-    
-    
-    
-    
+
 }

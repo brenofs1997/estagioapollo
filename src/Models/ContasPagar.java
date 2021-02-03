@@ -35,7 +35,7 @@ public class ContasPagar {
     private String status;
     private Fornecedor fornecedor;
     private Compra compra;
-    DALContasPagar dal=new DALContasPagar();
+    DALContasPagar dal = new DALContasPagar();
 
     public ContasPagar() {
     }
@@ -98,11 +98,13 @@ public class ContasPagar {
     public void setValor_pago(double valor_pago) {
         this.valor_pago = valor_pago;
     }
-     public String getEmissao() throws ParseException {
+
+    public String getEmissao() throws ParseException {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         return formato.format(emissao);
 
     }
+
     public Date getEmissaoDate() {
         return emissao;
     }
@@ -118,11 +120,13 @@ public class ContasPagar {
     public void setData_pago(Date data_pago) {
         this.data_pago = data_pago;
     }
-     public String getVencimento() throws ParseException {
+
+    public String getVencimento() throws ParseException {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         return formato.format(vencimento);
 
     }
+
     public Date getVencimentoDate() {
         return vencimento;
     }
@@ -203,12 +207,16 @@ public class ContasPagar {
         return dal.get(codigo);
     }
 
+    public ContasPagar getC(int codCompra) {
+        return dal.getC(codCompra);
+    }
+
     public boolean apagar(int cod) {
         return dal.apagar(cod);
     }
 
     public boolean alterar(ContasPagar c) {
-            
+
         return dal.salvar(c);
     }
 
@@ -216,9 +224,9 @@ public class ContasPagar {
         return dal.salvar(cp);
 
     }
-    
+
     public boolean verificarParcelaPaga(ContasPagar contaspagar) {
-       
+
         DALContasPagar conta = new DALContasPagar();
         List<ContasPagar> aux = new ArrayList();
         aux = getParcDespesas(contaspagar.getFlag_despesa());
@@ -231,6 +239,10 @@ public class ContasPagar {
 
     public boolean apagar(ContasPagar desp, List<ContasPagar> listaParcela) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<ContasPagar> getParcCompras(int codigo) {
+         return dal.getParcDespesas(codigo);
     }
 
 }

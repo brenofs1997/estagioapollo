@@ -7,15 +7,19 @@ package View;
 
 import Controller.CompraController;
 import Controller.ContasPagarController;
+import Erros.Erros;
+import Models.Compra;
 import Models.CondicaoPagamento;
 import Models.ContasPagar;
 import Models.Fornecedor;
+import Models.Funcionario;
 import Models.Produto;
 import Models.itens_Compra;
 import apollo.utils.MaskFieldUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -31,14 +35,19 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -103,11 +112,40 @@ public class FXMLTelaCompraController implements Initializable {
     private TableColumn<itens_Compra, Double> coltotal;
     @FXML
     private TableColumn<itens_Compra, String> coldesc;
-    private static List<itens_Compra> itensCompra = new ArrayList();
+    public static List<itens_Compra> itensCompra = new ArrayList();
+
+    public static List<itens_Compra> getItensCompra() {
+        return itensCompra;
+    }
+
+    public static void setItensCompra(List<itens_Compra> itensCompra) {
+        FXMLTelaCompraController.itensCompra = itensCompra;
+    }
     CompraController controller = new CompraController();
     ContasPagarController controllerCP = new ContasPagarController();
     NumberFormat nf = new DecimalFormat("#,###.00");
+    public static List<ContasPagar> listaParcela = new ArrayList();
+    public static Funcionario func;
+    Erros msg = new Erros();
+    public static Funcionario getFunc() {
+        return func;
+    }
 
+    public static void setFunc(Funcionario func) {
+        FXMLTelaCompraController.func = func;
+    }
+    @FXML
+    private Label lbTotal;
+     public static Compra compra;
+
+    public static Compra getCompra() {
+        return compra;
+    }
+
+    public static void setCompra(Compra compra) {
+        FXMLTelaCompraController.compra = compra;
+    }
+     
     /**
      * Initializes the controller class.
      */
@@ -194,9 +232,6 @@ public class FXMLTelaCompraController implements Initializable {
         estadoEdicao();
     }
 
-    @FXML
-    private void Cosnultar(ActionEvent event) {
-    }
 
     @FXML
     private void Cancelar(ActionEvent event) {
@@ -215,6 +250,40 @@ public class FXMLTelaCompraController implements Initializable {
 
     @FXML
     private void Finalizar(ActionEvent event) {
+        int dias = 0, quant = 1, cod = 0, erro = 0;
+        NumberFormat nf = new DecimalFormat("#,###.00");
+        try {
+            cod = Integer.parseInt(txcodigo.getText());
+
+        } catch (NumberFormatException e) {
+            cod = 0;
+
+        }
+        if (erro == 0) {
+            if (cod == 0) {
+                try {
+                    if (controller.gravar(listaParcela,itensCompra,func,cod,cbFornecedor,java.sql.Date.valueOf(dtEmissao.getValue()),cbCondPgto,nf.parse(lbTotal.getText()).doubleValue())) {
+                        msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
+                        estadoInicial();
+                    } else {
+                        msg.Error("Erro ", "Gravação não realizada");
+                        
+                    }
+                } catch (ParseException ex) {
+                    Logger.getLogger(FXMLTelaCompraController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+               // if (controller.apagar(tabela)) {
+                //    if (controller.gravar(listaParcela)) {
+                 //       msg.Affirmation("Apollo Informa:", "Alteração feita com sucesso");
+                 //       estadoInicial();
+                  //  } else {
+                 //       msg.Error("Erro ", "Alteração não realizada");
+                        
+                   //}
+               
+            }
+        }
     }
 
     @FXML
@@ -227,16 +296,67 @@ public class FXMLTelaCompraController implements Initializable {
 
     @FXML
     private void habilitaCampos(ActionEvent event) {
+        String cond = "";
+
+        if (cbCondPgto.getSelectionModel().getSelectedItem() != null) {
+            cond = cbCondPgto.getSelectionModel().getSelectedItem().getDescricao();
+            if (cond.toUpperCase().equals("DINHEIRO") || cond.toUpperCase().equals("DÉBITO")) {
+                txDias.setDisable(true);
+                txQuantParc.setDisable(true);
+            }
+
+        }
+    }
+
+    private void atualizarTabela() {
+        try {
+            ObservableList<ContasPagar> contr;
+            contr = FXCollections.observableArrayList(listaParcela);
+            tabelaParcelas.setItems(contr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML
     private void Gerar(ActionEvent event) {
+        Double total = 0.0;
+        int dias = 0, quant = 1, cod = 0;
+        NumberFormat nf = new DecimalFormat("#,###.00");
+        try {
+            cod = Integer.parseInt(txcodigo.getText());
+
+        } catch (NumberFormatException e) {
+            cod = 0;
+
+        }
+        try {
+            dias = Integer.parseInt(txDias.getText());
+            quant = Integer.parseInt(txQuantParc.getText());
+        } catch (NumberFormatException e) {
+
+            dias = 0;
+            quant = 1;
+            txDias.setText("");
+            txQuantParc.setText("");
+        }
+
+        try {
+
+            total = nf.parse(lbTotal.getText()).doubleValue();
+
+            listaParcela.clear();
+            listaParcela = controllerCP.gerarParcelas(cbCondPgto, null, total, dtEmissao, dtDtvenc, dias, quant, cod, func);
+            atualizarTabela();
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaLancarDespesasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void AddProduto(ActionEvent event) {
         Double uni = 0.0;
-        int quant=0;
+        int quant = 0;
         if (!txValor.getText().isEmpty()) {
             try {
                 uni = nf.parse(txValor.getText()).doubleValue();
@@ -245,10 +365,10 @@ public class FXMLTelaCompraController implements Initializable {
             }
         }
         if (!txQuant.getText().isEmpty()) {
-          quant=Integer.parseInt(txQuant.getText());
+            quant = Integer.parseInt(txQuant.getText());
         }
-        controller.addProduto(itensCompra, cbProduto.getSelectionModel().getSelectedItem(), tabelaProd, quant, uni);
-        
+        controller.addProduto( cbProduto.getSelectionModel().getSelectedItem(), tabelaProd, quant, uni, lbTotal);
+
     }
 
     @FXML
@@ -270,6 +390,21 @@ public class FXMLTelaCompraController implements Initializable {
             CarregaProdutos(cbFornecedor.getSelectionModel().getSelectedItem().getCodigo());
         }
 
+    }
+
+    @FXML
+    private void Consultar(ActionEvent event) throws IOException {
+         Parent inicial = FXMLLoader.load(getClass().getResource("CompraConsulta.fxml"));
+        Scene scene = new Scene(inicial);
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("BEM-VINDO: A BUSCA DE DESPESAS");
+
+        stage.showAndWait();
+        if (getCompra() != null) {
+            controller.carregaCampos(pnconteudo, getCompra(), cbCondPgto, cbFornecedor, dtEmissao, dtDtvenc, txDias, txQuantParc, txcodigo, btFinalizar, btExcluir, btNovo, tabelaProd,tabelaParcelas);
+        }
     }
 
 }

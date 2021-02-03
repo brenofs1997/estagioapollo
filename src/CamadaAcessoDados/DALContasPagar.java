@@ -26,7 +26,7 @@ public class DALContasPagar {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/LLLL/yyyy");
 
         String sql = "insert into contas_pagar (flag_despesa,parcela,valor,"
-                + "valor_pago,emissao,data_pago,funcionario,cond_pgto,tipo_despesa,qtde_parcelas,dias_entreparc,status,fornecedor,compra,vencimento) "
+                + "valor_pago,emissao,data_pago,funcionario,cond_pgto,tipo_despesa,qtde_parcelas,dias_entreparc,status,cod_fornecedor,cod_compra,vencimento) "
                 + "values(#A,'#B',#C,#D,'#E','#F',#H,#I,#J,#L,#M,'#N',#O,#P,'#G')";
 
         sql = sql.replace("#A", "" + c.getFlag_despesa());
@@ -56,7 +56,7 @@ public class DALContasPagar {
         String sql = "update contas_pagar set flag_despesa=#A,parcela='#B',valor=#C,"
                 + "valor_pago=#D,emissao='#E',data_pago='#F',"
                 + "vencimento='#G',funcionario=#H,cond_pgto=#I,"
-                + "tipo_despesa=#J,qtde_parcelas=#L,dias_entreparc=#M,status='#N',fornecedor=#O,compra=#P where codigo=" + c.getCodigo();
+                + "tipo_despesa=#J,qtde_parcelas=#L,dias_entreparc=#M,status='#N',cod_fornecedor=#O,cod_compra=#P where codigo=" + c.getCodigo();
         sql = sql.replace("#A", "" + c.getFlag_despesa());
         sql = sql.replace("#B", c.getParcela());
         sql = sql.replace("#C", "" + c.getValor());
@@ -118,7 +118,7 @@ public class DALContasPagar {
                 cont = new ContasPagar(rs.getInt("codigo"), rs.getInt("flag_despesa"), rs.getString("parcela"), rs.getDouble("valor"),
                         rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"), rs.getDate("vencimento"), dalf.get(rs.getInt("funcionario")),
                         dalcd.get(rs.getInt("cond_pgto")), dalt.get(rs.getInt("tipo_despesa")), rs.getInt("qtde_parcelas"), rs.getInt("dias_entreparc"), rs.getString("parcela"),
-                        dalfr.get(rs.getInt("fornecedor")), dalcp.get(rs.getInt("compra")));
+                        dalfr.get(rs.getInt("cod_fornecedor")), dalcp.get(rs.getInt("cod_compra")));
             }
         } catch (SQLException ex) {
 
@@ -146,7 +146,7 @@ public class DALContasPagar {
                 cont = new ContasPagar(rs.getInt("codigo"), rs.getInt("flag_despesa"), rs.getString("parcela"), rs.getDouble("valor"),
                         rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"), rs.getDate("vencimento"), dalf.get(rs.getInt("funcionario")),
                         dalcd.get(rs.getInt("cond_pgto")), dalt.get(rs.getInt("tipo_despesa")), rs.getInt("qtde_parcelas"), rs.getInt("dias_entreparc"), rs.getString("parcela"),
-                        dalfr.get(rs.getInt("fornecedor")), dalcp.get(rs.getInt("compra")));
+                        dalfr.get(rs.getInt("cod_fornecedor")), dalcp.get(rs.getInt("cod_compra")));
                 cp.add(cont);
             }
         } catch (SQLException ex) {
@@ -173,7 +173,7 @@ public class DALContasPagar {
                 cont = new ContasPagar(rs.getInt("codigo"), rs.getInt("flag_despesa"), rs.getString("parcela"), rs.getDouble("valor"),
                         rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"), rs.getDate("vencimento"), dalf.get(rs.getInt("funcionario")),
                         dalcd.get(rs.getInt("cond_pgto")), dalt.get(rs.getInt("tipo_despesa")), rs.getInt("qtde_parcelas"), rs.getInt("dias_entreparc"), rs.getString("parcela"),
-                        dalfr.get(rs.getInt("fornecedor")), dalcp.get(rs.getInt("compra")));
+                        dalfr.get(rs.getInt("cod_fornecedor")), dalcp.get(rs.getInt("cod_compra")));
                 cp.add(cont);
             }
         } catch (SQLException ex) {
@@ -181,7 +181,32 @@ public class DALContasPagar {
         }
         return cp;
     }
+ public List<ContasPagar> getParcCompras(int codigo) {
+        List<ContasPagar> cp = new ArrayList();
+        ContasPagar cont = new ContasPagar();
+        DALFuncionario dalf = new DALFuncionario();
+        DALFornecedor dalfr = new DALFornecedor();
+        DALTipoDespesa dalt = new DALTipoDespesa();
+        DALCondPgto dalcd = new DALCondPgto();
+        DALCompra dalcp = new DALCompra();
+        String sql = "select * from contas_pagar where cod_compra = " + codigo;
 
+        sql += " order by codigo";
+        ResultSet rs = Banco.getCon().consultar(sql);
+        try {
+            while (rs.next()) {
+
+                cont = new ContasPagar(rs.getInt("codigo"), rs.getInt("flag_despesa"), rs.getString("parcela"), rs.getDouble("valor"),
+                        rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"), rs.getDate("vencimento"), dalf.get(rs.getInt("funcionario")),
+                        dalcd.get(rs.getInt("cond_pgto")), dalt.get(rs.getInt("tipo_despesa")), rs.getInt("qtde_parcelas"), rs.getInt("dias_entreparc"), rs.getString("parcela"),
+                        dalfr.get(rs.getInt("cod_fornecedor")), dalcp.get(rs.getInt("cod_compra")));
+                cp.add(cont);
+            }
+        } catch (SQLException ex) {
+
+        }
+        return cp;
+    }
     public boolean verificaPagamento(List<ContasPagar> aux) {
         boolean auxC = false;
         if (aux != null) {
@@ -198,6 +223,32 @@ public class DALContasPagar {
 
         }
         return auxC;
+    }
+
+    public ContasPagar getC(int codCompra) {
+        ContasPagar cont = new ContasPagar();
+        DALFuncionario dalf = new DALFuncionario();
+        DALFornecedor dalfr = new DALFornecedor();
+        DALTipoDespesa dalt = new DALTipoDespesa();
+        DALCondPgto dalcd = new DALCondPgto();
+        DALCompra dalcp = new DALCompra();
+        String sql = "select * from contas_pagar ";
+        if (codCompra > 0) {
+            sql += " where compra=" + codCompra;
+        }
+        ResultSet rs = Banco.getCon().consultar(sql);
+        try {
+            while (rs.next()) {
+
+                cont = new ContasPagar(rs.getInt("codigo"), rs.getInt("flag_despesa"), rs.getString("parcela"), rs.getDouble("valor"),
+                        rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"), rs.getDate("vencimento"), dalf.get(rs.getInt("funcionario")),
+                        dalcd.get(rs.getInt("cond_pgto")), dalt.get(rs.getInt("tipo_despesa")), rs.getInt("qtde_parcelas"), rs.getInt("dias_entreparc"), rs.getString("parcela"),
+                        dalfr.get(rs.getInt("cod_fornecedor")), dalcp.get(rs.getInt("cod_compra")));
+            }
+        } catch (SQLException ex) {
+
+        }
+        return cont;
     }
 
 }

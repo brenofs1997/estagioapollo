@@ -344,7 +344,7 @@ public class TelaLancarDespesasController implements Initializable {
 
         if (cbCondPgto.getSelectionModel().getSelectedItem() != null) {
             cond = cbCondPgto.getSelectionModel().getSelectedItem().getDescricao();
-            if (cond.toUpperCase().equals("DINHEIRO")) {
+            if (cond.toUpperCase().equals("DINHEIRO")|| cond.toUpperCase().equals("DÉBITO")) {
                 txDias.setDisable(true);
                 txQuant.setDisable(true);
             }

@@ -38,13 +38,11 @@ public class DespesasConsultaController implements Initializable {
     private Pane pnconteudo;
      @FXML
     private TableView<ContasPagar> tabela;
-    @FXML
     private TableColumn<ContasPagar, String> colparc;
     @FXML
     private TableColumn<ContasPagar, Date> colvenc;
     @FXML
     private TableColumn<ContasPagar, Double> colvalor;
-    @FXML
     private TableColumn<ContasPagar, String> coldesc;
     
     ContasPagarController controller = new ContasPagarController();
@@ -56,7 +54,7 @@ public class DespesasConsultaController implements Initializable {
     public static void setDesp(ContasPagar desp) {
         DespesasConsultaController.desp = desp;
     }
-  
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         colparc.setCellValueFactory(new PropertyValueFactory("parcela"));

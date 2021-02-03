@@ -23,6 +23,10 @@ public class Produto {
     public Produto() {
     }
 
+    public Produto(int codigo) {
+        this.codigo = codigo;
+    }
+    
     public Produto(int codigo, String descricao, double preco, int qtde, boolean ativo, Categoria categoria) {
         this.codigo = codigo;
         this.descricao = descricao;
