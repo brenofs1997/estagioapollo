@@ -7,7 +7,6 @@ package Controller;
 
 import Erros.Erros;
 import Models.Categoria;
-import Models.TipoDespesa;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.util.List;

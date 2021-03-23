@@ -61,7 +61,9 @@ public class DALCompra {
 
         return Banco.getCon().manipular(sql);
     }
-
+     public boolean apagarItens(int cod) {
+        return Banco.getCon().manipular("delete from item_compra where codigo_compra = " + cod);
+    }
     public boolean salvar(Compra c) {
 
         String sql = "insert into entrada_de_produtos(emissao,codigo_fornecedor,codigo_condpagto,total) "
@@ -75,7 +77,7 @@ public class DALCompra {
     }
 
     public boolean alterar(Compra c) {
-        String sql = "update entrada_de_produtos set emissao='#A',codigo_fornecedor=#B,cond_pgto=#C,total=#D where codigo=" + c.getCodigo();
+        String sql = "update entrada_de_produtos set emissao='#A',codigo_fornecedor=#B,codigo_condpagto=#C,total=#D where codigo=" + c.getCodigo();
         sql = sql.replace("#A", "" + c.getEmissaoDate());
         sql = sql.replace("#B", "" + c.getFornecedor().getCodigo());
         sql = sql.replace("#C", "" + c.getCond_pgto().getCodigo());
@@ -123,7 +125,7 @@ public class DALCompra {
         DALCompra dalcp = new DALCompra();
         String sql = "select * from item_compra  where codigo_compra=" + codCompra ;
         
-        sql += " order by emissao";
+      
         ResultSet rs = Banco.getCon().consultar(sql);
         try {
             while (rs.next()) {
@@ -137,5 +139,20 @@ public class DALCompra {
 
         }
         return cp;
+    }
+    
+    public boolean verificarParcelaPaga(int codigo) {
+        String sql = "select codigo from contas_pagar where cod_compra = " + codigo + " and data_pago is not null";
+
+        ResultSet rs = Banco.getCon().consultar(sql);
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+        }
+
+        return false;
+
     }
 }

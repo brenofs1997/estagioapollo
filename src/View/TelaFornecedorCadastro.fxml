@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="851.0" prefWidth="1134.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TelaFornecedorCadastroController">
+   <children>
+      <BorderPane layoutX="-1.0" prefHeight="851.0" prefWidth="1134.0">
+         <bottom>
+            <Pane fx:id="pnpesquisa" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox layoutX="29.0" prefHeight="191.0" prefWidth="1062.0">
+                     <children>
+                        <HBox prefHeight="90.0" prefWidth="854.0">
+                           <children>
+                              <Pane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <JFXRadioButton fx:id="rbnome" layoutX="14.0" layoutY="9.0" selected="true" text="Nome Fantasia">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="Pesquisa1" />
+                                       </toggleGroup>
+                                    </JFXRadioButton>
+                                    <JFXRadioButton fx:id="rbcpf" layoutX="14.0" layoutY="34.0" text="CNPJ" toggleGroup="$Pesquisa1" />
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="73.0" prefWidth="864.0">
+                                 <children>
+                                    <JFXTextField fx:id="txpesquisar" focusColor="#4d4d4d" labelFloat="true" layoutX="10.0" layoutY="13.0" prefHeight="42.0" prefWidth="404.0" promptText="Informe o nome do fantasia ou CNPJ..." style="-fx-background-color: WHITE;">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="15.0" top="15.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXButton fx:id="btpesquisar" layoutX="434.0" layoutY="11.0" onAction="#clkPesquisar" prefHeight="55.0" prefWidth="121.0" ripplerFill="#d74326" style="-fx-background-color: F52F00;" text="Pesquisar" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </HBox>
+                        <TableView fx:id="tabela" onMouseClicked="#evtTabela" prefHeight="136.0" prefWidth="576.0">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                           <columns>
+                              <TableColumn fx:id="colcod" prefWidth="77.0" text="Código" />
+                              <TableColumn fx:id="colnome" prefWidth="135.0" text="Nome" />
+                              <TableColumn fx:id="colcnpj" prefWidth="120.0" text="CNPJ" />
+                              <TableColumn fx:id="colcidade" prefWidth="112.0" text="Cidade" />
+                              <TableColumn fx:id="colativo" prefWidth="112.0" text="Ativo" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+         </bottom>
+         <center>
+            <Pane fx:id="pndados" prefHeight="420.0" prefWidth="703.0" style="-fx-border-width: 1px 0px 1px 0px; -fx-border-color: BLACK;" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXTextField fx:id="txcod" disable="true" editable="false" labelFloat="true" layoutX="79.0" layoutY="21.0" prefHeight="25.0" prefWidth="135.0" promptText="Código">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXCheckBox fx:id="chkAtivo" layoutX="240.0" layoutY="25.0" selected="true" text="Ativo">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXCheckBox>
+                  <JFXTextField fx:id="txnome" focusColor="#4d4d4d" labelFloat="true" layoutX="79.0" layoutY="82.0" prefHeight="31.0" prefWidth="456.0" promptText="Nome  Fantasia *" style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txrazao" focusColor="#4d4d4d" labelFloat="true" layoutX="567.0" layoutY="82.0" prefHeight="31.0" prefWidth="456.0" promptText="Razão Social *" style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txendereco" focusColor="#4d4d4d" labelFloat="true" layoutX="72.0" layoutY="159.0" prefHeight="39.0" prefWidth="422.0" promptText="Endereço " style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txnum" focusColor="#4d4d4d" labelFloat="true" layoutX="518.0" layoutY="159.0" prefHeight="39.0" prefWidth="187.0" promptText="Número " style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txbairro" focusColor="#4d4d4d" labelFloat="true" layoutX="732.0" layoutY="159.0" prefHeight="39.0" prefWidth="295.0" promptText="Bairro " style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXComboBox fx:id="cbUf" focusColor="#4d4d4d" labelFloat="true" layoutX="72.0" layoutY="252.0" onAction="#carregaCidade" prefHeight="31.0" prefWidth="88.0" promptText="UF" />
+                  <JFXComboBox fx:id="cbCid" disable="true" focusColor="#4d4d4d" labelFloat="true" layoutX="196.0" layoutY="252.0" prefHeight="31.0" prefWidth="300.0" promptText="Cidade" />
+                  <JFXTextField fx:id="txcep" focusColor="#4d4d4d" labelFloat="true" layoutX="540.0" layoutY="243.0" prefHeight="39.0" prefWidth="176.0" promptText="CEP " style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtelefone" focusColor="#4d4d4d" labelFloat="true" layoutX="754.0" layoutY="244.0" prefHeight="39.0" prefWidth="273.0" promptText="Telefone" style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txcnpj" focusColor="#4d4d4d" labelFloat="true" layoutX="66.0" layoutY="322.0" onKeyPressed="#validaCPF" prefHeight="39.0" prefWidth="350.0" promptText="CNPJ *" style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txemail" focusColor="#4d4d4d" labelFloat="true" layoutX="503.0" layoutY="322.0" prefHeight="39.0" prefWidth="534.0" promptText="Email " style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXButton fx:id="btRetirar" ellipsisString="" layoutX="443.0" layoutY="404.0" onAction="#retirar" prefHeight="35.0" prefWidth="37.0" style="-fx-background-color: #ea1b21;" text=" " textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="TRASH" size="1.5em" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Adicionar a lista de produtos" />
+                     </tooltip>
+                  </JFXButton>
+                  <JFXButton fx:id="btAdd" ellipsisString="" layoutX="384.0" layoutY="404.0" onAction="#Add" prefHeight="35.0" prefWidth="37.0" style="-fx-background-color: #ea1b21;" text=" " textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Adicionar a lista de produtos" />
+                     </tooltip>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="PLUS" size="1.5em" />
+                     </graphic>
+                  </JFXButton>
+                  <TableView fx:id="tabelaCat" layoutX="509.0" layoutY="404.0" prefHeight="142.0" prefWidth="371.0">
+                    <columns>
+                      <TableColumn fx:id="cbdesc" prefWidth="75.0" text="Categoria" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <JFXComboBox fx:id="cbCat" focusColor="#4d4d4d" labelFloat="true" layoutX="62.0" layoutY="406.0" prefHeight="31.0" prefWidth="294.0" promptText="Categoria de Produtos" />
+               </children>
+            </Pane>
+         </center>
+         <top>
+            <Pane fx:id="pnbtn" prefHeight="77.0" prefWidth="926.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="btnovo" layoutX="157.0" layoutY="12.0" onAction="#clknovo" prefHeight="55.0" prefWidth="145.0" ripplerFill="#3e24d3" style="-fx-background-color: F52F00;" text="Novo" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btalterar" layoutX="310.0" layoutY="12.0" onAction="#clkalterar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: F52F00;" text="Alterar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btapagar" layoutX="472.0" layoutY="12.0" onAction="#clkapagar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: F52F00;" text="Apagar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btconfirmar" layoutX="641.0" layoutY="12.0" onAction="#clkconfirmar" prefHeight="55.0" prefWidth="145.0" ripplerFill="#26d157" style="-fx-background-color: F52F00;" text="Confirmar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btcancelar" layoutX="815.0" layoutY="12.0" onAction="#clkcancelar" prefHeight="55.0" prefWidth="145.0" ripplerFill="#d14326" style="-fx-background-color: F52F00;" text="Cancelar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </Pane>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>

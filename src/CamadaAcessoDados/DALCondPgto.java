@@ -64,6 +64,18 @@ public class DALCondPgto {
         }
         return null;
     }
+    
+     public CondicaoPagamento getC(String  descricao) {
+        String SQL = "select * from condicao_pgto where descricao like '%" + descricao+"%'";
+        ResultSet rs = Banco.getCon().consultar(SQL);
+        try {
+            if (rs.next()) {
+                return new CondicaoPagamento(rs.getInt("codigo"), rs.getString("descricao"));
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
 
     
 }

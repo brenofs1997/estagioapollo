@@ -72,7 +72,7 @@ public class DALCliente {
     public List<Cliente> get(String filtro) {
         List<Cliente> c = new ArrayList();
         Cidade cid = new Cidade();
-        String SQL = "select c.codigo,c.nome,c.data_cadastro,c.cpf,c.endereco,c.bairro,c.email,c.limite_fiado,c.cep,c.telefone,c.numero,c.saldo_devedor,c.cod_cidade,c.ativo from cliente c , cidade cid where c.ativo='true' and c.cod_cidade = cid.cid_cod ";
+        String SQL = "select c.codigo,c.nome,c.data_cadastro,c.cpf,c.endereco,c.bairro,c.email,c.limite_fiado,c.cep,c.telefone,c.numero,c.saldo_devedor,c.cod_cidade,c.ativo from cliente c , cidade cid where c.ativo='true' and c.cod_cidade = cid.cid_cod and c.codigo <> 1 ";
 
         if (!filtro.isEmpty()) {
             SQL = SQL + " and " + filtro;

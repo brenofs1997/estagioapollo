@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="242.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TelaBaixarFiadoController">
+   <children>
+      <DatePicker fx:id="dtBaixa" layoutX="90.0" layoutY="70.0" />
+      <JFXTextField fx:id="txtValor" focusColor="BLACK" labelFloat="true" layoutX="90.0" layoutY="121.0" prefHeight="31.0" prefWidth="218.0" promptText="Digite o Valor*" />
+      <JFXButton fx:id="btBaixar" buttonType="RAISED" layoutX="127.0" layoutY="173.0" onAction="#BaixarVenda" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="BAIXAR" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <ripplerFill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#f52f00" />
+                  <Stop color="#400c00" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </ripplerFill>
+      </JFXButton>
+      <Label layoutX="90.0" layoutY="30.0" text="Data da Baixa" />
+   </children>
+</AnchorPane>

@@ -38,11 +38,13 @@ public class DespesasConsultaController implements Initializable {
     private Pane pnconteudo;
      @FXML
     private TableView<ContasPagar> tabela;
+   @FXML
     private TableColumn<ContasPagar, String> colparc;
     @FXML
     private TableColumn<ContasPagar, Date> colvenc;
     @FXML
     private TableColumn<ContasPagar, Double> colvalor;
+   @FXML
     private TableColumn<ContasPagar, String> coldesc;
     
     ContasPagarController controller = new ContasPagarController();

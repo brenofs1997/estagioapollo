@@ -39,12 +39,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -122,6 +123,16 @@ public class TelaLancarDespesasController implements Initializable {
     private JFXTextField txDias;
     @FXML
     private Pane pnconteudo;
+    @FXML
+    private Label lbTipodesp;
+    @FXML
+    private Label lbValor;
+    @FXML
+    private Label lbCondPagamento;
+    @FXML
+    private Label lbEntreParc;
+    @FXML
+    private Label lbQtdeParc;
 
     /**
      * Initializes the controller class.
@@ -137,7 +148,7 @@ public class TelaLancarDespesasController implements Initializable {
     }
 
     private void estadoInicial() {
-
+        pnconteudo.setDisable(true);
         btFinalizar.setDisable(true);
         btConsultar.setDisable(false);
         btCancelar.setDisable(false);
@@ -162,7 +173,7 @@ public class TelaLancarDespesasController implements Initializable {
         dtDtvenc.setValue(LocalDate.now());
         CarregaCondPgto();
         CarregaTipo();
-        pnconteudo.setDisable(true);
+
     }
 
     public void CarregaCondPgto() {
@@ -181,6 +192,11 @@ public class TelaLancarDespesasController implements Initializable {
         txValor.setText("");
         cbCondPgto.resetValidation();
         cbTipo.resetValidation();
+        lbTipodesp.setText("");
+        lbValor.setText("");
+        lbCondPagamento.setText("");
+        lbEntreParc.setText("");
+        lbQtdeParc.setText("");
 
     }
 
@@ -214,21 +230,12 @@ public class TelaLancarDespesasController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("BEM-VINDO: A BUSCA DE DESPESAS");
-
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         if (getDesp() != null) {
             controller.carregaCampos(pnconteudo, getDesp(), cbCondPgto, cbTipo, txValor, dtEmissao, dtDtvenc, txDias, txQuant, txcodigo, btFinalizar, btExcluir, btNovo, tabela);
         }
-
-//         try {
-//            ObservableList<ContasPagar> contr;
-//            listaParcrlad.clear();
-//            listaParcrlad.add(desp);
-//            contr = FXCollections.observableArrayList(listaParcrlad);
-//            tabela.setItems(contr);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 
     @FXML
@@ -278,7 +285,7 @@ public class TelaLancarDespesasController implements Initializable {
             if (cod == 0) {
                 if (controller.gravar(listaParcela)) {
                     msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
-                     estadoInicial();
+                    estadoInicial();
                 } else {
                     msg.Error("Erro ", "Gravação não realizada");
 
@@ -290,7 +297,7 @@ public class TelaLancarDespesasController implements Initializable {
                         estadoInicial();
                     } else {
                         msg.Error("Erro ", "Alteração não realizada");
-                        
+
                     }
                 }
             }
@@ -313,26 +320,62 @@ public class TelaLancarDespesasController implements Initializable {
         Double total = 0.0;
         int dias = 0, quant = 0, cod = 0;
         NumberFormat nf = new DecimalFormat("#,###.00");
+        String cond = "";
+
         try {
             cod = Integer.parseInt(txcodigo.getText());
-            dias = Integer.parseInt(txDias.getText());
-            quant = Integer.parseInt(txQuant.getText());
         } catch (NumberFormatException e) {
             cod = 0;
-            dias = 0;
-            quant=1;
-            txDias.setText("0");
-            txQuant.setText("0");
+
         }
 
         try {
-            
-            total = nf.parse(txValor.getText()).doubleValue();
-            
 
-            listaParcela.clear();
-            listaParcela = controller.gerarParcelas(cbCondPgto, cbTipo, total, dtEmissao, dtDtvenc, dias, quant, cod, func);
-            atualizarTabela();
+            quant = Integer.parseInt(txQuant.getText());
+        } catch (NumberFormatException e) {
+
+            quant = 1;
+
+            txQuant.setText("");
+        }
+
+        try {
+            if (cbTipo.getSelectionModel().getSelectedItem() != null && !txValor.getText().isEmpty()) {
+                if (cbCondPgto.getSelectionModel().getSelectedItem() != null) {
+                    cond = cbCondPgto.getSelectionModel().getSelectedItem().getDescricao();
+                    if (!cond.toUpperCase().equals("DINHEIRO") || !cond.toUpperCase().equals("DÉBITO")) {
+                        if (txQuant.getText().isEmpty()) {
+                            msg.campoVazio(txQuant);
+                        }
+
+                    }
+                    try {
+                        dias = Integer.parseInt(txDias.getText());
+                    } catch (NumberFormatException e) {
+                        if (cond.toUpperCase().equals("DINHEIRO") || cond.toUpperCase().equals("DÉBITO")) {
+                            dias = 0;
+                            txDias.setText("");
+                        }
+                    }
+                    if (dias == 0 || dias > 31) {
+                        msg.Affirmation("", "Numero de dias não pode ser 0 ou maior que 31");
+                    } else {
+                        total = nf.parse(txValor.getText()).doubleValue();
+
+                        listaParcela.clear();
+                        listaParcela = controller.gerarParcelas(cbCondPgto, cbTipo, total, dtEmissao, dtDtvenc, dias, quant, cod, func);
+                        atualizarTabela();
+                    }
+
+                } else {
+                    msg.campoVazioCbx(cbCondPgto);
+                }
+
+            } else {
+                msg.campoVazioCbx(cbTipo);
+                msg.campoVazio(txValor);
+            }
+
         } catch (ParseException ex) {
             Logger.getLogger(TelaLancarDespesasController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -343,10 +386,14 @@ public class TelaLancarDespesasController implements Initializable {
         String cond = "";
 
         if (cbCondPgto.getSelectionModel().getSelectedItem() != null) {
+            txDias.setDisable(false);
+            txQuant.setDisable(false);
             cond = cbCondPgto.getSelectionModel().getSelectedItem().getDescricao();
-            if (cond.toUpperCase().equals("DINHEIRO")|| cond.toUpperCase().equals("DÉBITO")) {
+            if (cond.toUpperCase().equals("DINHEIRO") || cond.toUpperCase().equals("DÉBITO")) {
                 txDias.setDisable(true);
                 txQuant.setDisable(true);
+                txDias.setText("");
+                txQuant.setText("");
             }
 
         }

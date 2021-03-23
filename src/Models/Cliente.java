@@ -32,6 +32,10 @@ public class Cliente {
     public Cliente() {
     }
 
+    public Cliente(int codigo) {
+        this.codigo = codigo;
+    }
+
     public Cliente(int codigo, String nome, Date data_cadastro, String cpf, String endereco, String bairro, String email, double limite_fiado, String cep, String telefone, Cidade cidade, boolean ativo, String numero, double saldo_devedor) {
         this.codigo = codigo;
         this.nome = nome;

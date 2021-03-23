@@ -68,10 +68,14 @@ public class ContasPagarController {
     
     public List<CondicaoPagamento> CarregaCondPgto() {
         CondicaoPagamento cp = new CondicaoPagamento();
-        List<CondicaoPagamento> Lista = cp.get("");//Lista de Tipos de despesa
+        List<CondicaoPagamento> Lista = cp.get("");//Lista de CondPgto
         return Lista;
     }
-    
+     public List<Categoria> CarregaCategoria() {
+        Categoria cp = new Categoria();
+        List<Categoria> Lista = cp.get("");//Lista de Categoria
+        return Lista;
+    }
     public List<TipoDespesa> CarregaTipo() {
         TipoDespesa cp = new TipoDespesa();
         List<TipoDespesa> Lista = cp.get("");//Lista de Tipos de despesa

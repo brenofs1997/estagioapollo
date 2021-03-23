@@ -84,7 +84,27 @@ public class DALProduto {
         }
         return des;
     }
+    public List<Produto> getCategoria(int codigo) {
+       List<Produto> des = new ArrayList();
+        Categoria cat = new Categoria();
+        String sql = "select * from produto";
+        if (codigo!=0) {
+            sql += " where cod_categoria=" + codigo;
+        }
+        
+        sql+=" order by descricao";
+        ResultSet rs = Banco.getCon().consultar(sql);
+        try {
+            while (rs.next()) {
+                cat=cat.get(rs.getInt("cod_categoria"));
+                des.add(new Produto(rs.getInt("codigo"), rs.getString("descricao"), rs.getDouble("preco"),rs.getInt("qtde"),rs.getBoolean("ativo"),cat));
+            }
 
+        } catch (SQLException ex) {
+
+        }
+        return des;
+    }
     public static Produto get(int codigo) {
         Categoria cat = new Categoria();
         String SQL = "select * from Produto where codigo = " + codigo;

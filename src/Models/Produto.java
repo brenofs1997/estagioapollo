@@ -89,6 +89,9 @@ public class Produto {
     public List<Produto> getCategoriasFornecedor(int codigoFornecedor){
         return dal.getCategoriasFornecedor(codigoFornecedor);
     }
+     public List<Produto> getCategoria(int codigoCategoria){
+        return dal.getCategoria(codigoCategoria);
+    }
     public Produto get(int codigo){
         return dal.get(codigo);
     }

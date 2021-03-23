@@ -98,9 +98,9 @@ public class Compra {
         return dal.apagar(cod);
     }
 
-    public boolean alterar(Compra c) {
+    public boolean alterar(Compra c) { 
 
-        return dal.salvar(c);
+        return dal.alterar(c);
     }
 
     public boolean salvar(Compra cp) {
@@ -121,7 +121,7 @@ public class Compra {
     }
 
     public boolean verificarParcelaPaga(Compra compra) {
-        return false;
+      return dal.verificarParcelaPaga(compra.getCodigo());
     }
 
    public List<itens_Compra> getProdutos(int codigo) {

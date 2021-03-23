@@ -5,16 +5,19 @@
  */
 package Models;
 
+import CamadaAcessoDados.DALEstado;
+import java.util.List;
 
 public class Estado {
+
     private int cod;
     private String nome, sigla;
+    DALEstado dal = new DALEstado();
 
     public Estado(int cod) {
         this.cod = cod;
     }
 
-   
     public Estado(int cod, String nome, String sigla) {
         this.cod = cod;
         this.sigla = sigla;
@@ -22,13 +25,13 @@ public class Estado {
     }
 
     public Estado(String nome, String sigla) {
-        cod=0;
+        cod = 0;
         this.sigla = sigla;
         this.nome = nome;
     }
 
     public Estado() {
-        this(0,"","");
+        this(0, "", "");
     }
 
     public int getCod() {
@@ -55,11 +58,17 @@ public class Estado {
         this.nome = nome;
     }
 
+    public List<Estado> get(String filtro) {
+        return dal.get(filtro);
+    }
+
     @Override
     public String toString() {
-        return nome;
+        return sigla;
     }
-    
-    
-}
 
+    public Estado getPorCid(int cid_cod) {
+        return dal.getPorCid(cid_cod);
+    }
+
+}

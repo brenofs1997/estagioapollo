@@ -47,18 +47,16 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <JFXComboBox fx:id="cbFornecedor" focusColor="#7c7b78" labelFloat="true" layoutX="16.0" layoutY="89.0" onAction="#HabilitaProduto" prefHeight="31.0" prefWidth="316.0" promptText="Fornecedor*" />
+                        <JFXComboBox fx:id="cbFornecedor" focusColor="#7c7b78" labelFloat="true" layoutX="16.0" layoutY="89.0" onAction="#HabilitaProduto" onMouseClicked="#atualizaFornecedores" prefHeight="31.0" prefWidth="316.0" promptText="Fornecedor*" />
                         <JFXButton fx:id="btForcedor" ellipsisString="" layoutX="351.0" layoutY="87.0" onAction="#AddForcedor" prefHeight="35.0" prefWidth="37.0" style="-fx-background-color: #ea1b21;" text=" " textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" iconName="PLUS" size="1.5em" />
-                           </graphic>
                            <tooltip>
                               <Tooltip text="Adicionar Fornecedor" />
                            </tooltip>
                         </JFXButton>
+                        <FontAwesomeIcon fill="WHITE" iconName="PLUS" layoutX="361.0" layoutY="112.0" size="1.5em" />
                      </children>
                   </Pane>
                   <Pane layoutX="41.0" layoutY="339.0" prefHeight="224.0" prefWidth="600.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@../apollo/utils/styles.css">
@@ -107,14 +105,23 @@
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" iconName="PLUS" size="1.5em" />
-                           </graphic>
                            <tooltip>
                               <Tooltip text="Adicionar a lista de produtos" />
                            </tooltip>
                         </JFXButton>
                         <JFXTextField fx:id="txQuant" disable="true" labelFloat="true" layoutX="14.0" layoutY="88.0" prefHeight="31.0" prefWidth="155.0" promptText="Quantidade*" />
+                        <JFXButton fx:id="btRetirarProd" disable="true" ellipsisString="" layoutX="405.0" layoutY="31.0" onAction="#tirarProduto" prefHeight="35.0" prefWidth="37.0" style="-fx-background-color: #ea1b21;" text=" " textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" iconName="TRASH" size="1.5em" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Adicionar a lista de produtos" />
+                           </tooltip>
+                        </JFXButton>
+                        <FontAwesomeIcon fill="WHITE" iconName="PLUS" layoutX="361.0" layoutY="56.0" size="1.5em" />
                      </children>
                   </Pane>
                   <Pane layoutX="654.0" layoutY="19.0" prefHeight="310.0" prefWidth="588.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@../apollo/utils/styles.css">
@@ -125,7 +132,7 @@
                            </columnResizePolicy>
                            <columns>
                               <TableColumn fx:id="coldesc" prefWidth="75.0" text="Desccrição" />
-                              <TableColumn fx:id="colquant" prefWidth="75.0" text="Quantidade" />
+                              <TableColumn fx:id="colquant" onEditCommit="#editarTabela" prefWidth="75.0" text="Quantidade" />
                               <TableColumn fx:id="colunitario" prefWidth="75.0" text="Unitário(R$)" />
                               <TableColumn fx:id="coltotal" prefWidth="75.0" text="Total(R$)" />
                            </columns>

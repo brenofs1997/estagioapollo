@@ -13,9 +13,11 @@ import java.util.List;
  * @author paulo
  */
 public class CondicaoPagamento {
+
     private int codigo;
     private String descricao;
     DALCondPgto dal = new DALCondPgto();
+
     public CondicaoPagamento() {
     }
 
@@ -24,7 +26,11 @@ public class CondicaoPagamento {
         this.descricao = descricao;
     }
 
-    
+    public CondicaoPagamento(int codigo) {
+        this.codigo = codigo;
+
+    }
+
     public int getCodigo() {
         return codigo;
     }
@@ -40,26 +46,34 @@ public class CondicaoPagamento {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
     public boolean gravar(CondicaoPagamento c) {
 
         return dal.salvar(c);
     }
-     public List<CondicaoPagamento> get(String filtro){
+
+    public List<CondicaoPagamento> get(String filtro) {
         return dal.get(filtro);
     }
-    public CondicaoPagamento get(int filtro){
+
+    public CondicaoPagamento get(int filtro) {
         return dal.get(filtro);
     }
+
+    public CondicaoPagamento getC(String filtro) {
+        return dal.getC(filtro);
+    }
+
     @Override
     public String toString() {
         return descricao;
     }
 
     public boolean alterar(CondicaoPagamento c) {
-       return dal.alterar(c);
+        return dal.alterar(c);
     }
-    public boolean apagar(int cod)
-    {
+
+    public boolean apagar(int cod) {
         return dal.apagar(cod);
     }
 }

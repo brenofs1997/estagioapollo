@@ -5,15 +5,13 @@
  */
 package Models;
 
+import CamadaAcessoDados.DALCompra;
+
 /**
  *
  * @author Paulo
  */
 public class itens_Compra {
-
-    public static void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     private int quantidade;
 
@@ -24,8 +22,9 @@ public class itens_Compra {
     private Compra compra;
 
     private Produto produto;
-
+    DALCompra dal = new DALCompra();
     public itens_Compra() {
+        
     }
 
     public itens_Compra(int quantidade, double unitario, double total, Compra compra, Produto produto) {
@@ -74,6 +73,9 @@ public class itens_Compra {
 
     public void setProduto(Produto produto) {
         this.produto = produto;
+    }
+     public boolean apagar(int cod) {
+        return dal.apagarItens(cod);
     }
     
 }

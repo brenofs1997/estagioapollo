@@ -99,6 +99,9 @@ public class DALContasPagar {
     public boolean apagar(int cod) {
         return Banco.getCon().manipular("delete from contas_pagar where flag_despesa = " + cod);
     }
+    public boolean apagarParcCompra(int cod) {
+        return Banco.getCon().manipular("delete from contas_pagar where cod_compra = " + cod);
+    }
 
     public ContasPagar get(int filtro) {
         ContasPagar cont = new ContasPagar();
@@ -234,7 +237,7 @@ public class DALContasPagar {
         DALCompra dalcp = new DALCompra();
         String sql = "select * from contas_pagar ";
         if (codCompra > 0) {
-            sql += " where compra=" + codCompra;
+            sql += " where cod_compra=" + codCompra;
         }
         ResultSet rs = Banco.getCon().consultar(sql);
         try {

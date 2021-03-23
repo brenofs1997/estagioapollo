@@ -214,6 +214,10 @@ public class ContasPagar {
     public boolean apagar(int cod) {
         return dal.apagar(cod);
     }
+     public boolean apagarParcCompra(int cod) {
+        return dal.apagarParcCompra(cod);
+    }
+    
 
     public boolean alterar(ContasPagar c) {
 
@@ -242,7 +246,7 @@ public class ContasPagar {
     }
 
     public List<ContasPagar> getParcCompras(int codigo) {
-         return dal.getParcDespesas(codigo);
+         return dal.getParcCompras(codigo);
     }
 
 }

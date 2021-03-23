@@ -13,7 +13,7 @@ import java.util.List;
  * @author paulo
  */
 public class Fornecedor {
-    
+
     private int codigo;
     private String nomefantasia;
     private String cnpj;
@@ -21,18 +21,18 @@ public class Fornecedor {
     private String endereco;
     private String bairro;
     private String numero;
+    private Cidade cidade;
     private String email;
     private String razaosocial;
     private String cep;
     private String telefonecontato;
-   
-    private Cidade Cidade;
-    DALFornecedor dal= new DALFornecedor();
+
+    DALFornecedor dal = new DALFornecedor();
 
     public Fornecedor() {
     }
 
-    public Fornecedor(int codigo, String nomefantasia, String cnpj, String ativo, String endereco, String bairro, String numero, String email, String razaosocial, String cep, String telefonecontato, Cidade Cidade) {
+    public Fornecedor(int codigo, String nomefantasia, String cnpj, String ativo, String endereco, String bairro, String numero, Cidade cidade, String email, String razaosocial, String cep, String telefonecontato) {
         this.codigo = codigo;
         this.nomefantasia = nomefantasia;
         this.cnpj = cnpj;
@@ -40,12 +40,11 @@ public class Fornecedor {
         this.endereco = endereco;
         this.bairro = bairro;
         this.numero = numero;
+        this.cidade = cidade;
         this.email = email;
         this.razaosocial = razaosocial;
         this.cep = cep;
         this.telefonecontato = telefonecontato;
-       
-        this.Cidade = Cidade;
     }
 
     public int getCodigo() {
@@ -104,6 +103,14 @@ public class Fornecedor {
         this.numero = numero;
     }
 
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -136,26 +143,41 @@ public class Fornecedor {
         this.telefonecontato = telefonecontato;
     }
 
-    public Cidade getCidade() {
-        return Cidade;
+    public boolean salvar(Fornecedor f) {
+        return dal.salvar(f);
     }
 
-    public void setCidade(Cidade Cidade) {
-        this.Cidade = Cidade;
+    public boolean alterar(Fornecedor f) {
+         return dal.alterar(f);
     }
-     public Fornecedor get(int codigo) {
+
+    public boolean salvarCategoria(int codfor, int codcat) {
+        return dal.salvarCategoria(codfor, codcat);
+    }
+
+    public boolean apagarCats(int cod) {
+        return dal.apagarCats(cod);
+    }
+
+    public boolean apagar(int codigo) {
+        return dal.apagar(codigo);
+    }
+
+    public Fornecedor get(int codigo) {
         return dal.get(codigo);
     }
-       public List<Fornecedor> get(String filtro) {
+
+    public List<Fornecedor> get(String filtro) {
         return dal.get(filtro);
+    }
+
+    public List<Categoria> getCategorias(int codfor) {
+        return dal.getCategorias(codfor);
     }
 
     @Override
     public String toString() {
         return nomefantasia;
     }
-      
-    
-   
-    
+
 }

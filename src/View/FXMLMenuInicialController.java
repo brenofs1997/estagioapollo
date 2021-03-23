@@ -6,10 +6,15 @@
 package View;
 
 import Controller.MenuController;
+import Erros.Erros;
+import Models.Caixa;
 import Models.Funcionario;
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +26,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLMenuInicialController implements Initializable {
@@ -83,12 +91,48 @@ public class FXMLMenuInicialController implements Initializable {
         FXMLMenuInicialController.funcionario = funcionario;
     }
 
-    MenuController mctrl = new MenuController();
     @FXML
     private JFXButton cadProduto;
+    @FXML
+    private JFXButton CadForc;
+    @FXML
+    private FontAwesomeIcon iconcaixa = new FontAwesomeIcon();
+    @FXML
+    private Label lbcaixa = new Label();
+    @FXML
+    private Label lbcaixasaldo = new Label();
+    @FXML
+    private FontAwesomeIcon iconcaixaSaldo;
+
+    MenuController mctrl = new MenuController();
+
+    Caixa c = new Caixa();
+    Erros msg = new Erros();
+
+    NumberFormat nf = new DecimalFormat("#,###.00");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        if (c.verificaCaixa()) {
+            if (c.isStatus().equals("Caixa Aberto.")) {
+                iconcaixa.setIconName("UNLOCK_ALT");
+            } else {
+                iconcaixa.setIconName("LOCK");
+            }
+            lbcaixa.setText(c.isStatus());
+            lbcaixasaldo.setText(nf.format(c.getSaldoInicio()));
+
+        } else {
+            c.iniciaCaixa();
+            if (c.isStatus().equals("Caixa Aberto.")) {
+                iconcaixa.setIconName("UNLOCK_ALT");
+            } else {
+                iconcaixa.setIconName("LOCK");
+            }
+            lbcaixa.setText(c.isStatus());
+            lbcaixasaldo.setText(nf.format(c.getSaldoInicio()));
+        }
         verificaRestricao();
     }
 
@@ -112,6 +156,7 @@ public class FXMLMenuInicialController implements Initializable {
         }
         TelaLancarDespesasController.setFunc(funcionario);
         FXMLTelaCompraController.setFunc(funcionario);
+        FXMLTelaVendasProdutoController.setFunc(funcionario);
     }
 
     @FXML
@@ -122,12 +167,14 @@ public class FXMLMenuInicialController implements Initializable {
             Scene scene = new Scene(inicial);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("BEM-VINDO: AO CADASTRO DE CATEGORIAS");
+            stage.setTitle("BEM-VINDO: AO CADASTRO DE CLIENTE");
             // stage.setMaximized(true);
 
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -147,7 +194,9 @@ public class FXMLMenuInicialController implements Initializable {
 
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -161,11 +210,13 @@ public class FXMLMenuInicialController implements Initializable {
 
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("BEM-VINDO: AO CADASTRO DE NÍVEL DE FUNCIONARIO");
+            stage.setTitle("BEM-VINDO: AO CADASTRO DE NÍVEL DE FUNCIONÁRIO");
             // stage.setMaximized(true);
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -184,7 +235,9 @@ public class FXMLMenuInicialController implements Initializable {
 
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -198,12 +251,14 @@ public class FXMLMenuInicialController implements Initializable {
 
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("BEM-VINDO: AO CADASTRO DE FUNCIONARIO");
+            stage.setTitle("BEM-VINDO: AO CADASTRO DE FUNCIONÁRIO");
             // stage.setMaximized(true);
 
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -222,7 +277,9 @@ public class FXMLMenuInicialController implements Initializable {
 
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -230,28 +287,34 @@ public class FXMLMenuInicialController implements Initializable {
 
     @FXML
     private void Sair(ActionEvent event) {
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        a.setContentText("Deseja sair?");
-        a.showAndWait();
-        if (a.getResult() == ButtonType.OK) {
-            try {
-                btnsair.getScene().getWindow().hide();
-                Parent root = FXMLLoader.load(getClass().getResource("TelaAutenticacaoFXML.fxml"));
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.setTitle("Autenticação de Usuário");
-                
-                stage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        if (c.isAberto()) {
+              msg.Error("Apollo Informa: ", "Caixa Aberto!");
+        } else {
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            a.setContentText("Deseja sair?");
+            a.showAndWait();
+            if (a.getResult() == ButtonType.OK) {
+                try {
+                    btnsair.getScene().getWindow().hide();
+                    Parent root = FXMLLoader.load(getClass().getResource("TelaAutenticacaoFXML.fxml"));
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setTitle("Autenticação de Usuário");
+
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.setResizable(false);
+                    stage.showAndWait();
+                } catch (IOException ex) {
+                    Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
 
     @FXML
     private void Produto(ActionEvent event) {
-         try {
+        try {
             Parent inicial = FXMLLoader.load(getClass().getResource("TelaProduto.fxml"));
             Scene scene = new Scene(inicial);
 
@@ -262,7 +325,9 @@ public class FXMLMenuInicialController implements Initializable {
 
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -270,15 +335,17 @@ public class FXMLMenuInicialController implements Initializable {
 
     @FXML
     private void lancarDespesas(ActionEvent event) {
-         try {
+        try {
             Parent inicial = FXMLLoader.load(getClass().getResource("TelaLancarDespesas.fxml"));
             Scene scene = new Scene(inicial);
 
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle("BEM-VINDO: AO LANÇAMENTO DE DESPESAS");
-            
-            stage.show();
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -297,10 +364,126 @@ public class FXMLMenuInicialController implements Initializable {
 
             //Close authentication Window
             //Show main Window
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void forCad(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("TelaFornecedorCadastro.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: AO CADASTRO DE FORNECEDOR");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void VendaProdutos(ActionEvent event) {
+        if (c.isAberto()) {
+            try {
+                Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaVendasProduto.fxml"));
+                Scene scene = new Scene(inicial);
+
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("BEM-VINDO: A VENDA DE PRODUTOS");
+                // stage.setMaximized(true);
+
+                //Close authentication Window
+                //Show main Window
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setResizable(false);
+                stage.showAndWait();
+
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            msg.Error("Apollo Informa: ", "Caixa Fechado!");
+        }
+
+    }
+
+    @FXML
+    private void ReceberFiado(ActionEvent event
+    ) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaReceberFiado.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: AO RECEBER FIADOS");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void abreCaixa(MouseEvent event) {
+        if (c.isAberto()) {
+            c.atualizarStatus("F");
+            lbcaixa.setText(c.isStatus());
+            iconcaixa.setIconName("LOCK");
+        } else {
+            c.atualizarStatus("A");
+            lbcaixa.setText(c.isStatus());
+            iconcaixa.setIconName("UNLOCK_ALT");
+        }
+    }
+
+    public void atualizaSaldo() {
+        lbcaixasaldo.setText(nf.format(c.getSaldoInicio()));
+    }
+
+    @FXML
+    private void atualizaSaldo(MouseEvent event) {
+        if (c.isAberto()) {
+            try {
+                Parent inicial = FXMLLoader.load(getClass().getResource("TelaSaldoCaixa.fxml"));
+                Scene scene = new Scene(inicial);
+
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("BEM-VINDO: ABRIR CAIXA");
+                // stage.setMaximized(true);
+
+                //Close authentication Window
+                //Show main Window
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setResizable(false);
+                stage.showAndWait();
+                atualizaSaldo();
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            msg.Error("Apollo Informa: ", "Caixa Fechado!");
+        }
+
     }
 
 }

@@ -22,9 +22,9 @@
                         <TableView fx:id="tabela" layoutX="-4.0" onMouseClicked="#doubleClick" prefHeight="271.0" prefWidth="649.0">
                            <columns>
                               <TableColumn fx:id="coldesc" prefWidth="292.0" text="Descrição" />
+                              <TableColumn fx:id="colparc" prefWidth="292.0" text="Parcela" />
                               <TableColumn fx:id="colvenc" prefWidth="126.0" text="Vencimento" />
                               <TableColumn fx:id="colvalor" prefWidth="75.0" text="Valor" />
-                              <TableColumn fx:id="colparc" prefWidth="292.0" text="Parcela" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
