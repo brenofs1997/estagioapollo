@@ -12,10 +12,15 @@ import Models.Funcionario;
 import Models.Venda;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +30,8 @@ public class DALContasReceber {
 
     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/LLLL/yyyy");
-
+    NumberFormat nf = new DecimalFormat("#,###.00");
+    DecimalFormat formatoDecimal = new DecimalFormat("#.##");
     public boolean salvar(ContasReceber c) {
 
         int codVenda = 0;
@@ -68,16 +74,22 @@ public class DALContasReceber {
     }
 
     public ContasReceber get(int codigo) {
+        Double vr = 0.0;
         String sql = " select * from contas_receber where codigo =" + codigo;
 
         ResultSet rs = Banco.getCon().consultar(sql);
         try {
             while (rs.next()) {
-
-                return new ContasReceber(rs.getInt("codigo"), new Venda(rs.getInt("cod_venda")), rs.getString("parcela"),
+                try {
+                    vr=nf.parse(nf.format(rs.getDouble("valor")-rs.getDouble("valor_pago"))).doubleValue() ;
+                } catch (ParseException ex) {
+                    Logger.getLogger(DALContasReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return new ContasReceber(rs.getInt("codigo"), rs.getString("parcela"),
                         rs.getDouble("valor"), rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"),
-                        rs.getDate("vencimento"), new Funcionario(rs.getInt("cod_funcionario")), new Cliente(rs.getInt("cod_cliente")),
-                        new CondicaoPagamento(rs.getInt("cod_condicaopagamento")), rs.getString("status"));
+                        rs.getDate("vencimento"),  new Funcionario(rs.getInt("cod_funcionario")), new Cliente(rs.getInt("cod_cliente")), 
+                        new CondicaoPagamento(rs.getInt("cod_condicaopagamento")), rs.getString("status"), new Venda(rs.getInt("cod_venda")),
+                        vr);
 
             }
         } catch (SQLException ex) {
@@ -85,30 +97,42 @@ public class DALContasReceber {
         }
         return null;
     }
-     public List<ContasReceber> get(String filtro) {
-         
-        String sql = " select * from contas_receber where status= '"+filtro+"'" ;
+
+    public List<ContasReceber> get(String filtro) {
+
+        String sql = " select * from contas_receber ";
+        if (!filtro.isEmpty()) {
+            sql += "where status= '" + filtro + "'";
+        }
+        Double vr = 0.0;
         List<ContasReceber> cr = new ArrayList();
         ContasReceber cont = new ContasReceber();
         ResultSet rs = Banco.getCon().consultar(sql);
         try {
             while (rs.next()) {
-                
-
-                 cont=new ContasReceber(rs.getInt("codigo"), new Venda(rs.getInt("cod_venda")), rs.getString("parcela"),
+               try {
+                    vr=nf.parse(nf.format(rs.getDouble("valor")-rs.getDouble("valor_pago"))).doubleValue() ;
+                } catch (ParseException ex) {
+                    Logger.getLogger(DALContasReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                cont = new ContasReceber(rs.getInt("codigo"), rs.getString("parcela"),
                         rs.getDouble("valor"), rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"),
                         rs.getDate("vencimento"), new Funcionario(rs.getInt("cod_funcionario")), new Cliente(rs.getInt("cod_cliente")),
-                        new CondicaoPagamento(rs.getInt("cod_condicaopagamento")), rs.getString("status"));
-                 cr.add(cont);
+                        new CondicaoPagamento(rs.getInt("cod_condicaopagamento")), rs.getString("status"), new Venda(rs.getInt("cod_venda")),
+                        vr);
+
+                cr.add(cont);
             }
         } catch (SQLException ex) {
 
         }
         return cr;
     }
+
     public List<ContasReceber> getFiado(int cliente, String dtinicial, String dtfinal) {
         List<ContasReceber> cr = new ArrayList();
         ContasReceber cont = new ContasReceber();
+        Double vr = 0.0;
         String sql = " select cr.* from contas_receber cr,venda v,condicao_pgto cp where cr.cod_venda = v.codigo "
                 + " and  v.cod_cliente =" + cliente + " and v.cod_condpagto =cp.codigo and cp.descricao like '%Fiado%' ";
 
@@ -121,12 +145,17 @@ public class DALContasReceber {
         ResultSet rs = Banco.getCon().consultar(sql);
         try {
             while (rs.next()) {
-
-                cont = new ContasReceber(rs.getInt("codigo"), new Venda(rs.getInt("cod_venda")), rs.getString("parcela"),
+                try {
+                    vr=nf.parse(nf.format(rs.getDouble("valor")-rs.getDouble("valor_pago"))).doubleValue() ;
+                } catch (ParseException ex) {
+                    Logger.getLogger(DALContasReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                cont = new ContasReceber(rs.getInt("codigo"), rs.getString("parcela"),
                         rs.getDouble("valor"), rs.getDouble("valor_pago"), rs.getDate("emissao"), rs.getDate("data_pago"),
                         rs.getDate("vencimento"), new Funcionario(rs.getInt("cod_funcionario")), new Cliente(rs.getInt("cod_cliente")),
-                        new CondicaoPagamento(rs.getInt("cod_condicaopagamento")), rs.getString("status"));
-                cr.add(cont);
+                        new CondicaoPagamento(rs.getInt("cod_condicaopagamento")), rs.getString("status"), new Venda(rs.getInt("cod_venda")),
+                        vr);
+                 cr.add(cont);
             }
         } catch (SQLException ex) {
 

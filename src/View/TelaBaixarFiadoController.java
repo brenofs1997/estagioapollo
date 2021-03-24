@@ -53,6 +53,7 @@ public class TelaBaixarFiadoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         dtBaixa.setValue(LocalDate.now());
         MaskFieldUtil.monetaryField(txtValor);
+        txtValor.setText(nf.format(conta.getValor_restante()));
     }
 
     @FXML

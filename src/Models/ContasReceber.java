@@ -26,6 +26,7 @@ public class ContasReceber {
     private CondicaoPagamento cond_pgto;
     private String status;
     private Venda venda;
+    private double valor_restante;
     DALContasReceber dal = new DALContasReceber();
 
     public ContasReceber() {
@@ -82,6 +83,22 @@ public class ContasReceber {
 
     }
 
+    public ContasReceber(int codigo, String parcela, double valor, double valor_pago, Date emissao, Date data_pago, Date vencimento, Funcionario funcionario, Cliente cliente, CondicaoPagamento cond_pgto, String status, Venda venda, double valor_restante) {
+        this.codigo = codigo;
+        this.parcela = parcela;
+        this.valor = valor;
+        this.valor_pago = valor_pago;
+        this.emissao = emissao;
+        this.data_pago = data_pago;
+        this.vencimento = vencimento;
+        this.funcionario = funcionario;
+        this.cliente = cliente;
+        this.cond_pgto = cond_pgto;
+        this.status = status;
+        this.venda = venda;
+        this.valor_restante = valor_restante;
+    }
+    
     public int getCodigo() {
         return codigo;
     }
@@ -211,6 +228,14 @@ public class ContasReceber {
         this.venda = venda;
     }
 
+    public double getValor_restante() {
+        return valor_restante;
+    }
+
+    public void setValor_restante(double valor_restante) {
+        this.valor_restante = valor_restante;
+    }
+    
     public boolean gravar(ContasReceber c) {
 
         return dal.salvar(c);

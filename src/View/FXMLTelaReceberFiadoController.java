@@ -86,6 +86,8 @@ public class FXMLTelaReceberFiadoController implements Initializable {
     private JFXRadioButton rbQuitados;
     @FXML
     private JFXRadioButton rbPendente;
+    @FXML
+    private TableColumn<ContasReceber, Double> colvalorrestante;
 
     /**
      * Initializes the controller class.
@@ -97,6 +99,7 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         coltotal.setCellValueFactory(new PropertyValueFactory("valor"));
         coldatapago.setCellValueFactory(new PropertyValueFactory("data_pago"));
         colvalorpago.setCellValueFactory(new PropertyValueFactory("valor_pago"));
+        colvalorrestante.setCellValueFactory(new PropertyValueFactory("valor_restante"));
         CarregaCliente();
 
     }
