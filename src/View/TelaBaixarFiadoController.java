@@ -9,6 +9,7 @@ import Controller.ReceberFiadoController;
 import Erros.Erros;
 import Models.ContasReceber;
 import apollo.utils.MaskFieldUtil;
+import apollo.utils.converteDataPicker;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -16,16 +17,16 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class TelaBaixarFiadoController implements Initializable {
 
@@ -48,12 +49,16 @@ public class TelaBaixarFiadoController implements Initializable {
     public static void setConta(ContasReceber conta) {
         TelaBaixarFiadoController.conta = conta;
     }
+    @FXML
+    private DatePicker dtEmissao;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         dtBaixa.setValue(LocalDate.now());
         MaskFieldUtil.monetaryField(txtValor);
         txtValor.setText(nf.format(conta.getValor_restante()));
+        converteDataPicker cv = new converteDataPicker();
+        cv.converter(getConta().getEmissaoDate(), dtEmissao);
     }
 
     @FXML

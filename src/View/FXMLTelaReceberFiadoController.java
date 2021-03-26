@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
@@ -88,6 +89,8 @@ public class FXMLTelaReceberFiadoController implements Initializable {
     private JFXRadioButton rbPendente;
     @FXML
     private TableColumn<ContasReceber, Double> colvalorrestante;
+    @FXML
+    private Label lbTotal;
 
     /**
      * Initializes the controller class.
@@ -101,6 +104,7 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         colvalorpago.setCellValueFactory(new PropertyValueFactory("valor_pago"));
         colvalorrestante.setCellValueFactory(new PropertyValueFactory("valor_restante"));
         CarregaCliente();
+        controller.calcTotal(tabelaRec, lbTotal);
 
     }
 
@@ -120,6 +124,7 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         if (a.showAndWait().get() == ButtonType.OK) {
             controller.estornar(tabelaRec.getSelectionModel().getSelectedItem());
             consultar();
+            controller.calcTotal(tabelaRec, lbTotal);
         }
     }
 
@@ -140,8 +145,9 @@ public class FXMLTelaReceberFiadoController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.showAndWait();
-
+            tabelaRec.getItems().clear();
             consultar();
+            controller.calcTotal(tabelaRec, lbTotal);
         } else {
             msg.Error("ERRO", "Selecione uma  conta");
         }
@@ -157,12 +163,13 @@ public class FXMLTelaReceberFiadoController implements Initializable {
 
     @FXML
     private void PesqCliente(ActionEvent event) {
-         cbCliente.setItems(FXCollections.observableArrayList(controllerV.PesquisarCliente(txtPesqCli.getText())));
+        cbCliente.setItems(FXCollections.observableArrayList(controllerV.PesquisarCliente(txtPesqCli.getText())));
     }
 
     @FXML
     private void Consultar(ActionEvent event) {
         consultar();
+        controller.calcTotal(tabelaRec, lbTotal);
     }
 
     public void consultar() {
@@ -184,7 +191,8 @@ public class FXMLTelaReceberFiadoController implements Initializable {
     @FXML
     private void VerificarVenda(MouseEvent event) {
         if (tabelaRec.getSelectionModel().getSelectedItem() != null) {
-            if (tabelaRec.getSelectionModel().getSelectedItem().getStatus().toUpperCase() == "Q") {
+            String status=tabelaRec.getSelectionModel().getSelectedItem().getStatus().toUpperCase();
+            if (status.equals("Q") || status.equals("PR")) {
                 btBaixar.setDisable(true);
             } else {
                 btBaixar.setDisable(false);
@@ -194,28 +202,31 @@ public class FXMLTelaReceberFiadoController implements Initializable {
 
     @FXML
     private void pesqTodos(ActionEvent event) {
-        if(rbTodos.isSelected())
-        {
+        if (rbTodos.isSelected()) {
+            tabelaRec.getItems().clear();
             controller.pesquisaRadio("", tabelaRec);
-            
+            controller.calcTotal(tabelaRec, lbTotal);
+
         }
     }
 
     @FXML
     private void pesqQuitado(ActionEvent event) {
-         if(rbQuitados.isSelected())
-        {
-             controller.pesquisaRadio("Q", tabelaRec);
-           
+        if (rbQuitados.isSelected()) {
+            tabelaRec.getItems().clear();
+            controller.pesquisaRadio("Q", tabelaRec);
+            controller.calcTotal(tabelaRec, lbTotal);
+
         }
     }
 
     @FXML
     private void pesqParcial(ActionEvent event) {
-        if(rbPendente.isSelected())
-        {
-              controller.pesquisaRadio("P", tabelaRec);
-       }
+        if (rbPendente.isSelected()) {
+            tabelaRec.getItems().clear();
+            controller.pesquisaRadio("PR", tabelaRec);
+            controller.calcTotal(tabelaRec, lbTotal);
+        }
     }
 
 }

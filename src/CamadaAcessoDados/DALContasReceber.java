@@ -136,6 +136,7 @@ public class DALContasReceber {
         String sql = " select cr.* from contas_receber cr,venda v,condicao_pgto cp where cr.cod_venda = v.codigo "
                 + " and  v.cod_cliente =" + cliente + " and v.cod_condpagto =cp.codigo and cp.descricao like '%Fiado%' ";
 
+        
         if (!dtinicial.isEmpty()) {
             sql += " and cr.emissao BETWEEN '" + dtfinal + "' and '" + dtfinal + "' ";
         }

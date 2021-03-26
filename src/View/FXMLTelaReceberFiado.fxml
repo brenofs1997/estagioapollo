@@ -98,6 +98,16 @@
                            </font>
                         </Label>
                         <FontAwesomeIcon iconName="SHOPPING_CART" layoutX="182.0" layoutY="20.0" size="1.5em" />
+                        <Label layoutX="421.0" layoutY="398.0" prefHeight="20.0" prefWidth="79.0" text="TOTAL(R$):">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbTotal" layoutX="500.0" layoutY="398.0" prefHeight="17.0" prefWidth="113.0">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
                      </children>
                   </Pane>
                </children>
