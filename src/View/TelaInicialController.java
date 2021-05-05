@@ -165,7 +165,7 @@ public class TelaInicialController implements Initializable {
 
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.setTitle("BEM-VINDO: AO CADASTRO DE CATEGORIAS");
+        stage.setTitle("BEM-VINDO: AO CADASTRO DE CLIENTE");
         // stage.setMaximized(true);
 
         //Close authentication Window

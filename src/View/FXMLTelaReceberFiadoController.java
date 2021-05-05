@@ -5,6 +5,7 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.ReceberFiadoController;
 import Controller.VendaController;
 import Erros.Erros;
@@ -17,6 +18,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -89,8 +91,17 @@ public class FXMLTelaReceberFiadoController implements Initializable {
     private JFXRadioButton rbPendente;
     @FXML
     private TableColumn<ContasReceber, Double> colvalorrestante;
-    @FXML
     private Label lbTotal;
+    @FXML
+    private JFXCheckBox cbAtiperiodo;
+    @FXML
+    private TableColumn<ContasReceber, String> colnomeCliente;
+    @FXML
+    private TableColumn<ContasReceber, String> colIdpagamento;
+    @FXML
+    private TableColumn<ContasReceber, Integer> colcodVenda;
+    @FXML
+    private JFXButton btAjuda;
 
     /**
      * Initializes the controller class.
@@ -103,9 +114,12 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         coldatapago.setCellValueFactory(new PropertyValueFactory("data_pago"));
         colvalorpago.setCellValueFactory(new PropertyValueFactory("valor_pago"));
         colvalorrestante.setCellValueFactory(new PropertyValueFactory("valor_restante"));
+        colnomeCliente.setCellValueFactory(new PropertyValueFactory("cliente"));
+        colIdpagamento.setCellValueFactory(new PropertyValueFactory("parcela"));
+        colcodVenda.setCellValueFactory(new PropertyValueFactory("venda"));
         CarregaCliente();
-        controller.calcTotal(tabelaRec, lbTotal);
 
+        rbPendente.fire();
     }
 
     public void CarregaCliente() {
@@ -122,9 +136,9 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setContentText("Confirma o estorno");
         if (a.showAndWait().get() == ButtonType.OK) {
-            controller.estornar(tabelaRec.getSelectionModel().getSelectedItem());
+            controller.estornar(tabelaRec.getSelectionModel().getSelectedItem(), btEstornar);
             consultar();
-            controller.calcTotal(tabelaRec, lbTotal);
+
         }
     }
 
@@ -146,8 +160,8 @@ public class FXMLTelaReceberFiadoController implements Initializable {
             stage.setResizable(false);
             stage.showAndWait();
             tabelaRec.getItems().clear();
-            consultar();
-            controller.calcTotal(tabelaRec, lbTotal);
+            controller.pesquisaRadio("", tabelaRec);
+
         } else {
             msg.Error("ERRO", "Selecione uma  conta");
         }
@@ -169,13 +183,16 @@ public class FXMLTelaReceberFiadoController implements Initializable {
     @FXML
     private void Consultar(ActionEvent event) {
         consultar();
-        controller.calcTotal(tabelaRec, lbTotal);
+
     }
 
     public void consultar() {
 
         String dtinicial = "";
         String dtfinal = "";
+
+        String status = "";
+
         int cliente = 0;
         if (dtInicial.getValue() != null && dtFinal.getValue() != null) {
             dtinicial = dtInicial.getValue().toString();
@@ -185,17 +202,29 @@ public class FXMLTelaReceberFiadoController implements Initializable {
             cliente = cbCliente.getSelectionModel().getSelectedItem().getCodigo();
         }
 
-        controller.consultar(cliente, dtinicial, dtfinal, tabelaRec);
+        if (rbPendente.isSelected()) {
+            status = "P";
+        } else if (rbQuitados.isSelected()) {
+            status = "Q";
+        }
+
+        controller.consultar(cliente, dtinicial, dtfinal, tabelaRec, status);
     }
 
     @FXML
     private void VerificarVenda(MouseEvent event) {
         if (tabelaRec.getSelectionModel().getSelectedItem() != null) {
-            String status=tabelaRec.getSelectionModel().getSelectedItem().getStatus().toUpperCase();
+            String status = tabelaRec.getSelectionModel().getSelectedItem().getStatus().toUpperCase();
             if (status.equals("Q") || status.equals("PR")) {
                 btBaixar.setDisable(true);
             } else {
                 btBaixar.setDisable(false);
+            }
+
+            if (controller.veriEstorna(tabelaRec.getSelectionModel().getSelectedItem())) {
+                btEstornar.setDisable(false);
+            } else {
+                btEstornar.setDisable(true);
             }
         }
     }
@@ -205,8 +234,6 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         if (rbTodos.isSelected()) {
             tabelaRec.getItems().clear();
             controller.pesquisaRadio("", tabelaRec);
-            controller.calcTotal(tabelaRec, lbTotal);
-
         }
     }
 
@@ -215,7 +242,6 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         if (rbQuitados.isSelected()) {
             tabelaRec.getItems().clear();
             controller.pesquisaRadio("Q", tabelaRec);
-            controller.calcTotal(tabelaRec, lbTotal);
 
         }
     }
@@ -225,8 +251,27 @@ public class FXMLTelaReceberFiadoController implements Initializable {
         if (rbPendente.isSelected()) {
             tabelaRec.getItems().clear();
             controller.pesquisaRadio("PR", tabelaRec);
-            controller.calcTotal(tabelaRec, lbTotal);
         }
+    }
+
+    @FXML
+    private void AtivarPeriodo(ActionEvent event) {
+        if (cbAtiperiodo.isSelected()) {
+            dtInicial.setDisable(false);
+            dtFinal.setDisable(false);
+            dtInicial.setValue(LocalDate.now());
+            dtFinal.setValue(LocalDate.now());
+        } else {
+            dtInicial.setDisable(true);
+            dtFinal.setDisable(true);
+        }
+
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("ReceberFiado.htm");
     }
 
 }

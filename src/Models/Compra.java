@@ -128,6 +128,14 @@ public class Compra {
          return dal.getItens(codigo);
     }
 
+    @Override
+    public String toString() {
+        return ""+codigo ;
+    }
+   
+
+   
+
     
 
 }

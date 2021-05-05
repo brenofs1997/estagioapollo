@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.FXMLRelatorioVendaController">
+   <children>
+      <Pane layoutX="13.0" layoutY="31.0" prefHeight="263.0" prefWidth="563.0" style="-fx-background-color: #fff;">
+         <children>
+            <Label layoutX="225.0" layoutY="11.0" prefHeight="21.0" prefWidth="127.0" text="Período Final">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="11.0" prefHeight="21.0" prefWidth="115.0" text="Período Inicial">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="dtInicial" disable="true" layoutX="14.0" layoutY="44.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="160.0" promptText=" --/--/--" />
+            <DatePicker fx:id="dtFinal" disable="true" layoutX="225.0" layoutY="44.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="160.0" promptText=" --/--/--" />
+            <FontAwesomeIcon iconName="CALENDAR" layoutX="189.0" layoutY="67.0" size="1.5em" />
+            <JFXComboBox fx:id="cbCliente" focusColor="#7c7b78" labelFloat="true" layoutX="15.0" layoutY="110.0" prefHeight="31.0" prefWidth="434.0" promptText="Cliente" />
+            <JFXButton fx:id="btLimpar" graphicTextGap="6.0" layoutX="39.0" layoutY="194.0" onAction="#LimparFiltros" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Limpar Filtros" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </Pane>
+      <JFXButton fx:id="btConsultar" graphicTextGap="6.0" layoutX="220.0" layoutY="321.0" onAction="#Consultar" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Consultar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btAjuda" graphicTextGap="6.0" layoutX="45.0" layoutY="321.0" onAction="#Ajuda" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Ajuda" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXCheckBox fx:id="cbAtiperiodo" layoutX="433.0" layoutY="79.0" onAction="#AtivarPeriodo" prefHeight="21.0" prefWidth="123.0" text="Ativar Periodo" />
+   </children>
+</AnchorPane>

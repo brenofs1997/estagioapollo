@@ -8,9 +8,11 @@ package Controller;
 import Erros.Erros;
 import Models.Cidade;
 import Models.Cliente;
+import Models.Estado;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
 
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
@@ -53,12 +55,23 @@ public class ClienteController {
         return c.gravar(c);
     }
 
-    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXCheckBox chkAtivo, JFXTextField txcodcid, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, DatePicker dtCadastro, TableView<Cliente> tabela) {
+    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXCheckBox chkAtivo, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, DatePicker dtCadastro, TableView<Cliente> tabela) {
         Cidade cidade = new Cidade();
         Cliente c = tabela.getSelectionModel().getSelectedItem();
         c = c.get(c.getCodigo());
         txcod.setText("" + c.getCodigo());
+       
         cidade = cidade.get(c.getCidade().getCid_cod());
+
+        Estado e = new Estado();
+        e = e.getPorCid(cidade.getCid_cod());
+
+        cbUf.getSelectionModel().select(0);
+        cbUf.getSelectionModel().select(e);
+
+        cbCid.getSelectionModel().select(0);
+        cbCid.getSelectionModel().select(cidade);
+        
         txnome.setText("" + c.getNome());
         txcpf.setText("" + c.getCpf());
         txendereco.setText("" + c.getEndereco());
@@ -72,8 +85,7 @@ public class ClienteController {
         }
         txbairro.setText("" + c.getBairro());
         txnum.setText("" + c.getNumero());
-        txcodcid.setText(String.valueOf(c.getCidade().getCid_cod()));
-        txcid.setText("" + cidade.getCid_nome());
+       
         txcep.setText("" + c.getCep());
          int ano = c.getData_cadastro().getYear() + 1900;
         int mes = c.getData_cadastro().getMonth() + 1;

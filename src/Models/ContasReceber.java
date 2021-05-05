@@ -14,7 +14,7 @@ import java.util.List;
 public class ContasReceber {
 
     private int codigo;
-    private int cod_venda;
+
     private String parcela;
     private double valor;
     private double valor_pago;
@@ -36,9 +36,9 @@ public class ContasReceber {
         this.codigo = codigo;
     }
 
-    public ContasReceber(int codigo, int cod_venda, String parcela, double valor, double valor_pago, Date emissao, Date data_pago, Date vencimento, Funcionario funcionario, Cliente cliente, CondicaoPagamento cond_pgto, String status, Venda venda) {
+    public ContasReceber(int codigo, String parcela, double valor, double valor_pago, Date emissao, Date data_pago, Date vencimento, Funcionario funcionario, Cliente cliente, CondicaoPagamento cond_pgto, String status, Venda venda) {
         this.codigo = codigo;
-        this.cod_venda = cod_venda;
+
         this.parcela = parcela;
         this.valor = valor;
         this.valor_pago = valor_pago;
@@ -67,9 +67,9 @@ public class ContasReceber {
         this.status = status;
     }
 
-    public ContasReceber(int cod_venda, String parcela, double valor, double valor_pago, Date emissao, Date data_pago, Date vencimento, Funcionario funcionario, Cliente cliente, CondicaoPagamento cond_pgto, String status) {
+    public ContasReceber(Venda venda, String parcela, double valor, double valor_pago, Date emissao, Date data_pago, Date vencimento, Funcionario funcionario, Cliente cliente, CondicaoPagamento cond_pgto, String status) {
 
-        this.cod_venda = cod_venda;
+        this.venda = venda;
         this.parcela = parcela;
         this.valor = valor;
         this.valor_pago = valor_pago;
@@ -98,21 +98,13 @@ public class ContasReceber {
         this.venda = venda;
         this.valor_restante = valor_restante;
     }
-    
+
     public int getCodigo() {
         return codigo;
     }
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
-    }
-
-    public int getCod_venda() {
-        return cod_venda;
-    }
-
-    public void setCod_venda(int cod_venda) {
-        this.cod_venda = cod_venda;
     }
 
     public String getParcela() {
@@ -235,7 +227,7 @@ public class ContasReceber {
     public void setValor_restante(double valor_restante) {
         this.valor_restante = valor_restante;
     }
-    
+
     public boolean gravar(ContasReceber c) {
 
         return dal.salvar(c);
@@ -252,15 +244,29 @@ public class ContasReceber {
     public ContasReceber get(int codigo) {
         return dal.get(codigo);
     }
-    public List<ContasReceber> get( String filtro) {
+
+    public List<ContasReceber> get(String filtro) {
         return dal.get(filtro);
     }
-    public List<ContasReceber> getFiado(int cliente, String dtinicial, String dtfinal) {
-        return dal.getFiado(cliente, dtinicial, dtfinal);
+
+    public List<ContasReceber> getNF(String filtro) {
+        return dal.getNF(filtro);
+    }
+
+    public List<ContasReceber> getVeri(String filtro) {
+        return dal.getVeri(filtro);
+    }
+
+    public List<ContasReceber> getFiado(int cliente, String dtinicial, String dtfinal, String status) {
+        return dal.getFiado(cliente, dtinicial, dtfinal, status);
     }
 
     public boolean alterar(ContasReceber conta) {
         return dal.alterar(conta);
+    }
+
+    public List<ContasReceber> getNaoFiado(int cliente, String dtinicial, String dtfinal, String status) {
+        return dal.getNaoFiado(cliente, dtinicial, dtfinal, status);
     }
 
 }

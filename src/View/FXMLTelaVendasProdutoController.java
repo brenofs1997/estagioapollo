@@ -5,6 +5,7 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.ContasPagarController;
 import Controller.VendaController;
 import Erros.Erros;
@@ -16,7 +17,6 @@ import Models.Produto;
 import Models.Venda;
 import Models.itens_Venda;
 import static View.FXMLTelaCompraController.itensCompra;
-import apollo.utils.ComboBoxAutoComplete;
 import apollo.utils.MaskFieldUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -50,7 +50,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
@@ -157,6 +156,8 @@ public class FXMLTelaVendasProdutoController implements Initializable {
     private JFXTextField txtPesqProd;
     @FXML
     private JFXButton btPesqProd;
+    @FXML
+    private JFXButton btAjuda;
 
     /**
      * Initializes the controller class.
@@ -227,7 +228,7 @@ public class FXMLTelaVendasProdutoController implements Initializable {
         if (a.showAndWait().get() == ButtonType.OK) {
             if (!venda.verificarParcelaPaga(venda)) {
                 if (controller.excluir(venda)) {
-                    msg.Affirmation("Excluido com sucesso", "Compra excluida!");
+                    msg.Affirmation("Excluido com sucesso", "Venda excluida!");
                     venda = null;
                     estadoInicial();
                 } else {
@@ -370,21 +371,20 @@ public class FXMLTelaVendasProdutoController implements Initializable {
     }
 
     public void CarregaCategoria() {
-      
+
         cbCategoria.setItems(FXCollections.observableArrayList(controllerCP.CarregaCategoria()));
-        
+
     }
 
     public void CarregaCliente() {
-        
+
         cbCliente.setItems(FXCollections.observableArrayList(controller.CarregaCliente()));
-        
+
     }
 
     public void CarregaProdutos(int cod) {
-        
+
         cbProduto.setItems(FXCollections.observableArrayList(controller.CarregarProduto(cod)));
-       
 
     }
 
@@ -430,8 +430,12 @@ public class FXMLTelaVendasProdutoController implements Initializable {
             if (!txQuant.getText().isEmpty()) {
                 quant = Integer.parseInt(txQuant.getText());
                 if (quant > 0) {
-                    itensVenda = controller.addProduto(cbProduto.getSelectionModel().getSelectedItem(), tabelaProd, quant, uni, lbTotal);
-                    atualizarTabelaItens();
+                    if (controller.verificaEstoque(quant, cbProduto.getSelectionModel().getSelectedItem(),txQuant)) {
+                        itensVenda = controller.addProduto(cbProduto.getSelectionModel().getSelectedItem(), tabelaProd, quant, uni, lbTotal);
+                        atualizarTabelaItens();
+                    } else {
+                        msg.Error("Apollo Informa:", "quantidade insuficiente no estoque!");
+                    }
                 } else if (quant == 0) {
                     msg.Error("Apollo Informa:", "quantidade não pode ser 0!");
                 } else if (quant < 0) {
@@ -444,6 +448,7 @@ public class FXMLTelaVendasProdutoController implements Initializable {
             msg.Error("Apollo Informa:", "Produto não Selecionado!");
         }
     }
+
     @FXML
     private void editarTabela(TableColumn.CellEditEvent<itens_Venda, Integer> event) {
         int id = 0;
@@ -518,16 +523,20 @@ public class FXMLTelaVendasProdutoController implements Initializable {
 
     @FXML
     private void PesqCliente(ActionEvent event) {
-        
-         cbCliente.setItems(FXCollections.observableArrayList(controller.PesquisarCliente(txtPesqCli.getText())));
+
+        cbCliente.setItems(FXCollections.observableArrayList(controller.PesquisarCliente(txtPesqCli.getText())));
     }
 
     @FXML
     private void PesqProd(ActionEvent event) {
-        
+
         cbProduto.setItems(FXCollections.observableArrayList(controller.PesquisarProduto(txtPesqProd.getText())));
     }
 
-   
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("Venda.htm");
+    }
 
 }

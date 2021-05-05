@@ -5,7 +5,7 @@
  */
 package View;
 
-import Controller.CategoriaController;
+import Ajuda.Ajuda;
 import Controller.ProdutoController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -80,15 +80,21 @@ public class TelaProdutoController implements Initializable {
     private JFXComboBox<Categoria> cbCategoria;
     Erros msg = new Erros();
     ProdutoController prodControl = new ProdutoController();
-    
+    @FXML
+    private JFXButton btAjuda;
 
-   @Override
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
         coldesc.setCellValueFactory(new PropertyValueFactory("descricao"));
         MaskFieldUtil.monetaryField(txPreco);
+        MaskFieldUtil.maxField(txDescricao, 50);
+        MaskFieldUtil.maxField(txpesquisar, 20);
+        MaskFieldUtil.maxField(txPreco, 12);
+
         estadoOriginal();
     }
+
     @FXML
     private void clknovo(ActionEvent event) {
         estadoEdicao();
@@ -97,7 +103,7 @@ public class TelaProdutoController implements Initializable {
     @FXML
     private void clkalterar(ActionEvent event) {
         estadoEdicao();
-        prodControl.alterar(txcod, txDescricao,txPreco,txQtde,cbAtivo,cbCategoria, tabela);
+        prodControl.alterar(txcod, txDescricao, txPreco, txQtde, cbAtivo, cbCategoria, tabela);
     }
 
     @FXML
@@ -108,10 +114,10 @@ public class TelaProdutoController implements Initializable {
 
     @FXML
     private void clkconfirmar(ActionEvent event) {
-        int erro = 0, cod = 0,qtde=0;
-        Double preco=0.0;
+        int erro = 0, cod = 0, qtde = 0;
+        Double preco = 0.0;
         String desc = "";
-        Boolean ativo=false;
+        Boolean ativo = false;
         LimparCampos();
         NumberFormat nf = new DecimalFormat("#,###.00");
 
@@ -140,20 +146,21 @@ public class TelaProdutoController implements Initializable {
             msg.campoVazio(txQtde, "Campo não pode ser vazio");
             erro++;
         } else {
-            qtde =Integer.parseInt(txQtde.getText());
+            qtde = Integer.parseInt(txQtde.getText());
         }
-        if(cbAtivo.isSelected())
-            ativo =true;
-        
-         if (cbCategoria.getSelectionModel().getSelectedItem()==null) {
+        if (cbAtivo.isSelected()) {
+            ativo = true;
+        }
+
+        if (cbCategoria.getSelectionModel().getSelectedItem() == null) {
             msg.cbVazioCategoria(cbCategoria);
             erro++;
         } else {
-            qtde =Integer.parseInt(txQtde.getText());
+            qtde = Integer.parseInt(txQtde.getText());
         }
         if (erro == 0) {
             if (cod == 0) {
-                if (prodControl.gravar(cod, desc,preco,qtde,ativo, cbCategoria)) {
+                if (prodControl.gravar(cod, desc, preco, qtde, ativo, cbCategoria)) {
                     msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
                     estadoOriginal();
                 } else {
@@ -185,8 +192,8 @@ public class TelaProdutoController implements Initializable {
 
     @FXML
     private void clkPesquisar(ActionEvent event) {
-        String filtro=" descricao ilike '%"+txpesquisar.getText()+"%'";
-        prodControl.clkPesquisar(filtro,tabela);
+        String filtro = " descricao ilike '%" + txpesquisar.getText() + "%'";
+        prodControl.clkPesquisar(filtro, tabela);
     }
 
     @FXML
@@ -194,8 +201,6 @@ public class TelaProdutoController implements Initializable {
 
         prodControl.evtTabela(tabela, btalterar, btapagar);
     }
-
-    
 
     public void estadoOriginal() {
         pnpesquisa.setDisable(false);
@@ -236,5 +241,11 @@ public class TelaProdutoController implements Initializable {
         txDescricao.resetValidation();
         txpesquisar.resetValidation();
 
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("CadastroProduto.htm");
     }
 }

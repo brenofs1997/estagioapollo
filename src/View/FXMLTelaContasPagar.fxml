@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="953.0" prefWidth="1350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.FXMLTelaContasPagarController">
+   <children>
+      <BorderPane prefHeight="953.0" prefWidth="1350.0">
+         <bottom>
+            <Pane prefHeight="95.0" prefWidth="1386.0" style="-fx-border-width: 1px 0px 0px; -fx-border-color: black;" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="btCancelar" graphicTextGap="6.0" layoutX="160.0" layoutY="21.0" onAction="#Cancelar" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Cancelar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btEstornar" graphicTextGap="6.0" layoutX="443.0" layoutY="19.0" onAction="#Estornar" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Estornar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btBaixar" graphicTextGap="6.0" layoutX="728.0" layoutY="19.0" onAction="#Baixar" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Baixar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btAjuda" graphicTextGap="6.0" layoutX="996.0" layoutY="19.0" onAction="#Ajuda" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Ajuda" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </Pane>
+         </bottom>
+         <center>
+            <Pane fx:id="pnconteudo" prefHeight="514.0" prefWidth="1449.0" style="-fx-background-color: #ecf0f1;" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane layoutX="32.0" layoutY="19.0" prefHeight="422.0" prefWidth="1290.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@../apollo/utils/styles.css">
+                     <children>
+                        <DatePicker fx:id="dtFinal" disable="true" layoutX="223.0" layoutY="71.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="160.0" promptText=" --/--/--" />
+                        <Label layoutX="224.0" layoutY="45.0" prefHeight="21.0" prefWidth="127.0" text="Período Final">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <JFXComboBox fx:id="cbFornecedor" focusColor="#7c7b78" labelFloat="true" layoutX="14.0" layoutY="297.0" onAction="#HabilitaProduto" onMouseClicked="#atualizaFornecedores" prefHeight="31.0" prefWidth="416.0" promptText="Fornecedor*" />
+                        <JFXTextField fx:id="txtPesqForne" labelFloat="true" layoutX="16.0" layoutY="225.0" prefHeight="31.0" prefWidth="413.0" promptText="Pesquisar Fornecedor" />
+                        <JFXButton fx:id="btPesqFornecedor" ellipsisString="" layoutX="444.0" layoutY="223.0" onAction="#PesqFornecedor" prefHeight="35.0" prefWidth="37.0" style="-fx-background-color: #ea1b21;" text=" " textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" iconName="SEARCH" size="1.5em" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Filtrar Clientes" />
+                           </tooltip>
+                        </JFXButton>
+                        <Label layoutX="14.0" layoutY="45.0" prefHeight="21.0" prefWidth="115.0" text="Período Inicial">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="dtInicial" disable="true" layoutX="14.0" layoutY="72.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="160.0" promptText=" --/--/--" />
+                        <FontAwesomeIcon iconName="CALENDAR" layoutX="186.0" layoutY="95.0" size="1.5em" />
+                        <JFXButton fx:id="btFiltrar" graphicTextGap="6.0" layoutX="342.0" layoutY="346.0" onAction="#Consultar" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Filtrar" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXRadioButton fx:id="rbTodos" layoutX="49.0" layoutY="166.0" onAction="#pesqTodos" text="Todos">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="grupo" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="rbQuitados" layoutX="162.0" layoutY="166.0" onAction="#pesqQuitado" text="Quitados" toggleGroup="$grupo" />
+                        <JFXRadioButton fx:id="rbPendente" layoutX="293.0" layoutY="166.0" onAction="#pesqParcial" text="Pendentes" toggleGroup="$grupo" />
+                        <JFXCheckBox fx:id="cbAtiperiodo" layoutX="427.0" layoutY="76.0" onAction="#AtivarPeriodo" prefHeight="21.0" prefWidth="123.0" text="Ativar Periodo" />
+                        <JFXCheckBox fx:id="cbAtifornecedor" layoutX="522.0" layoutY="230.0" onAction="#AtivarFornecedor" prefHeight="21.0" prefWidth="168.0" text="Ativar Fornecedor" />
+                        <JFXCheckBox fx:id="cbAtidespesa" layoutX="1053.0" layoutY="302.0" onAction="#AtivarDespesa" prefHeight="21.0" prefWidth="168.0" text="Ativar Despesa" />
+                        <JFXComboBox fx:id="cbDespesa" disable="true" focusColor="#7c7b78" labelFloat="true" layoutX="690.0" layoutY="297.0" onMouseClicked="#atualizaFornecedores" prefHeight="31.0" prefWidth="306.0" promptText="Despesa*" />
+                        <JFXButton fx:id="btLimpar" graphicTextGap="6.0" layoutX="690.0" layoutY="346.0" onAction="#LimparFiltro" prefHeight="55.0" prefWidth="160.0" style="-fx-background-color: #ea1b21;" text="Limpar Filtros" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="36.0" layoutY="448.0" prefHeight="394.0" prefWidth="1283.0" style="-fx-background-color: white;" styleClass="box" stylesheets="@../apollo/utils/styles.css">
+                     <children>
+                        <TableView fx:id="tabelaRec" layoutX="4.0" layoutY="37.0" onMouseClicked="#VerificarVenda" prefHeight="337.0" prefWidth="1268.0">
+                           <columns>
+                              <TableColumn fx:id="colnomeFornecedor" prefWidth="297.0" text="Fornecedor" />
+                              <TableColumn fx:id="coltipodesp" prefWidth="161.0" text="Despesa" />
+                              <TableColumn fx:id="colIdpagamento" prefWidth="128.0" text="ID Pagamento" />
+                              <TableColumn fx:id="colvencimento" prefWidth="114.0" text="Vencimento" />
+                              <TableColumn fx:id="coltotal" prefWidth="106.0" text="Total" />
+                              <TableColumn fx:id="coldatapago" prefWidth="112.0" text="Dt. Pago" />
+                              <TableColumn fx:id="colvalorpago" prefWidth="99.0" text="Pago($)" />
+                              <TableColumn fx:id="colvalorrestante" minWidth="0.0" prefWidth="125.0" text="Restante($)" />
+                              <TableColumn fx:id="colcodVenda" prefWidth="125.0" text="Cod. Compra" />
+                           </columns>
+                        </TableView>
+                        <Label layoutX="14.0" layoutY="6.0" text="Lista de Contas a Pagar">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <FontAwesomeIcon iconName="SHOPPING_CART" layoutX="182.0" layoutY="20.0" size="1.5em" />
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

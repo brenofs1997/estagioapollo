@@ -5,6 +5,7 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.CompraController;
 import Controller.ContasPagarController;
 import Erros.Erros;
@@ -156,6 +157,8 @@ public class FXMLTelaCompraController implements Initializable {
     }
     @FXML
     private JFXButton btRetirarProd;
+    @FXML
+    private JFXButton btAjuda;
 
     /**
      * Initializes the controller class.
@@ -479,7 +482,6 @@ public class FXMLTelaCompraController implements Initializable {
 
                 if (erro == 0) {
                     try {
-                        
 
                         total = nf.parse(lbTotal.getText()).doubleValue();
 
@@ -623,6 +625,12 @@ public class FXMLTelaCompraController implements Initializable {
     @FXML
     private void atualizaFornecedores(MouseEvent event) {
         CarregaFornecedor();
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("Compra.htm");
     }
 
 }

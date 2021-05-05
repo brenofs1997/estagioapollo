@@ -16,6 +16,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -32,11 +33,14 @@ public class TelaBaixarFiadoController implements Initializable {
 
     Erros msg = new Erros();
     @FXML
+    private JFXTextField dtEmissao;
+    @FXML
     private DatePicker dtBaixa;
     @FXML
     private JFXTextField txtValor;
     @FXML
     private JFXButton btBaixar;
+
     ReceberFiadoController controller = new ReceberFiadoController();
     NumberFormat nf = new DecimalFormat("#,###.00");
     DecimalFormat formato = new DecimalFormat("#.##");
@@ -49,16 +53,15 @@ public class TelaBaixarFiadoController implements Initializable {
     public static void setConta(ContasReceber conta) {
         TelaBaixarFiadoController.conta = conta;
     }
-    @FXML
-    private DatePicker dtEmissao;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         dtBaixa.setValue(LocalDate.now());
         MaskFieldUtil.monetaryField(txtValor);
         txtValor.setText(nf.format(conta.getValor_restante()));
-        converteDataPicker cv = new converteDataPicker();
-        cv.converter(getConta().getEmissaoDate(), dtEmissao);
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        dtEmissao.setText(formato.format(conta.getEmissaoDate()));
+
     }
 
     @FXML
@@ -68,12 +71,16 @@ public class TelaBaixarFiadoController implements Initializable {
         if (!txtValor.getText().isEmpty()) {
             try {
                 valor = nf.parse(txtValor.getText()).doubleValue();
-                if (controller.baixar(conta, valor, dtBaixa)) {
-                    msg.Affirmation("Apollo informa", "Concluido com sucesso");
-                    Stage self = (Stage) btBaixar.getScene().getWindow();
-                    self.close();
+                if (valor > conta.getValor()) {
+                    msg.Error("ERRO", "Valor maior que o valor da conta");
                 } else {
-                    msg.Error("ERRO", "Erro ao baixar conta");
+                    if (controller.baixar(conta, valor, dtBaixa)) {
+                        msg.Affirmation("Apollo informa", "Concluido com sucesso");
+                        Stage self = (Stage) btBaixar.getScene().getWindow();
+                        self.close();
+                    } else {
+                        msg.Error("ERRO", "Erro ao baixar conta");
+                    }
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(TelaBaixarFiadoController.class.getName()).log(Level.SEVERE, null, ex);

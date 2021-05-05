@@ -5,6 +5,7 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.FornecedorController;
 import Erros.Erros;
 import Models.Categoria;
@@ -132,6 +133,12 @@ public class TelaFornecedorCadastroController implements Initializable {
     public static void setItensCategoria(List<Categoria> itensCategoria) {
         TelaFornecedorCadastroController.itensCategoria = itensCategoria;
     }
+    @FXML
+    private JFXButton btAjuda;
+    @FXML
+    private JFXTextField txtPesqProd;
+    @FXML
+    private JFXButton btPesqProd;
 
     /**
      * Initializes the controller class.
@@ -139,16 +146,29 @@ public class TelaFornecedorCadastroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
+        
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
         colnome.setCellValueFactory(new PropertyValueFactory("nomefantasia"));
         colcnpj.setCellValueFactory(new PropertyValueFactory("cnpj"));
         colcidade.setCellValueFactory(new PropertyValueFactory("cidade"));
         colativo.setCellValueFactory(new PropertyValueFactory("ativo"));
 
+        
+        
         cbdesc.setCellValueFactory(new PropertyValueFactory("descricao"));
         MaskFieldUtil.cepField(txcep);
         MaskFieldUtil.foneField(txtelefone);
         MaskFieldUtil.cpfCnpjField(txcnpj);
+        
+        MaskFieldUtil.maxField(txnome, 100);
+        MaskFieldUtil.maxField(txrazao, 100);
+        MaskFieldUtil.maxField(txemail, 100);
+        MaskFieldUtil.maxField(txendereco, 70);
+        MaskFieldUtil.maxField(txbairro, 30);
+        MaskFieldUtil.maxField(txnum, 10);
+        MaskFieldUtil.maxField(txpesquisar, 100);
+        
         estadoInicial();
     }
 
@@ -362,6 +382,16 @@ public class TelaFornecedorCadastroController implements Initializable {
         } else {
             msg.Affirmation("Apollo Informa:", "Item não Selecionado!");
         }
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("CadastrodeFornecedores.htm");
+    }
+
+    @FXML
+    private void PesqProd(ActionEvent event) {
     }
 
 }

@@ -5,9 +5,8 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
@@ -19,18 +18,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import CamadaAcessoDados.Banco;
-import CamadaAcessoDados.DALEmpresaParametros;
 import Controller.EmpresaParametrosController;
+import Controller.FornecedorController;
 import Erros.Erros;
 import Models.Cidade;
 import Models.EmpresaParametros;
+import Models.Estado;
 import Models.Funcionario;
 import apollo.utils.MaskFieldUtil;
 import apollo.utils.ValidarCPF;
+import com.jfoenix.controls.JFXComboBox;
 //import Models.Funcionario;
 //import utils.Erros;
 //import utils.ValidarCPF;
@@ -40,21 +40,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -88,11 +80,7 @@ public class TelaEmpresaParametrosCadController implements Initializable {
         TelaEmpresaParametrosCadController.cid = cid;
     }
 
-    @FXML
-    private ToggleGroup Pesquisa;
-    @FXML
     private JFXRadioButton rbfantasia;
-    @FXML
     private JFXRadioButton rbcnpj;
     @FXML
     private Pane pnbtn;
@@ -108,10 +96,7 @@ public class TelaEmpresaParametrosCadController implements Initializable {
     private JFXButton btcancelar;
     @FXML
     private Pane pnpesquisa;
-    @FXML
     private JFXTextField txpesquisar;
-    @FXML
-    private JFXButton btpesquisar;
     @FXML
     private TableView<EmpresaParametros> tabela;
     @FXML
@@ -140,12 +125,7 @@ public class TelaEmpresaParametrosCadController implements Initializable {
     private JFXTextField txbairro;
     @FXML
     private JFXTextField txnum;
-    @FXML
-    private JFXTextField txcodcid;
-    @FXML
-    private JFXButton btnpesquisarcid;
-    @FXML
-    private JFXTextField txcid;
+
     @FXML
     private JFXTextField txcep;
     @FXML
@@ -174,6 +154,18 @@ public class TelaEmpresaParametrosCadController implements Initializable {
     public static void setFunc(Funcionario func) {
         TelaEmpresaParametrosCadController.func = func;
     }
+    @FXML
+    private JFXButton btAjuda;
+    @FXML
+    private JFXTextField txtPesqProd;
+    @FXML
+    private JFXButton btPesqProd;
+    @FXML
+    private JFXComboBox<Cidade> cbCid;
+    @FXML
+    private JFXComboBox<Estado> cbUf;
+
+    FornecedorController control = new FornecedorController();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -182,10 +174,19 @@ public class TelaEmpresaParametrosCadController implements Initializable {
         MaskFieldUtil.foneField(txtelefone);
         MaskFieldUtil.cepField(txcep);
 
+        MaskFieldUtil.maxField(txfantasia, 100);
+        MaskFieldUtil.maxField(txrazasocial, 100);
+        MaskFieldUtil.maxField(txemail, 100);
+        MaskFieldUtil.maxField(txlogradouro, 70);
+        MaskFieldUtil.maxField(txbairro, 30);
+
+        MaskFieldUtil.maxField(txnum, 10);
+
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
         colnome.setCellValueFactory(new PropertyValueFactory("fantasia"));
         colcid.setCellValueFactory(new PropertyValueFactory("cidade"));
         colfone.setCellValueFactory(new PropertyValueFactory("telefone"));
+        CarregarUf();
         emprecontrol.estadoInicial(pnpesquisa,
                 pndados,
                 pnlogo,
@@ -202,7 +203,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                 txlogradouro,
                 txbairro,
                 txnum,
-                txcid,
+                cbUf,
+                cbCid,
                 txcep,
                 txemail,
                 txsite,
@@ -210,7 +212,12 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                 logoIcon, tabela, lbErroCNPJ);
     }
 
+    public void CarregarUf() {
+        cbUf.setItems(FXCollections.observableArrayList(control.carregarUf()));
+    }
+
     private void estadoInicial() {
+        CarregarUf();
         emprecontrol.estadoInicial(pnpesquisa,
                 pndados,
                 pnlogo,
@@ -227,7 +234,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                 txlogradouro,
                 txbairro,
                 txnum,
-                txcid,
+                cbUf,
+                cbCid,
                 txcep,
                 txemail,
                 txsite,
@@ -256,7 +264,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                 txlogradouro,
                 txbairro,
                 txnum,
-                txcid,
+                cbUf,
+                cbCid,
                 txcep,
                 txemail,
                 txsite,
@@ -267,6 +276,7 @@ public class TelaEmpresaParametrosCadController implements Initializable {
 
     @FXML
     private void clknovo(ActionEvent event) {
+        CarregarUf();
         Banco.conectar();
         ResultSet rs = Banco.getCon().consultar("SELECT  * FROM empresa_parametros");
         int rows = 0;
@@ -297,7 +307,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                     txlogradouro,
                     txbairro,
                     txnum,
-                    txcid,
+                    cbUf,
+                    cbCid,
                     txcep,
                     txemail,
                     txsite,
@@ -324,7 +335,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                 txlogradouro,
                 txbairro,
                 txnum,
-                txcid,
+                cbUf,
+                cbCid,
                 txcep,
                 txemail,
                 txsite,
@@ -339,8 +351,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                 txlogradouro,
                 txbairro,
                 txnum,
-                txcodcid,
-                txcid,
+                cbUf,
+                cbCid,
                 txcep,
                 txemail,
                 txsite,
@@ -372,7 +384,7 @@ public class TelaEmpresaParametrosCadController implements Initializable {
 
     @FXML
     private void clkconfirmar(ActionEvent event) throws FileNotFoundException, IOException, SQLException {
-        int cod, erro = 0;
+        int cod, erro = 0, codcid = 0;
         ValidarCPF valida = new ValidarCPF();
         try {
             cod = Integer.parseInt(txcod.getText());
@@ -388,11 +400,12 @@ public class TelaEmpresaParametrosCadController implements Initializable {
             validar(txcnpj, "");
             erro = 1;
         }
-
-        if (CampoVazio(txcid.getText())) {
-            validar(txcid, "");
-            erro = 1;
+        try {
+            codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
+        } catch (Exception e) {
+            codcid = 0;
         }
+
         if (!txcnpj.getText().isEmpty()) {
             if (!valida.isValid(txcnpj.getText())) {
                 lbErroCNPJ.setVisible(true);
@@ -434,8 +447,9 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                     txlogradouro,
                     txbairro,
                     txnum,
-                    txcodcid,
-                    txcid,
+                    cbUf,
+                    cbCid,
+                    codcid,
                     txcep,
                     txemail,
                     txsite,
@@ -464,7 +478,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
                 txlogradouro,
                 txbairro,
                 txnum,
-                txcid,
+                cbUf,
+                cbCid,
                 txcep,
                 txemail,
                 txsite,
@@ -473,7 +488,6 @@ public class TelaEmpresaParametrosCadController implements Initializable {
 
     }
 
-    @FXML
     private void clkPesquisar(ActionEvent event) {
         emprecontrol.Pesquisar(tabela, txpesquisar, rbfantasia, rbcnpj);
 
@@ -483,42 +497,6 @@ public class TelaEmpresaParametrosCadController implements Initializable {
     private void evtTabela(MouseEvent event) {
         emprecontrol.evtTabela(tabela, btalterar, btapagar);
 
-    }
-
-    public void pesquisarCidade(int cid_cod) {
-        emprecontrol.pesquisarCidade(cid_cod, txcodcid, txcid);
-
-    }
-
-    @FXML
-    private void onExitCidade(KeyEvent event) {
-        if (event.getCode() == KeyCode.TAB && !txcodcid.getText().isEmpty()) {
-            pesquisarCidade(Integer.parseInt(txcodcid.getText()));
-            txcep.requestFocus();
-        }
-    }
-
-    @FXML
-    private void evtProcurarCidade(ActionEvent event) {
-        Erros msg = new Erros();
-        try {
-            Stage stage = new Stage();
-            Parent pesquisa = FXMLLoader.load(getClass().getResource("/estagiocarvaobarao/utils/Consulta.fxml"));
-            Scene scene = new Scene(pesquisa);
-            //Show main Window
-            stage.setScene(scene);
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/estagiocarvaobarao/ui/icons/icon.png")));
-            stage.setResizable(false);
-            stage.setTitle("Consulta de cidades");
-            stage.showAndWait();
-            if (cid != null) {
-                pesquisarCidade(cid.getCid_cod());
-                txcep.requestFocus();
-            }
-
-        } catch (Exception e) {
-            msg.Error("", e.getMessage());
-        }
     }
 
     private void exit(int i) {
@@ -591,5 +569,31 @@ public class TelaEmpresaParametrosCadController implements Initializable {
             lbErroCNPJ.setText("");
             lbErroCNPJ.setVisible(false);
         }
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("CadastroEmpresa.htm");
+    }
+
+    @FXML
+    private void PesqProd(ActionEvent event) {
+    }
+
+    @FXML
+    private void carregaCidade(ActionEvent event) {
+         if (cbUf.getSelectionModel().getSelectedItem() != null) {
+            int codigo = 0;
+            codigo = cbUf.getSelectionModel().getSelectedItem().getCod();
+            cbCid.setDisable(false);
+            CarregarCid(codigo);
+        } else {
+            cbCid.setDisable(true);
+        }
+    }
+    
+     public void CarregarCid(int codcid) {
+        cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUF(codcid)));
     }
 }

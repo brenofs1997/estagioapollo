@@ -5,6 +5,7 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.ContasPagarController;
 import Erros.Erros;
 import Models.CondicaoPagamento;
@@ -133,6 +134,8 @@ public class TelaLancarDespesasController implements Initializable {
     private Label lbEntreParc;
     @FXML
     private Label lbQtdeParc;
+    @FXML
+    private JFXButton btAjuda;
 
     /**
      * Initializes the controller class.
@@ -397,6 +400,12 @@ public class TelaLancarDespesasController implements Initializable {
             }
 
         }
+    }
+
+    @FXML
+    private void AJuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("LancarDespesas.htm");
     }
 
 }

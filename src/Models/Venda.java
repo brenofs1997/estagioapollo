@@ -124,5 +124,10 @@ public class Venda {
         return dal.apagar(codigo);
     }
 
+    @Override
+    public String toString() {
+        return ""+codigo;
+    }
+    
    
 }

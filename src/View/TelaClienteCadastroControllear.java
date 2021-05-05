@@ -5,7 +5,9 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.ClienteController;
+import Controller.FornecedorController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -27,7 +29,9 @@ import Models.Cidade;
 import apollo.utils.MaskFieldUtil;
 import Erros.Erros;
 import Models.Cliente;
+import Models.Estado;
 import apollo.utils.ValidarCPF;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -78,11 +82,7 @@ public class TelaClienteCadastroControllear implements Initializable {
     private JFXTextField txbairro;
     @FXML
     private JFXTextField txnum;
-    @FXML
     private JFXTextField txcodcid;
-    @FXML
-    private JFXButton btnpesquisarcid;
-    @FXML
     private JFXTextField txcid;
     @FXML
     private JFXTextField txcep;
@@ -131,6 +131,18 @@ public class TelaClienteCadastroControllear implements Initializable {
     private DatePicker dtCadastro;
     @FXML
     private JFXTextField txlimiteFiado;
+    @FXML
+    private JFXButton btAjuda;
+    @FXML
+    private JFXTextField txtPesqProd;
+    @FXML
+    private JFXButton btPesqProd;
+    @FXML
+    private JFXComboBox<Estado> cbUf;
+    @FXML
+    private JFXComboBox<Cidade> cbCid;
+
+    FornecedorController control = new FornecedorController();
 
     /**
      * Initializes the controller class.
@@ -142,8 +154,14 @@ public class TelaClienteCadastroControllear implements Initializable {
         MaskFieldUtil.cepField(txcep);
         MaskFieldUtil.cpfField(txcpf);
         MaskFieldUtil.foneField(txtelefone);
-        MaskFieldUtil.numericField(txcodcid);
-
+        MaskFieldUtil.monetaryField(txlimiteFiado);
+        MaskFieldUtil.maxField(txnome, 70);
+        MaskFieldUtil.maxField(txemail, 100);
+        MaskFieldUtil.maxField(txendereco, 70);
+        MaskFieldUtil.maxField(txbairro, 30);
+        MaskFieldUtil.maxField(txlimiteFiado, 12);
+        MaskFieldUtil.maxField(txnum, 10);
+        MaskFieldUtil.maxField(txpesquisar, 70);
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
         colnome.setCellValueFactory(new PropertyValueFactory("nome"));
         colcpf.setCellValueFactory(new PropertyValueFactory("cpf"));
@@ -167,7 +185,6 @@ public class TelaClienteCadastroControllear implements Initializable {
         txnum.resetValidation();
         txbairro.resetValidation();
         txtelefone.resetValidation();
-        txcid.resetValidation();
         txcep.resetValidation();
         txemail.resetValidation();
 
@@ -181,8 +198,16 @@ public class TelaClienteCadastroControllear implements Initializable {
                 ((ComboBox) n).getSelectionModel().select(0);
             }
         }
-
+        CarregarUf();
         clControl.carregaTabela("", tabela);
+    }
+
+    public void CarregarUf() {
+        cbUf.setItems(FXCollections.observableArrayList(control.carregarUf()));
+    }
+    
+    public void CarregarCid(int codcid) {
+        cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUF(codcid)));
     }
 
     private void estadoEdicao() {
@@ -199,7 +224,8 @@ public class TelaClienteCadastroControllear implements Initializable {
         txnum.resetValidation();
         txbairro.resetValidation();
         txtelefone.resetValidation();
-        txcid.resetValidation();
+        cbUf.resetValidation();
+        cbCid.resetValidation();
         txcep.resetValidation();
         txemail.resetValidation();
 
@@ -221,8 +247,8 @@ public class TelaClienteCadastroControllear implements Initializable {
                 txbairro,
                 txtelefone,
                 chkAtivo,
-                txcodcid,
-                txcid,
+                cbUf,
+                cbCid,
                 txcep,
                 txemail,
                 dtCadastro,
@@ -288,10 +314,8 @@ public class TelaClienteCadastroControllear implements Initializable {
         } catch (Exception e) {
             cod = 0;
         }
-        try {
-
-            codcid = Integer.parseInt(txcodcid.getText());
-
+         try {
+            codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
         } catch (Exception e) {
             codcid = 0;
         }
@@ -381,36 +405,9 @@ public class TelaClienteCadastroControllear implements Initializable {
         clControl.Pesquisar(txpesquisar, txcodcid, txcid, cid_cod);
     }
 
-    @FXML
-    private void evtProcurarCidade(ActionEvent event) {
-        Erros msg = new Erros();
-        try {
-            Stage stage = new Stage();
-            Parent pesquisa = FXMLLoader.load(getClass().getResource("Consulta.fxml"));
-            Scene scene = new Scene(pesquisa);
-            //Show main Window
-            stage.setScene(scene);
-//            stage.getIcons().add(new Image(getClass().getResourceAsStream("")));
-            stage.setResizable(false);
-            stage.setTitle("Consulta de cidades");
-            stage.showAndWait();
-            if (cid != null) {
-                pesquisarCidade(cid.getCid_cod());
-                txcep.requestFocus();
-            }
+   
 
-        } catch (Exception e) {
-            msg.Error("", e.getMessage());
-        }
-    }
-
-    @FXML
-    private void onExitCidade(KeyEvent event) {
-        if (event.getCode() == KeyCode.TAB && !txcodcid.getText().isEmpty()) {
-            pesquisarCidade(Integer.parseInt(txcodcid.getText()));
-            txcep.requestFocus();
-        }
-    }
+   
 
     @FXML
     private void evRbNome(ActionEvent event) {
@@ -444,6 +441,28 @@ public class TelaClienteCadastroControllear implements Initializable {
             } else {
                 lbErroCPF.setVisible(false);
             }
+        }
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("CadastrodeCliente.htm");
+    }
+
+    @FXML
+    private void PesqProd(ActionEvent event) {
+    }
+
+    @FXML
+    private void carregaCidade(ActionEvent event) {
+        if (cbUf.getSelectionModel().getSelectedItem() != null) {
+            int codigo = 0;
+            codigo = cbUf.getSelectionModel().getSelectedItem().getCod();
+            cbCid.setDisable(false);
+            CarregarCid(codigo);
+        } else {
+            cbCid.setDisable(true);
         }
     }
 

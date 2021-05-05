@@ -5,6 +5,7 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.NivelFuncionarioController;
 import Erros.Erros;
 import com.jfoenix.controls.JFXButton;
@@ -21,6 +22,7 @@ import javafx.scene.layout.Pane;
 
 import Models.NivelFuncionario;
 import Models.Restricoes;
+import apollo.utils.MaskFieldUtil;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.collections.ObservableList;
@@ -67,6 +69,8 @@ public class TelaNivelFuncionarioController implements Initializable {
     private JFXComboBox<Restricoes> cbRestricao;
     NivelFuncionarioController tpControl = new NivelFuncionarioController();
     Erros msg = new Erros();
+    @FXML
+    private JFXButton btAjuda;
 
     @FXML
     private void clknovo(ActionEvent event) {
@@ -161,6 +165,8 @@ public class TelaNivelFuncionarioController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        MaskFieldUtil.maxField(txDescricao, 30);
+        MaskFieldUtil.maxField(txpesquisar, 30);
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
         coldesc.setCellValueFactory(new PropertyValueFactory("descricao"));
         estadoOriginal();
@@ -205,6 +211,12 @@ public class TelaNivelFuncionarioController implements Initializable {
         txDescricao.resetValidation();
         txpesquisar.resetValidation();
 
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("CadastrodeNiveldeFuncionario.htm");
     }
 
 }

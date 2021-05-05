@@ -5,16 +5,21 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.MenuController;
 import Erros.Erros;
 import Models.Caixa;
 import Models.Funcionario;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,8 +34,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 public class FXMLMenuInicialController implements Initializable {
 
@@ -157,6 +164,7 @@ public class FXMLMenuInicialController implements Initializable {
         TelaLancarDespesasController.setFunc(funcionario);
         FXMLTelaCompraController.setFunc(funcionario);
         FXMLTelaVendasProdutoController.setFunc(funcionario);
+        //FXMLTelaContasPagarController(funcionario);
     }
 
     @FXML
@@ -288,7 +296,7 @@ public class FXMLMenuInicialController implements Initializable {
     @FXML
     private void Sair(ActionEvent event) {
         if (c.isAberto()) {
-              msg.Error("Apollo Informa: ", "Caixa Aberto!");
+            msg.Error("Apollo Informa: ", "Caixa Aberto!");
         } else {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText("Deseja sair?");
@@ -395,7 +403,7 @@ public class FXMLMenuInicialController implements Initializable {
 
     @FXML
     private void VendaProdutos(ActionEvent event) {
-        if (c.isAberto()) {
+        if (c.isAberto() && c.getSaldoInicio() > 100) {
             try {
                 Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaVendasProduto.fxml"));
                 Scene scene = new Scene(inicial);
@@ -410,19 +418,18 @@ public class FXMLMenuInicialController implements Initializable {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setResizable(false);
                 stage.showAndWait();
-
+                lbcaixasaldo.setText(nf.format(c.getSaldoInicio()));
             } catch (IOException ex) {
                 Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            msg.Error("Apollo Informa: ", "Caixa Fechado!");
+            msg.Error("Apollo Informa: ", "Caixa Fechado ou saldo insuficiente!");
         }
 
     }
 
     @FXML
-    private void ReceberFiado(ActionEvent event
-    ) {
+    private void ReceberFiado(ActionEvent event) {
         try {
             Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaReceberFiado.fxml"));
             Scene scene = new Scene(inicial);
@@ -456,11 +463,345 @@ public class FXMLMenuInicialController implements Initializable {
     }
 
     public void atualizaSaldo() {
+        
         lbcaixasaldo.setText(nf.format(c.getSaldoInicio()));
     }
 
+
     @FXML
-    private void atualizaSaldo(MouseEvent event) {
+    private void ContasPagar(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaContasPagar.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: AO CONTAS A PAGAR");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void RelProdutos(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLRelatorioProdutos.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: RELATÓRIO DE PRODUTOS");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void RelVendas(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLRelatorioVenda.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: RELATÓRIO DE VENDAS");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void RelCompras(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLRelatorioCompras.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: RELATÓRIO DE COMPRAS");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void RelFiado(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLRelatorioFiados.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: RELATÓRIO DE FIADOS");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void RelContasReceber(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLRelatorioContasReceber.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: RELATÓRIO DE CONTAS A RECEBER");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void RelContasPagar(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLRelatorioContasPagar.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: RELATÓRIO DE CONTAS A PAGAR");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void ContasReceber(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaContasReceber.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: AO CONTAS A RECEBER");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void Manual(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("");
+
+    }
+
+    @FXML
+    private void RelDespesas(ActionEvent event) {
+        try {
+            Parent inicial = FXMLLoader.load(getClass().getResource("FXMLRelatorioDespesas.fxml"));
+            Scene scene = new Scene(inicial);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("BEM-VINDO: RELATÓRIO DE DESPESAS");
+            // stage.setMaximized(true);
+
+            //Close authentication Window
+            //Show main Window
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static boolean Backup(String arquivo) {
+        final ArrayList<String> comandos;
+        comandos = new ArrayList();
+        comandos.add(System.getProperty("user.dir") + "/src/backup/pg_dump.exe");
+        comandos.add("--host");
+        comandos.add("localhost"); //ou  comandos.add("192.168.0.1");
+        comandos.add("--port");
+        comandos.add("5432");
+        comandos.add("--username");
+        comandos.add("postgres");
+        comandos.add("--format");
+        comandos.add("custom");
+        comandos.add("--blobs");
+        comandos.add("--verbose");
+        comandos.add("--file");
+        comandos.add(arquivo);
+        comandos.add("apollo");
+        ProcessBuilder pb = new ProcessBuilder(comandos);
+        pb.environment().put("PGPASSWORD", "postgres123");
+        try {
+            final Process process = pb.start();
+            final BufferedReader r = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line = r.readLine();
+            while (line != null) {
+                System.err.println(line);
+                line = r.readLine();
+            }
+            r.close();
+            process.waitFor();
+            process.destroy();
+            
+            return true;
+        } catch (Exception e) {
+           
+            return false;
+        }
+    }
+
+    public static boolean Restore(String arquivo) {
+        final ArrayList<String> comandos;
+        comandos = new ArrayList();
+        comandos.add(System.getProperty("user.dir") + "/src/backup/pg_restore.exe");
+        comandos.add("-c");
+        comandos.add("--host");
+        comandos.add("localhost"); //ou  comandos.add("192.168.0.1");
+        comandos.add("--port");
+        comandos.add("5432");
+        comandos.add("--username");
+        comandos.add("postgres");
+        comandos.add("--dbname");
+        comandos.add("apollo");
+        comandos.add("--verbose");
+        comandos.add(arquivo);
+        ProcessBuilder pb = new ProcessBuilder(comandos);
+        pb.environment().put("PGPASSWORD", "postgres123");
+        try {
+            final Process process = pb.start();
+            final BufferedReader r = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line = r.readLine();
+            while (line != null) {
+                System.err.println(line);
+                line = r.readLine();
+            }
+            r.close();
+            process.waitFor();
+            process.destroy();
+           
+            return true;
+        } catch (Exception e) {
+         
+            return false;
+        }
+
+    }
+
+    @FXML
+    private void Backup(ActionEvent event) {
+        String caminho = "";
+
+       // caminho = btnArquivo();
+
+        if (caminho.isEmpty()) {
+            caminho = System.getProperty("user.dir") + "/src/backup/backup.sql";
+        }
+
+        if(Backup(caminho)){
+            msg.Affirmation("Apollo informa", "Backup realizado com sucesso!\nLocalizado em:\n"+caminho);
+        }else{
+            msg.Error("Apollo informa", "Erro na realização do backup.");
+        }
+    }
+
+    @FXML
+    private void Restore(ActionEvent event) {
+        String caminho = "";
+
+        caminho = btnArquivo();
+
+        if (caminho.isEmpty()) {
+            caminho = System.getProperty("user.dir") + "/src/backup/backup.sql";
+        }
+
+        if(Restore(caminho)){
+            msg.Affirmation("Apollo informa", "Restore realizado com sucesso!");
+        }else{
+            msg.Error("Apollo informa", "Erro na realização do restore.");
+        }
+    }
+
+    public String btnArquivo() {
+        FileChooser fc = new FileChooser();
+        FileChooser.ExtensionFilter extFilter4 = new FileChooser.ExtensionFilter("Todos os arquivos (*.)", "*");
+        fc.getExtensionFilters().add(extFilter4);
+        String arq = System.getProperty("user.dir") + "/src/backup";
+        File arquivo2= new File(arq) ;
+        fc.setInitialDirectory(arquivo2);
+        File arquivo = fc.showOpenDialog(null);
+        if (arquivo != null) {
+            return arquivo.getAbsolutePath();
+        }
+        return "";
+    }
+//    public String btnSelecionador() {
+////        FileChooser fc = new FileChooser();
+////        FileChooser.ExtensionFilter extFilter4 = new FileChooser.ExtensionFilter("Todos os arquivos (*.)", "*");
+////        fc.getExtensionFilters().add(extFilter4);
+////        
+////        
+////        File arquivo = fc.setSelectedExtensionFilter(extFilter4);
+////        
+////        if (arquivo != null) {
+////            return arquivo.getAbsolutePath();
+////        }
+////        return "";
+//    }
+
+    @FXML
+    private void Sangria(MouseEvent event) {
         if (c.isAberto()) {
             try {
                 Parent inicial = FXMLLoader.load(getClass().getResource("TelaSaldoCaixa.fxml"));
@@ -483,7 +824,6 @@ public class FXMLMenuInicialController implements Initializable {
         } else {
             msg.Error("Apollo Informa: ", "Caixa Fechado!");
         }
-
     }
 
 }

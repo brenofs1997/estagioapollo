@@ -5,8 +5,8 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.CategoriaController;
-import Controller.TipoDespesaController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -21,7 +21,7 @@ import javafx.scene.layout.Pane;
 
 import Erros.Erros;
 import Models.Categoria;
-import Models.TipoDespesa;
+import apollo.utils.MaskFieldUtil;
 import javafx.collections.ObservableList;
 
 import javafx.scene.Node;
@@ -64,6 +64,8 @@ public class TelaCategoria implements Initializable {
     private JFXTextField txDescricao;
     CategoriaController catCon = new CategoriaController();
     Erros msg = new Erros();
+    @FXML
+    private JFXButton btAjuda;
 
     @FXML
     private void clknovo(ActionEvent event) {
@@ -133,8 +135,8 @@ public class TelaCategoria implements Initializable {
 
     @FXML
     private void clkPesquisar(ActionEvent event) {
-        String filtro=" descricao ilike '%"+txpesquisar.getText()+"%'";
-        catCon.clkPesquisar(filtro,tabela);
+        String filtro = " descricao ilike '%" + txpesquisar.getText() + "%'";
+        catCon.clkPesquisar(filtro, tabela);
     }
 
     @FXML
@@ -145,6 +147,8 @@ public class TelaCategoria implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        MaskFieldUtil.maxField(txDescricao, 30);
+        MaskFieldUtil.maxField(txpesquisar, 30);
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
         coldesc.setCellValueFactory(new PropertyValueFactory("descricao"));
         estadoOriginal();
@@ -188,5 +192,11 @@ public class TelaCategoria implements Initializable {
         txDescricao.resetValidation();
         txpesquisar.resetValidation();
 
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("CadastrodeCategorias.htm");
     }
 }

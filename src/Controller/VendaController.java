@@ -5,7 +5,6 @@
  */
 package Controller;
 
-import CamadaAcessoDados.Banco;
 import Erros.Erros;
 import Models.Cliente;
 import Models.CondicaoPagamento;
@@ -47,6 +46,7 @@ public class VendaController {
     public List<Cliente> CarregaCliente() {
         Cliente c = new Cliente();
         List<Cliente> Lista = c.get("");//Lista de Tipos de despesa
+        Lista.add(new Cliente(0, "Todos", null, "", "", "", "", 0.0, "", "", null, true, "", 0));
         return Lista;
     }
 
@@ -147,14 +147,18 @@ public class VendaController {
         Cliente c = new Cliente();
         if (cond == false) {
             cd = cd.getC("Dinheiro");
-            cp = new ContasReceber(cod, "1/1", total, total, emissao, emissao, emissao, func, cbCliente.getSelectionModel().getSelectedItem(), cd, "Q");
+
             if (cbCliente.getSelectionModel().getSelectedItem() == null) {
                 c = c.get(1);
+            } else {
+                c = cbCliente.getSelectionModel().getSelectedItem();
             }
+            cp = new ContasReceber(new Venda(cod), "1", total, total, emissao, emissao, emissao, func, c, cd, "Q");
         } else {
             cd = cd.getC("Fiado");
-            cp = new ContasReceber(cod, "1/1", total, 0.0, emissao, null, null, func, cbCliente.getSelectionModel().getSelectedItem(), cd, "A");
             c = cbCliente.getSelectionModel().getSelectedItem();
+            cp = new ContasReceber(new Venda(cod), "1", total, 0.0, emissao, null, null, func, c, cd, "A");
+
         }
         Venda v = new Venda(cod, emissao, c, cd, total);
 
@@ -184,13 +188,18 @@ public class VendaController {
         Cliente c = new Cliente();
         if (cond == false) {
             cd = cd.getC("Dinheiro");
-            cp = new ContasReceber(cod, "1/1", total, total, emissao, emissao, emissao, func, cbCliente.getSelectionModel().getSelectedItem(), cd, "Q");
-            c = c.get(1);
+            if (cbCliente.getSelectionModel().getSelectedItem() == null) {
+                c = c.get(1);
+            } else {
+                c = cbCliente.getSelectionModel().getSelectedItem();
+            }
+            cp = new ContasReceber(new Venda(cod), "1", total, total, emissao, emissao, emissao, func, c, cd, "Q");
 
         } else {
             cd = cd.getC("Fiado");
-            cp = new ContasReceber(cod, "1/1", total, 0.0, emissao, null, null, func, cbCliente.getSelectionModel().getSelectedItem(), cd, "A");
             c = cbCliente.getSelectionModel().getSelectedItem();
+            cp = new ContasReceber(new Venda(cod), "1", total, 0.0, emissao, null, null, func, c, cd, "A");
+
         }
         Venda v = new Venda(cod, emissao, c, cd, total);
 
@@ -247,7 +256,7 @@ public class VendaController {
         ContasReceber cp = new ContasReceber();
         if (venda != null) {
 
-            if (cp.apagarParcVenda(venda.getCodigo()) &&  it.apagar(venda.getCodigo()) && venda.apagar(venda.getCodigo())) {
+            if (cp.apagarParcVenda(venda.getCodigo()) && it.apagar(venda.getCodigo()) && venda.apagar(venda.getCodigo())) {
                 return true;
             }
         }
@@ -256,13 +265,27 @@ public class VendaController {
 
     public List<Cliente> PesquisarCliente(String valor) {
         Cliente c = new Cliente();
-        List<Cliente> Lista = c.get("c.nome ILIKE '%"+valor+"%'");//Lista de Tipos de despesa
+        List<Cliente> Lista = c.get("c.nome ILIKE '%" + valor + "%'");//Lista de Tipos de despesa
         return Lista;
     }
+
     public List<Produto> PesquisarProduto(String valor) {
         Produto p = new Produto();
-        List<Produto> Lista = p.get("descricao ILIKE '%"+valor+"%'");//Lista de Tipos de despesa
+        List<Produto> Lista = p.get("descricao ILIKE '%" + valor + "%'");//Lista de Tipos de despesa
         return Lista;
+    }
+
+    public boolean verificaEstoque(int quant, Produto produto, JFXTextField txQuant) {
+        Produto aux = new Produto();
+        aux = aux.get(produto.getCodigo());
+
+        if ((aux.getQtde() - quant) >= 0) {
+            return true;
+
+        } else {
+            txQuant.setText("" + aux.getQtde());
+            return false;
+        }
     }
 
 }

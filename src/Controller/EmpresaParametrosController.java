@@ -11,8 +11,10 @@ import CamadaAcessoDados.DALEmpresaParametros;
 import Erros.Erros;
 import Models.Cidade;
 import Models.EmpresaParametros;
+import Models.Estado;
 import Models.Funcionario;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -58,7 +60,12 @@ public class EmpresaParametrosController {
 
     }
 
-    public void estadoInicial(Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txfantasia, JFXTextField txcnpj, JFXTextField txrazasocial, JFXTextField txtelefone, JFXTextField txie, JFXTextField txlogradouro, JFXTextField txbairro, JFXTextField txnum, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXTextField txsite, ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela, Label lbErroCNPJ) {
+    public void estadoInicial(Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar,
+            JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo,
+            JFXTextField txfantasia, JFXTextField txcnpj, JFXTextField txrazasocial,
+            JFXTextField txtelefone, JFXTextField txie, JFXTextField txlogradouro,
+            JFXTextField txbairro, JFXTextField txnum, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail,
+            JFXTextField txsite, ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela, Label lbErroCNPJ) {
         pnpesquisa.setDisable(false);
         pndados.setDisable(true);
         pnlogo.setDisable(true);
@@ -75,7 +82,6 @@ public class EmpresaParametrosController {
         txlogradouro.resetValidation();
         txbairro.resetValidation();
         txnum.resetValidation();
-        txcid.resetValidation();
         txcep.resetValidation();
         txemail.resetValidation();
         txsite.resetValidation();
@@ -95,7 +101,9 @@ public class EmpresaParametrosController {
         carregaTabela(tabela, "");
     }
 
-    public void estadoEdicao(Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txfantasia, JFXTextField txcnpj, JFXTextField txrazasocial, JFXTextField txtelefone, JFXTextField txie, JFXTextField txlogradouro, JFXTextField txbairro, JFXTextField txnum, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXTextField txsite, ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela) {
+    public void estadoEdicao(Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo,
+            JFXTextField txfantasia, JFXTextField txcnpj, JFXTextField txrazasocial, JFXTextField txtelefone, JFXTextField txie,
+            JFXTextField txlogradouro, JFXTextField txbairro, JFXTextField txnum, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, JFXTextField txsite, ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela) {
         Erros msg = new Erros();
         pnpesquisa.setDisable(true);
         pndados.setDisable(false);
@@ -112,14 +120,15 @@ public class EmpresaParametrosController {
         txlogradouro.resetValidation();
         txbairro.resetValidation();
         txnum.resetValidation();
-        txcid.resetValidation();
+        cbUf.resetValidation();
+        cbCid.resetValidation();
         txcep.resetValidation();
         txemail.resetValidation();
         txsite.resetValidation();
     }
 
     public void alterar(JFXTextField txcod, JFXTextField txfantasia, JFXTextField txcnpj, JFXTextField txrazasocial, JFXTextField txtelefone, JFXTextField txie, JFXTextField txlogradouro, JFXTextField txbairro, JFXTextField txnum,
-            JFXTextField txcodcid, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXTextField txsite,
+            JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, JFXTextField txsite,
             ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela, File arquivoaux) {
         EmpresaParametros ep = (EmpresaParametros) tabela.getSelectionModel().getSelectedItem();
         txcod.setText("" + ep.getCodigo());
@@ -132,8 +141,15 @@ public class EmpresaParametrosController {
         txnum.setText("" + ep.getNumero());
         Cidade c = new Cidade();
         c = c.get(ep.getCidade().getCid_cod());
-        txcodcid.setText(String.valueOf(c.getCid_cod()));
-        txcid.setText(c.getCid_nome());
+
+        Estado e = new Estado();
+        e = e.getPorCid(c.getCid_cod());
+
+        cbUf.getSelectionModel().select(0);
+        cbUf.getSelectionModel().select(e);
+
+        cbCid.getSelectionModel().select(0);
+        cbCid.getSelectionModel().select(c);
         txie.setText("" + ep.getIe());
         txcep.setText("" + ep.getCep());
         txemail.setText("" + ep.getEmail());
@@ -167,7 +183,11 @@ public class EmpresaParametrosController {
 
     }
 
-    public void cancelar(Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txfantasia, JFXTextField txcnpj, JFXTextField txrazasocial, JFXTextField txtelefone, JFXTextField txie, JFXTextField txlogradouro, JFXTextField txbairro, JFXTextField txnum, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXTextField txsite, ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela, Label lbErroCNPJ, Funcionario func) {
+    public void cancelar(Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar, JFXButton btcancelar,
+            JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txfantasia,
+            JFXTextField txcnpj, JFXTextField txrazasocial, JFXTextField txtelefone,
+            JFXTextField txie, JFXTextField txlogradouro, JFXTextField txbairro, JFXTextField txnum,
+            JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, JFXTextField txsite, ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela, Label lbErroCNPJ, Funcionario func) {
         if (!pndados.isDisabled())//encontra em estado de edição
         {
             estadoInicial(pnpesquisa,
@@ -186,7 +206,8 @@ public class EmpresaParametrosController {
                     txlogradouro,
                     txbairro,
                     txnum,
-                    txcid,
+                    cbUf,
+                    cbCid,
                     txcep,
                     txemail,
                     txsite,
@@ -281,14 +302,14 @@ public class EmpresaParametrosController {
     public void confirmar(int rows, int cod, Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar,
             JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txfantasia,
             JFXTextField txcnpj, JFXTextField txrazasocial, JFXTextField txtelefone, JFXTextField txie, JFXTextField txlogradouro,
-            JFXTextField txbairro, JFXTextField txnum, JFXTextField txcodcid, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail,
+            JFXTextField txbairro, JFXTextField txnum, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, int codcid, JFXTextField txcep, JFXTextField txemail,
             JFXTextField txsite, ImageView logo, FontAwesomeIcon logoIcon, TableView<EmpresaParametros> tabela, Label lbErroCNPJ,
             String caminhoLogo, FileInputStream arq, File arquivo, File arquivoaux, Image imagem) {
         EmpresaParametros ep = new EmpresaParametros();
 
         if (cod == 0) {
             ep = new EmpresaParametros(cod, txfantasia.getText(), txrazasocial.getText(), txlogradouro.getText(),
-                    txnum.getText(), new Cidade(Integer.parseInt(txcodcid.getText())), txtelefone.getText(), txcnpj.getText(),
+                    txnum.getText(), new Cidade(codcid), txtelefone.getText(), txcnpj.getText(),
                     txsite.getText(), txie.getText(), txemail.getText(), txcep.getText(), txbairro.getText());
         } else {
             EmpresaParametros aux = new EmpresaParametros();
@@ -297,7 +318,7 @@ public class EmpresaParametrosController {
                 caminhoLogo = aux.getLogo_grande();
             }
             ep = new EmpresaParametros(cod, txfantasia.getText(), txrazasocial.getText(), txlogradouro.getText(),
-                    txnum.getText(), new Cidade(Integer.parseInt(txcodcid.getText())), txtelefone.getText(), txcnpj.getText(),
+                    txnum.getText(), new Cidade(codcid), txtelefone.getText(), txcnpj.getText(),
                     txsite.getText(), txie.getText(), txemail.getText(), txcep.getText(), txbairro.getText());
         }
 
@@ -332,7 +353,8 @@ public class EmpresaParametrosController {
                                 txlogradouro,
                                 txbairro,
                                 txnum,
-                                txcid,
+                                cbUf,
+                                cbCid,
                                 txcep,
                                 txemail,
                                 txsite,
@@ -357,7 +379,8 @@ public class EmpresaParametrosController {
                             txlogradouro,
                             txbairro,
                             txnum,
-                            txcid,
+                            cbUf,
+                            cbCid,
                             txcep,
                             txemail,
                             txsite,
@@ -395,7 +418,8 @@ public class EmpresaParametrosController {
                             txlogradouro,
                             txbairro,
                             txnum,
-                            txcid,
+                            cbUf,
+                            cbCid,
                             txcep,
                             txemail,
                             txsite,
@@ -420,14 +444,14 @@ public class EmpresaParametrosController {
                         txlogradouro,
                         txbairro,
                         txnum,
-                        txcid,
+                        cbUf,
+                        cbCid,
                         txcep,
                         txemail,
                         txsite,
                         logo,
                         logoIcon, tabela, lbErroCNPJ);
             }
-           
 
         } else {
             msg.Error("Erro ao alterar!", "Problemas ao Alterar");

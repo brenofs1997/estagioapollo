@@ -30,11 +30,6 @@
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
-      <Label layoutX="91.0" layoutY="27.0" text="Emissão da Conta*">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <DatePicker fx:id="dtEmissao" disable="true" editable="false" layoutX="91.0" layoutY="56.0" />
+      <JFXTextField fx:id="dtEmissao" editable="false" labelFloat="true" layoutX="90.0" layoutY="61.0" prefHeight="31.0" prefWidth="218.0" promptText="Emissão da Conta" />
    </children>
 </AnchorPane>

@@ -27,7 +27,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font></JFXTextField>
                   <JFXCheckBox fx:id="cbAtivo" layoutX="295.0" layoutY="19.0" prefHeight="55.0" prefWidth="91.0" selected="true" text="Ativo" />
-                  <JFXTextField fx:id="txPreco" focusColor="BLACK" labelFloat="true" layoutX="135.0" layoutY="173.0" prefHeight="39.0" prefWidth="239.0" promptText="Preco*" style="-fx-background-color: WHITE;">
+                  <JFXTextField fx:id="txPreco" focusColor="BLACK" labelFloat="true" layoutX="135.0" layoutY="173.0" prefHeight="39.0" prefWidth="239.0" promptText="Preço*" style="-fx-background-color: WHITE;">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -37,14 +37,14 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </JFXTextField>
-                  <JFXComboBox fx:id="cbCategoria" labelFloat="true" layoutX="135.0" layoutY="242.0" prefHeight="31.0" prefWidth="240.0" promptText="Categoria*" />
+                  <JFXComboBox fx:id="cbCategoria" labelFloat="true" layoutX="135.0" layoutY="242.0" prefHeight="31.0" prefWidth="240.0" promptText="Categoria*" style="-fx-background-color: white;" />
                </children>
             </Pane>
          </center>
          <top>
             <Pane fx:id="pnbtn" prefHeight="77.0" prefWidth="1120.0" style="-fx-border-width: 1px; -fx-border-color: black; -fx-border-radius: 7px;" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton fx:id="btnovo" buttonType="RAISED" layoutX="138.0" layoutY="10.0" onAction="#clknovo" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="NOVO" textFill="WHITE">
+                  <JFXButton fx:id="btnovo" buttonType="RAISED" layoutX="36.0" layoutY="11.0" onAction="#clknovo" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="Novo" textFill="WHITE">
                      <ripplerFill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                            <stops>
@@ -56,7 +56,7 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
-                  <JFXButton fx:id="btalterar" buttonType="RAISED" layoutX="308.0" layoutY="11.0" onAction="#clkalterar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="ALTERAR" textFill="WHITE">
+                  <JFXButton fx:id="btalterar" buttonType="RAISED" layoutX="206.0" layoutY="12.0" onAction="#clkalterar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="Alterar" textFill="WHITE">
                      <ripplerFill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                            <stops>
@@ -68,7 +68,7 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
-                  <JFXButton fx:id="btapagar" buttonType="RAISED" layoutX="479.0" layoutY="10.0" onAction="#clkapagar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="APAGAR" textFill="WHITE">
+                  <JFXButton fx:id="btapagar" buttonType="RAISED" layoutX="377.0" layoutY="11.0" onAction="#clkapagar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="Apagar" textFill="WHITE">
                      <ripplerFill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                            <stops>
@@ -80,7 +80,7 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
-                  <JFXButton fx:id="btconfirmar" buttonType="RAISED" layoutX="653.0" layoutY="10.0" onAction="#clkconfirmar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="CONFIRMAR" textFill="WHITE">
+                  <JFXButton fx:id="btconfirmar" buttonType="RAISED" layoutX="551.0" layoutY="11.0" onAction="#clkconfirmar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="Confirmar" textFill="WHITE">
                      <ripplerFill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                            <stops>
@@ -92,7 +92,7 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
-                  <JFXButton fx:id="btcancelar" buttonType="RAISED" layoutX="825.0" layoutY="10.0" onAction="#clkcancelar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="CANCELAR" textFill="WHITE">
+                  <JFXButton fx:id="btAjuda" buttonType="RAISED" layoutX="723.0" layoutY="11.0" onAction="#Ajuda" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="Ajuda" textFill="WHITE">
                      <ripplerFill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                            <stops>
@@ -104,6 +104,19 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
+                  <JFXButton fx:id="btcancelar" buttonType="RAISED" layoutX="893.0" layoutY="12.0" onAction="#clkcancelar" prefHeight="55.0" prefWidth="145.0" style="-fx-background-color: #F52F00;" text="Cancelar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <ripplerFill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop color="#f52f00" />
+                              <Stop color="#400c00" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </ripplerFill>
+                  </JFXButton>
                </children>
             </Pane>
          </top>

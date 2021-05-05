@@ -90,7 +90,7 @@ public class DALFornecedor {
         String SQL = "select * from fornecedor ";
         List<Fornecedor> l = new ArrayList();
         if (!filtro.isEmpty()) {
-            SQL += " where " + filtro;
+            SQL += "where nomefantasia ILIKE '%"+filtro+"%'" ;
         }
         SQL += " order by nomefantasia";
         Cidade c = new Cidade();

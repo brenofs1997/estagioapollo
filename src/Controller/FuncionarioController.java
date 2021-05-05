@@ -10,6 +10,7 @@ import CamadaAcessoDados.DALFuncionario;
 import CamadaAcessoDados.DALNivelFuncionario;
 import Erros.Erros;
 import Models.Cidade;
+import Models.Estado;
 import Models.Funcionario;
 import Models.NivelFuncionario;
 import java.sql.ResultSet;
@@ -54,7 +55,7 @@ public class FuncionarioController {
         cbnivel.getSelectionModel().select(0);
     }
 
-    public void estadoInicial(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, Label lbErroCPF) {
+    public void estadoInicial(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone,JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, Label lbErroCPF) {
         pnpesquisa.setDisable(false);
         pndados.setDisable(true);
         btconfirmar.setDisable(true);
@@ -69,7 +70,6 @@ public class FuncionarioController {
         txnum.resetValidation();
         txbairro.resetValidation();
         txtelefone.resetValidation();
-        txcid.resetValidation();
         txcep.resetValidation();
         txemail.resetValidation();
         cbnivel.resetValidation();
@@ -91,7 +91,9 @@ public class FuncionarioController {
         carregaTabela(tabela, "");
     }
 
-    public void estadoEdicao(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, boolean primeiro_acesso, JFXCheckBox chkAtivo) {
+    public void estadoEdicao(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, 
+            JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, 
+            JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone,JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, boolean primeiro_acesso, JFXCheckBox chkAtivo) {
         pnpesquisa.setDisable(true);
         pndados.setDisable(false);
         btconfirmar.setDisable(false);
@@ -112,7 +114,8 @@ public class FuncionarioController {
         txnum.resetValidation();
         txbairro.resetValidation();
         txtelefone.resetValidation();
-        txcid.resetValidation();
+        cbUf.resetValidation();
+        cbCid.resetValidation();
         txcep.resetValidation();
         txemail.resetValidation();
         cbnivel.resetValidation();
@@ -132,7 +135,8 @@ public class FuncionarioController {
 //        msg.campoVazio(txsenha, "");
     }
 
-    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXCheckBox chkAtivo, JFXTextField txcodcid, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, JFXComboBox<NivelFuncionario> cbnivel0, TableView<Funcionario> tabela) {
+    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum,
+            JFXTextField txbairro, JFXTextField txtelefone, JFXCheckBox chkAtivo, JFXTextField txcodcid, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, JFXComboBox<NivelFuncionario> cbnivel0, TableView<Funcionario> tabela) {
         Funcionario f = (Funcionario) tabela.getSelectionModel().getSelectedItem();
         Cidade cidade = new Cidade();
         NivelFuncionario nf = new NivelFuncionario();
@@ -153,8 +157,18 @@ public class FuncionarioController {
         }
         txbairro.setText("" + f.getBairro());
         txnum.setText("" + f.getNumero());
-        txcodcid.setText(String.valueOf(f.getCidade().getCid_cod()));
-        txcid.setText("" + cidade.getCid_nome());
+ 
+          
+      
+
+        Estado e = new Estado();
+        e = e.getPorCid(cidade.getCid_cod());
+
+        cbUf.getSelectionModel().select(0);
+        cbUf.getSelectionModel().select(e);
+
+        cbCid.getSelectionModel().select(0);
+        cbCid.getSelectionModel().select(cidade);
         txcep.setText("" + f.getCep());
         txsenha.setText("" + f.getSenha());
         txlogin.setText("" + f.getLogin());
@@ -220,7 +234,6 @@ public class FuncionarioController {
                     txnum,
                     txbairro,
                     txtelefone,
-                    txcid,
                     txcep,
                     txemail,
                     cbnivel,
@@ -265,7 +278,9 @@ public class FuncionarioController {
         }
     }
 
-    public void confirmar(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, int cod, JFXTextField txcodcid, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXTextField txcid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, String ativo, String pAcesso, TableView<Funcionario> tabela, Label lbErroCPF) {
+    public void confirmar(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar,
+            JFXButton btnovo, int cod, JFXTextField txcodcid, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum,
+            JFXTextField txbairro, JFXTextField txtelefone, int codcid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, String ativo, String pAcesso, TableView<Funcionario> tabela, Label lbErroCPF) {
         Banco.conectar();
         ResultSet rs = Banco.getCon().consultar("select  * from funcionario");
         int rows = 0, cont = 0;
@@ -277,10 +292,10 @@ public class FuncionarioController {
         }
         NivelFuncionario nivel;
         Cidade cidade;
-        if (txcodcid.getText().isEmpty()) {
+        if (codcid == 0) {
             cidade = new Cidade();
         } else {
-            cidade = new Cidade(Integer.parseInt(txcodcid.getText()));
+            cidade = new Cidade(codcid);
         }
         nivel = cbnivel.valueProperty().getValue();
         Funcionario f = new Funcionario(cod, txnome.getText(), txcpf.getText(), txendereco.getText(),
@@ -308,7 +323,6 @@ public class FuncionarioController {
                     txnum,
                     txbairro,
                     txtelefone,
-                    txcid,
                     txcep,
                     txemail,
                     cbnivel,
@@ -348,7 +362,6 @@ public class FuncionarioController {
                         txnum,
                         txbairro,
                         txtelefone,
-                        txcid,
                         txcep,
                         txemail,
                         cbnivel,
@@ -377,7 +390,6 @@ public class FuncionarioController {
                         txnum,
                         txbairro,
                         txtelefone,
-                        txcid,
                         txcep,
                         txemail,
                         cbnivel,

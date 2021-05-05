@@ -5,12 +5,10 @@
  */
 package View;
 
+import Ajuda.Ajuda;
 import Controller.TipoDespesaController;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RequiredFieldValidator;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -23,28 +21,13 @@ import javafx.scene.layout.Pane;
 
 import Erros.Erros;
 import Models.TipoDespesa;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 
 public class TelaTipoDespesaController implements Initializable {
 
@@ -80,6 +63,8 @@ public class TelaTipoDespesaController implements Initializable {
     private JFXTextField txDescricao;
     TipoDespesaController tipCon = new TipoDespesaController();
     Erros msg = new Erros();
+    @FXML
+    private JFXButton btAjuda;
 
     @FXML
     private void clknovo(ActionEvent event) {
@@ -149,8 +134,8 @@ public class TelaTipoDespesaController implements Initializable {
 
     @FXML
     private void clkPesquisar(ActionEvent event) {
-        String filtro=" descricao ilike '%"+txpesquisar.getText()+"%'";
-        tipCon.clkPesquisar(filtro,tabela);
+        String filtro = " descricao ilike '%" + txpesquisar.getText() + "%'";
+        tipCon.clkPesquisar(filtro, tabela);
     }
 
     @FXML
@@ -204,5 +189,11 @@ public class TelaTipoDespesaController implements Initializable {
         txDescricao.resetValidation();
         txpesquisar.resetValidation();
 
+    }
+
+    @FXML
+    private void Ajuda(ActionEvent event) {
+        Ajuda a = new Ajuda();
+        a.Ajuda("CadastroTiposdeDespesas.htm");
     }
 }

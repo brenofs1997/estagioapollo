@@ -46,7 +46,7 @@ public class CompraController {
 
     public List<Fornecedor> CarregaFornecedor() {
         Fornecedor f = new Fornecedor();
-        List<Fornecedor> Lista = f.get("");//Lista de Tipos de despesa
+        List<Fornecedor> Lista = f.get("");//Lista de fORNECEDOR
         return Lista;
     }
 

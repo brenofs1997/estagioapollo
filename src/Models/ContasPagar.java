@@ -35,6 +35,8 @@ public class ContasPagar {
     private String status;
     private Fornecedor fornecedor;
     private Compra compra;
+    private double valor_restante;
+    private int flag_parcial;
     DALContasPagar dal = new DALContasPagar();
 
     public ContasPagar() {
@@ -57,6 +59,55 @@ public class ContasPagar {
         this.status = status;
         this.fornecedor = fornecedor;
         this.compra = compra;
+    }
+
+    public ContasPagar(int codigo, int flag_despesa, String parcela, double valor, double valor_pago, Date emissao, Date data_pago, Date vencimento, Funcionario funcionario, CondicaoPagamento cond_pgto, TipoDespesa tipo_despesa, int qtde_parcelas, int dias_entreparc, String status, Fornecedor fornecedor, Compra compra, int flag_parcial) {
+        this.codigo = codigo;
+        this.flag_despesa = flag_despesa;
+        this.parcela = parcela;
+        this.valor = valor;
+        this.valor_pago = valor_pago;
+        this.emissao = emissao;
+        this.data_pago = data_pago;
+        this.vencimento = vencimento;
+        this.funcionario = funcionario;
+        this.cond_pgto = cond_pgto;
+        this.tipo_despesa = tipo_despesa;
+        this.qtde_parcelas = qtde_parcelas;
+        this.dias_entreparc = dias_entreparc;
+        this.status = status;
+        this.fornecedor = fornecedor;
+        this.compra = compra;
+        this.flag_parcial = flag_parcial;
+    }
+
+    public ContasPagar(int codigo, int flag_despesa, String parcela, double valor, double valor_pago, Date emissao, Date data_pago, Date vencimento, Funcionario funcionario, CondicaoPagamento cond_pgto, TipoDespesa tipo_despesa, int qtde_parcelas, int dias_entreparc, String status, Fornecedor fornecedor, Compra compra, double valor_restante,int flag_parcial) {
+        this.codigo = codigo;
+        this.flag_despesa = flag_despesa;
+        this.parcela = parcela;
+        this.valor = valor;
+        this.valor_pago = valor_pago;
+        this.emissao = emissao;
+        this.data_pago = data_pago;
+        this.vencimento = vencimento;
+        this.funcionario = funcionario;
+        this.cond_pgto = cond_pgto;
+        this.tipo_despesa = tipo_despesa;
+        this.qtde_parcelas = qtde_parcelas;
+        this.dias_entreparc = dias_entreparc;
+        this.status = status;
+        this.fornecedor = fornecedor;
+        this.compra = compra;
+        this.valor_restante = valor_restante;
+         this.flag_parcial = flag_parcial;
+    }
+
+    public double getValor_restante() {
+        return valor_restante;
+    }
+
+    public void setValor_restante(double valor_restante) {
+        this.valor_restante = valor_restante;
     }
 
     public int getCodigo() {
@@ -113,7 +164,17 @@ public class ContasPagar {
         this.emissao = emissao;
     }
 
-    public Date getData_pago() {
+    public String getData_pago() throws ParseException {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        if (data_pago == null) {
+            return "";
+        } else {
+            return formato.format(data_pago);
+        }
+
+    }
+
+    public Date getData_pagoDate() {
         return data_pago;
     }
 
@@ -199,6 +260,14 @@ public class ContasPagar {
         this.compra = compra;
     }
 
+    public int getFlag_parcial() {
+        return flag_parcial;
+    }
+
+    public void setFlag_parcial(int flag_parcial) {
+        this.flag_parcial = flag_parcial;
+    }
+
     public List<ContasPagar> get(String filtro) {
         return dal.get(filtro);
     }
@@ -214,14 +283,14 @@ public class ContasPagar {
     public boolean apagar(int cod) {
         return dal.apagar(cod);
     }
-     public boolean apagarParcCompra(int cod) {
+
+    public boolean apagarParcCompra(int cod) {
         return dal.apagarParcCompra(cod);
     }
-    
 
     public boolean alterar(ContasPagar c) {
 
-        return dal.salvar(c);
+        return dal.alterar(c);
     }
 
     public boolean salvar(ContasPagar cp) {
@@ -246,7 +315,11 @@ public class ContasPagar {
     }
 
     public List<ContasPagar> getParcCompras(int codigo) {
-         return dal.getParcCompras(codigo);
+        return dal.getParcCompras(codigo);
+    }
+
+    public List<ContasPagar> getContasPagar(int flag_desp, int fornecedor, String dtinicial, String dtfinal, String status) {
+        return dal.getContasPagar(flag_desp, fornecedor, dtinicial, dtfinal, status);
     }
 
 }

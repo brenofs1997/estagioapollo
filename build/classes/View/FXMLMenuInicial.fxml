@@ -16,7 +16,7 @@
          <top>
             <HBox prefHeight="431.0" prefWidth="1974.0" BorderPane.alignment="CENTER">
                <children>
-                  <TitledPane fx:id="tpCadastro" prefHeight="430.0" prefWidth="324.0" text="Cadastros">
+                  <TitledPane fx:id="tpCadastro" expanded="false" prefHeight="430.0" prefWidth="324.0" text="Cadastros">
                      <content>
                         <VBox prefHeight="299.0" prefWidth="322.0">
                            <children>
@@ -179,7 +179,7 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                                  <graphic>
-                                    <FontAwesomeIcon iconName="BUILDING" size="2em" wrappingWidth="30.0">
+                                    <FontAwesomeIcon iconName="CUBES" size="2em" wrappingWidth="30.0">
                                        <fill>
                                           <LinearGradient endX="1.0" endY="1.0">
                                              <stops>
@@ -203,7 +203,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </TitledPane>
-                  <TitledPane fx:id="tpCompras" prefHeight="430.0" prefWidth="218.0" text="Compras">
+                  <TitledPane fx:id="tpCompras" expanded="false" prefHeight="430.0" prefWidth="218.0" text="Compras">
                      <content>
                         <VBox prefHeight="270.0" prefWidth="216.0">
                            <children>
@@ -232,11 +232,11 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></TitledPane>
-                  <TitledPane fx:id="tpFluxo" expanded="false" prefHeight="430.0" prefWidth="218.0" text="Fluxo de Caixa">
+                  <TitledPane fx:id="tpFluxo" expanded="false" prefHeight="430.0" prefWidth="255.0" text="Fluxo de Caixa">
                      <content>
-                        <VBox prefHeight="270.0" prefWidth="216.0">
+                        <VBox prefHeight="390.0" prefWidth="268.0">
                            <children>
-                              <JFXButton fx:id="CadContasPagar" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="CONTAS A PAGAR">
+                              <JFXButton fx:id="CadContasPagar" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#ContasPagar" prefHeight="48.0" prefWidth="239.0" text="CONTAS A PAGAR">
                                  <graphic>
                                     <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
                                        <fill>
@@ -255,7 +255,7 @@
                                     </FontAwesomeIcon>
                                  </graphic>
                               </JFXButton>
-                              <JFXButton fx:id="CadContasReceber" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="CONTAS A RECEBER">
+                              <JFXButton fx:id="CadContasReceber" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#ContasReceber" prefHeight="48.0" prefWidth="243.0" text="CONTAS A RECEBER">
                                  <graphic>
                                     <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
                                        <fill>
@@ -274,7 +274,7 @@
                                     </FontAwesomeIcon>
                                  </graphic>
                               </JFXButton>
-                              <JFXButton fx:id="CadLancarDespesas" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#lancarDespesas" prefHeight="30.0" prefWidth="200.0" text="LANÇAR DESPESAS">
+                              <JFXButton fx:id="CadLancarDespesas" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#lancarDespesas" prefHeight="48.0" prefWidth="240.0" text="LANÇAR DESPESAS">
                                  <graphic>
                                     <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
                                        <fill>
@@ -293,7 +293,7 @@
                                     </FontAwesomeIcon>
                                  </graphic>
                               </JFXButton>
-                              <JFXButton fx:id="CadReceberFiado" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#ReceberFiado" prefHeight="30.0" prefWidth="200.0" text="RECEBER FIADO">
+                              <JFXButton fx:id="CadReceberFiado" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#ReceberFiado" prefHeight="48.0" prefWidth="244.0" text="RECEBER FIADO">
                                  <graphic>
                                     <FontAwesomeIcon iconName="DOLLAR" size="2em" wrappingWidth="20.0">
                                        <fill>
@@ -318,7 +318,7 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></TitledPane>
-                  <TitledPane fx:id="tpVendas" expanded="false" prefHeight="431.0" prefWidth="218.0" text="Vendas">
+                  <TitledPane fx:id="tpVendas" expanded="false" prefHeight="431.0" prefWidth="180.0" text="Vendas">
                      <content>
                         <VBox prefHeight="270.0" prefWidth="216.0">
                            <children>
@@ -347,11 +347,11 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></TitledPane>
-                  <TitledPane fx:id="tpBack" expanded="false" prefHeight="352.0" prefWidth="202.0" text="Backup">
+                  <TitledPane fx:id="tpBack" prefHeight="352.0" prefWidth="202.0" text="Backup">
                      <content>
                         <VBox prefHeight="270.0" prefWidth="216.0">
                            <children>
-                              <JFXButton fx:id="CadBackup" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="BACKUP">
+                              <JFXButton fx:id="CadBackup" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#Backup" prefHeight="30.0" prefWidth="200.0" text="BACKUP">
                                  <graphic>
                                     <FontAwesomeIcon iconName="CLOUD_DOWNLOAD" size="2em" wrappingWidth="30.0">
                                        <fill>
@@ -370,7 +370,7 @@
                                     </FontAwesomeIcon>
                                  </graphic>
                               </JFXButton>
-                              <JFXButton fx:id="CadRestore" alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="RESTORE">
+                              <JFXButton fx:id="CadRestore" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#Restore" prefHeight="30.0" prefWidth="200.0" text="RESTORE">
                                  <graphic>
                                     <FontAwesomeIcon iconName="CLOUD_UPLOAD" size="2em" wrappingWidth="30.0">
                                        <fill>
@@ -395,13 +395,13 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></TitledPane>
-                  <TitledPane fx:id="tpAjuda" expanded="false" prefHeight="364.0" prefWidth="202.0" text="Ajuda">
+                  <TitledPane fx:id="tpAjuda" expanded="false" prefHeight="364.0" prefWidth="366.0" text="Ajuda">
                      <content>
                         <VBox prefHeight="293.0" prefWidth="230.0">
                            <children>
-                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="40.0" prefWidth="212.0" text="MANUAL DO USUÁRIO">
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#Manual" prefHeight="48.0" prefWidth="231.0" text="MANUAL DO USUÁRIO">
                                  <graphic>
-                                    <FontAwesomeIcon iconName="BOOK" size="2em" wrappingWidth="15.0">
+                                    <FontAwesomeIcon iconName="BOOK" size="2em" wrappingWidth="22.0">
                                        <fill>
                                           <LinearGradient endX="1.0" endY="1.0">
                                              <stops>
@@ -417,6 +417,9 @@
                                        </font>
                                     </FontAwesomeIcon>
                                  </graphic>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </JFXButton>
                            </children>
                         </VBox>
@@ -424,28 +427,44 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></TitledPane>
-                  <TitledPane fx:id="tpRelatorio" expanded="false" prefHeight="364.0" prefWidth="202.0" text="Relatório">
+                  <TitledPane fx:id="tpRelatorio" prefHeight="364.0" prefWidth="254.0" text="Relatório">
                      <content>
-                        <VBox prefHeight="270.0" prefWidth="216.0">
+                        <VBox prefHeight="324.0" prefWidth="248.0">
                            <children>
-                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" prefHeight="30.0" prefWidth="200.0" text="COMPRAS">
-                                 <graphic>
-                                    <FontAwesomeIcon iconName="SHOPPING_CART" size="2em" wrappingWidth="30.0">
-                                       <fill>
-                                          <LinearGradient endX="1.0" endY="1.0">
-                                             <stops>
-                                                <Stop color="#ff3f34" />
-                                                <Stop color="#ff3f34" offset="0.05555555555555555" />
-                                                <Stop color="#bc1717" offset="0.40849673202614384" />
-                                                <Stop color="RED" offset="1.0" />
-                                             </stops>
-                                          </LinearGradient>
-                                       </fill>
-                                       <font>
-                                          <Font size="9.0" />
-                                       </font>
-                                    </FontAwesomeIcon>
-                                 </graphic>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#RelCompras" prefHeight="39.0" prefWidth="271.0" text="RELATÓRIO DE COMPRAS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#RelContasPagar" prefHeight="39.0" prefWidth="275.0" text="RELATÓRIO DE CONTAS A PAGAR">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#RelContasReceber" prefHeight="39.0" prefWidth="275.0" text="RELATÓRIO DE CONTAS A RECEBER">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#RelDespesas" prefHeight="39.0" prefWidth="275.0" text="RELATÓRIO DESPESAS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#RelFiado" prefHeight="39.0" prefWidth="271.0" text="RELATÓRIO DE FIADOS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#RelProdutos" prefHeight="39.0" prefWidth="271.0" text="RELATÓRIO DE PRODUTOS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#RelVendas" prefHeight="39.0" prefWidth="271.0" text="RELATÓRIO DE VENDAS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </JFXButton>
                            </children>
                         </VBox>
@@ -453,13 +472,13 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></TitledPane>
-                  <TitledPane fx:id="tpRelatorio1" expanded="false" prefHeight="286.0" prefWidth="327.0" text="Sair">
+                  <TitledPane fx:id="tpRelatorio1" expanded="false" prefHeight="295.0" prefWidth="194.0" text="Sair">
                      <content>
                         <VBox prefHeight="270.0" prefWidth="216.0">
                            <children>
                               <JFXButton fx:id="btnsair" alignment="BOTTOM_LEFT" graphicTextGap="15.0" onAction="#Sair" prefHeight="30.0" prefWidth="200.0" text="SAIR">
                                  <graphic>
-                                    <FontAwesomeIcon iconName="SHOPPING_CART" size="2em" wrappingWidth="30.0">
+                                    <FontAwesomeIcon iconName="CLOSE" size="2em" wrappingWidth="30.0">
                                        <fill>
                                           <LinearGradient endX="1.0" endY="1.0">
                                              <stops>
@@ -506,7 +525,7 @@
                         <Font name="System Bold" size="55.0" />
                      </font>
                   </Label>
-                  <FontAwesomeIcon fx:id="iconcaixaSaldo" fill="RED" iconName="DOLLAR" layoutX="831.0" layoutY="198.0" onMouseClicked="#atualizaSaldo" size="10em" text="" />
+                  <FontAwesomeIcon fx:id="iconcaixaSaldo" fill="RED" iconName="DOLLAR" layoutX="831.0" layoutY="198.0" onMouseClicked="#Sangria" size="10em" text="" />
                   <Label fx:id="lbcaixa" layoutX="362.0" layoutY="139.0" prefHeight="81.0" prefWidth="411.0">
                      <font>
                         <Font name="System Bold" size="55.0" />

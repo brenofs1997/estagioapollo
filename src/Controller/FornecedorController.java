@@ -40,6 +40,11 @@ public class FornecedorController {
         modelo = FXCollections.observableArrayList(res);
         tabela.setItems(modelo);
     }
+    public List<Fornecedor> carregaFornecedor(String Filtro) {
+        Fornecedor f = new Fornecedor();
+        List<Fornecedor> res = f.get(Filtro);
+        return res;
+    }
 
     public List<Estado> carregarUf() {
         Estado e = new Estado();
@@ -159,7 +164,9 @@ public class FornecedorController {
         return confirma;
     }
 
-    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txrazao, JFXTextField txcnpj, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXCheckBox chkAtivo, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, TableView<Categoria> tabelaCat, TableView<Fornecedor> tabela) {
+    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txrazao, JFXTextField txcnpj, 
+            JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone,
+            JFXCheckBox chkAtivo, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, TableView<Categoria> tabelaCat, TableView<Fornecedor> tabela) {
        
         Fornecedor f = new Fornecedor();
         f = f.get(tabela.getSelectionModel().getSelectedItem().getCodigo());
