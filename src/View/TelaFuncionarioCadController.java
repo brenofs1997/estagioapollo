@@ -33,15 +33,10 @@ import Erros.Erros;
 import Models.Estado;
 import apollo.utils.ValidarCPF;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 
 public class TelaFuncionarioCadController implements Initializable {
 
@@ -364,7 +359,7 @@ public class TelaFuncionarioCadController implements Initializable {
 
     @FXML
     private void clkconfirmar(ActionEvent event) {
-        int cod = 0, erro = 0,codcid=0;
+        int cod = 0, erro = 0, codcid = 0;
         ValidarCPF valida = new ValidarCPF();
         String ativo, pAcesso;
 
@@ -378,39 +373,7 @@ public class TelaFuncionarioCadController implements Initializable {
             validar(txnome, "Campo não pode estar vazio!");
             erro = 1;
         }
-//        if (txcpf.getText().isEmpty()) {
-//            validar(txcpf, "Campo não pode estar vazio!");
-//            erro = 1;
-//        }
-//        if (txendereco.getText().isEmpty()) {
-//            validar(txendereco, "Campo não pode estar vazio!");
-//            erro = 1;
-//        }
-//        if (txnum.getText().isEmpty()) {
-//            validar(txnum, "Campo não pode estar vazio!");
-//            erro = 1;
-//        }
-//        if (txbairro.getText().isEmpty()) {
-//            validar(txbairro, "Campo não pode estar vazio!");
-//            erro = 1;
-//        }
-//        if (txtelefone.getText().isEmpty()) {
-//            validar(txtelefone, "Campo não pode estar vazio!");
-//            erro = 1;
-//        }
-         try {
-            codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
-        } catch (Exception e) {
-            codcid = 0;
-        }
-//        if (txcep.getText().isEmpty()) {
-//            validar(txcep, "Campo não pode estar vazio!");
-//            erro = 1;
-//        }
-//        if (txemail.getText().isEmpty()) {
-//            validar(txemail, "Campo não pode estar vazio!");
-//            erro = 1;
-//        }
+
         if (cbnivel.getSelectionModel().isEmpty()) {
             validarCb(cbnivel);
             erro = 1;
@@ -449,6 +412,18 @@ public class TelaFuncionarioCadController implements Initializable {
             pAcesso = "N";
         }
 
+        if (cbCid.getSelectionModel().getSelectedItem() == null) {
+            msg.campoVazioCbx(cbCid);
+            cbCid.setDisable(false);
+            erro = 1;
+        } else {
+            try {
+                codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
+            } catch (Exception e) {
+                codcid = 0;
+            }
+        }
+
         if (erro == 0) {
 
             cf.confirmar(pnpesquisa,
@@ -481,7 +456,7 @@ public class TelaFuncionarioCadController implements Initializable {
 
     @FXML
     private void clkcancelar(ActionEvent event) {
-        
+
         cf.cancelar(pnpesquisa,
                 pndados,
                 btconfirmar,
@@ -516,9 +491,6 @@ public class TelaFuncionarioCadController implements Initializable {
         cf.evtTabela(tabela, btalterar, btapagar);
 
     }
-
-   
-  
 
     @FXML
     private void evRbNome(ActionEvent event) {
@@ -571,11 +543,14 @@ public class TelaFuncionarioCadController implements Initializable {
 
     @FXML
     private void PesqProd(ActionEvent event) {
+        cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUFPesq(txtPesqProd.getText())));
+        cbCid.setDisable(false);
+        cbCid.getSelectionModel().select(0);
     }
 
     @FXML
     private void carregaCidade(ActionEvent event) {
-         if (cbUf.getSelectionModel().getSelectedItem() != null) {
+        if (cbUf.getSelectionModel().getSelectedItem() != null) {
             int codigo = 0;
             codigo = cbUf.getSelectionModel().getSelectedItem().getCod();
             cbCid.setDisable(false);
@@ -584,6 +559,7 @@ public class TelaFuncionarioCadController implements Initializable {
             cbCid.setDisable(true);
         }
     }
+
     public void CarregarCid(int codcid) {
         cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUF(codcid)));
     }

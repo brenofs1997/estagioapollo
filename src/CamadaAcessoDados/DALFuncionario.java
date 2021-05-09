@@ -188,4 +188,21 @@ public class DALFuncionario {
         return func;
     }
 
+    public Funcionario getporSenha(String senha) {
+        String sql = "select *  from funcionario where senha = '" + senha + "'";
+        ResultSet rs = Banco.getCon().consultar(sql);
+        try {
+            if (rs.next()) {
+                return new Funcionario(rs.getInt("codigo"), rs.getString("nome"), rs.getString("cpf"),
+                        rs.getString("endereco"), rs.getString("numero"), rs.getString("telefone"),
+                        rs.getString("email"), rs.getString("login"), rs.getString("senha"),
+                        rs.getString("ativo"), rs.getString("primeiro_acesso"), new Cidade(rs.getInt("cod_cidade")),
+                        new NivelFuncionario(rs.getInt("cod_nivel")),
+                        rs.getString("bairro"), rs.getString("cep"));
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+
 }

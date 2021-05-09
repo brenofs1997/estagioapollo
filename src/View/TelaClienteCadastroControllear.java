@@ -31,12 +31,15 @@ import Erros.Erros;
 import Models.Cliente;
 import Models.Estado;
 import apollo.utils.ValidarCPF;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -44,7 +47,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 
 public class TelaClienteCadastroControllear implements Initializable {
 
@@ -159,7 +161,7 @@ public class TelaClienteCadastroControllear implements Initializable {
         MaskFieldUtil.maxField(txemail, 100);
         MaskFieldUtil.maxField(txendereco, 70);
         MaskFieldUtil.maxField(txbairro, 30);
-        MaskFieldUtil.maxField(txlimiteFiado, 12);
+        MaskFieldUtil.maxField(txlimiteFiado, 11);
         MaskFieldUtil.maxField(txnum, 10);
         MaskFieldUtil.maxField(txpesquisar, 70);
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
@@ -200,12 +202,13 @@ public class TelaClienteCadastroControllear implements Initializable {
         }
         CarregarUf();
         clControl.carregaTabela("", tabela);
+        dtCadastro.setValue(LocalDate.now());
     }
 
     public void CarregarUf() {
         cbUf.setItems(FXCollections.observableArrayList(control.carregarUf()));
     }
-    
+
     public void CarregarCid(int codcid) {
         cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUF(codcid)));
     }
@@ -252,6 +255,7 @@ public class TelaClienteCadastroControllear implements Initializable {
                 txcep,
                 txemail,
                 dtCadastro,
+                txlimiteFiado,
                 tabela);
 
     }
@@ -303,7 +307,7 @@ public class TelaClienteCadastroControllear implements Initializable {
 
     @FXML
     private void clkconfirmar(ActionEvent event) {
-        int cod = 0, codcid, erro = 0;
+        int cod = 0, codcid = 0, erro = 0;
         ValidarCPF valida = new ValidarCPF();
         String ativo, pAcesso;
 
@@ -314,18 +318,21 @@ public class TelaClienteCadastroControllear implements Initializable {
         } catch (Exception e) {
             cod = 0;
         }
-         try {
-            codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
-        } catch (Exception e) {
-            codcid = 0;
-        }
-        if (txnome.getText().isEmpty()) {
-            validar(txnome, "Campo não pode estar vazio!");
+
+        if (cbCid.getSelectionModel().getSelectedItem() == null) {
+            msg.campoVazioCbx(cbCid);
+            cbCid.setDisable(false);
             erro = 1;
+        } else {
+            try {
+                codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
+            } catch (Exception e) {
+                codcid = 0;
+            }
         }
 
-        if (txcid.getText().isEmpty()) {
-            validar(txcid, "Campo não pode estar vazio!");
+        if (txnome.getText().isEmpty()) {
+            validar(txnome, "Campo não pode estar vazio!");
             erro = 1;
         }
 
@@ -350,28 +357,40 @@ public class TelaClienteCadastroControllear implements Initializable {
             erro = 1;
         }
 
+        if (dtCadastro.getValue() == null) {
+            dtCadastro.setValue(LocalDate.now());
+        }
+        NumberFormat nf = new DecimalFormat("#,###.00");
         if (erro == 0) {
 
             if (cod == 0) {
-                if (clControl.gravar(cod, txnome.getText(), java.sql.Date.valueOf(dtCadastro.getValue()), txcpf.getText(),
-                        txendereco.getText(), txbairro.getText(), txemail.getText(), Double.parseDouble(txlimiteFiado.getText()),
-                        txcep.getText(), txtelefone.getText(), codcid, chkAtivo.isSelected(), txnum.getText(), 0.0)) {
-                    msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
-                    estadoInicial();
-                } else {
-                    msg.Error("Erro ", "Cliente não gravado");
+                try {
+                    if (clControl.gravar(cod, txnome.getText(), java.sql.Date.valueOf(dtCadastro.getValue()), txcpf.getText(),
+                            txendereco.getText(), txbairro.getText(), txemail.getText(), nf.parse(txlimiteFiado.getText()).doubleValue(),
+                            txcep.getText(), txtelefone.getText(), codcid, chkAtivo.isSelected(), txnum.getText(), 0.0)) {
+                        msg.Affirmation("Apollo Informa:", "Gravação feita com sucesso");
+                        estadoInicial();
+                    } else {
+                        msg.Error("Erro ", "Cliente não gravado");
+                    }
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaClienteCadastroControllear.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             } else {
 
-                if (clControl.alterar(
-                        cod, txnome.getText(), java.sql.Date.valueOf(dtCadastro.getValue()), txcpf.getText(),
-                        txendereco.getText(), txbairro.getText(), txemail.getText(), Double.parseDouble(txlimiteFiado.getText()),
-                        txcep.getText(), txtelefone.getText(), codcid, chkAtivo.isSelected(), txnum.getText(), 0.0)) {
-                    msg.Affirmation("Apollo Informa:", "Alteração feita com sucesso");
-                    estadoInicial();
-                } else {
-                    msg.Error("Erro ", "Cliente não alterado");
+                try {
+                    if (clControl.alterar(
+                            cod, txnome.getText(), java.sql.Date.valueOf(dtCadastro.getValue()), txcpf.getText(),
+                            txendereco.getText(), txbairro.getText(), txemail.getText(), nf.parse(txlimiteFiado.getText()).doubleValue(),
+                            txcep.getText(), txtelefone.getText(), codcid, chkAtivo.isSelected(), txnum.getText(), 0.0)) {
+                        msg.Affirmation("Apollo Informa:", "Alteração feita com sucesso");
+                        estadoInicial();
+                    } else {
+                        msg.Error("Erro ", "Cliente não alterado");
+                    }
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaClienteCadastroControllear.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -404,10 +423,6 @@ public class TelaClienteCadastroControllear implements Initializable {
     public void pesquisarCidade(int cid_cod) {
         clControl.Pesquisar(txpesquisar, txcodcid, txcid, cid_cod);
     }
-
-   
-
-   
 
     @FXML
     private void evRbNome(ActionEvent event) {
@@ -452,6 +467,9 @@ public class TelaClienteCadastroControllear implements Initializable {
 
     @FXML
     private void PesqProd(ActionEvent event) {
+        cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUFPesq(txtPesqProd.getText())));
+        cbCid.setDisable(false);
+        cbCid.getSelectionModel().select(0);
     }
 
     @FXML

@@ -400,10 +400,16 @@ public class TelaEmpresaParametrosCadController implements Initializable {
             validar(txcnpj, "");
             erro = 1;
         }
-        try {
-            codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
-        } catch (Exception e) {
-            codcid = 0;
+         if (cbCid.getSelectionModel().getSelectedItem() == null) {
+            msg.campoVazioCbx(cbCid);
+            cbCid.setDisable(false);
+            erro = 1;
+        } else {
+            try {
+                codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
+            } catch (Exception e) {
+                codcid = 0;
+            }
         }
 
         if (!txcnpj.getText().isEmpty()) {
@@ -579,11 +585,14 @@ public class TelaEmpresaParametrosCadController implements Initializable {
 
     @FXML
     private void PesqProd(ActionEvent event) {
+        cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUFPesq(txtPesqProd.getText())));
+        cbCid.setDisable(false);
+        cbCid.getSelectionModel().select(0);
     }
 
     @FXML
     private void carregaCidade(ActionEvent event) {
-         if (cbUf.getSelectionModel().getSelectedItem() != null) {
+        if (cbUf.getSelectionModel().getSelectedItem() != null) {
             int codigo = 0;
             codigo = cbUf.getSelectionModel().getSelectedItem().getCod();
             cbCid.setDisable(false);
@@ -592,8 +601,8 @@ public class TelaEmpresaParametrosCadController implements Initializable {
             cbCid.setDisable(true);
         }
     }
-    
-     public void CarregarCid(int codcid) {
+
+    public void CarregarCid(int codcid) {
         cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUF(codcid)));
     }
 }

@@ -91,4 +91,19 @@ public class DALCidade {
         return list;
     }
 
+    public List<Cidade> getPorNomeList(String cid) {
+       List<Cidade> list = new ArrayList();
+        String sql = "select c.* from cidade c where c.cid_nome ilike  '%" + cid+"%' ";
+
+        ResultSet rs = Banco.getCon().consultar(sql);
+        try {
+            while (rs.next()) {
+                list.add(new Cidade(rs.getInt("cid_cod"), rs.getInt("est_cod"), rs.getString("cid_nome")));
+            }
+        } catch (Exception e) {
+            System.out.println("erro ao pesquisar");
+        }
+        return list;
+    }
+
 }

@@ -30,6 +30,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
@@ -139,6 +140,8 @@ public class TelaFornecedorCadastroController implements Initializable {
     private JFXTextField txtPesqProd;
     @FXML
     private JFXButton btPesqProd;
+    @FXML
+    private Label lbErroCNPJ;
 
     /**
      * Initializes the controller class.
@@ -146,21 +149,18 @@ public class TelaFornecedorCadastroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
-        
+
         colcod.setCellValueFactory(new PropertyValueFactory("codigo"));
         colnome.setCellValueFactory(new PropertyValueFactory("nomefantasia"));
         colcnpj.setCellValueFactory(new PropertyValueFactory("cnpj"));
         colcidade.setCellValueFactory(new PropertyValueFactory("cidade"));
         colativo.setCellValueFactory(new PropertyValueFactory("ativo"));
 
-        
-        
         cbdesc.setCellValueFactory(new PropertyValueFactory("descricao"));
         MaskFieldUtil.cepField(txcep);
         MaskFieldUtil.foneField(txtelefone);
         MaskFieldUtil.cpfCnpjField(txcnpj);
-        
+
         MaskFieldUtil.maxField(txnome, 100);
         MaskFieldUtil.maxField(txrazao, 100);
         MaskFieldUtil.maxField(txemail, 100);
@@ -168,7 +168,7 @@ public class TelaFornecedorCadastroController implements Initializable {
         MaskFieldUtil.maxField(txbairro, 30);
         MaskFieldUtil.maxField(txnum, 10);
         MaskFieldUtil.maxField(txpesquisar, 100);
-        
+
         estadoInicial();
     }
 
@@ -246,7 +246,7 @@ public class TelaFornecedorCadastroController implements Initializable {
 
     @FXML
     private void clkalterar(ActionEvent event) {
-         estadoEdicao();
+        estadoEdicao();
         control.alterar(txcod,
                 txnome,
                 txrazao,
@@ -273,7 +273,7 @@ public class TelaFornecedorCadastroController implements Initializable {
 
     @FXML
     private void clkconfirmar(ActionEvent event) {
-        int cod = 0, codcid, erro = 0;
+        int cod = 0, codcid = 0, erro = 0;
         ValidarCPF valida = new ValidarCPF();
         String ativo = "Não Ativo";
         try {
@@ -283,13 +283,46 @@ public class TelaFornecedorCadastroController implements Initializable {
             cod = 0;
         }
 
-        try {
-            codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
-        } catch (Exception e) {
-            codcid = 0;
+        if (cbCid.getSelectionModel().getSelectedItem() == null) {
+            msg.campoVazioCbx(cbCid);
+            cbCid.setDisable(false);
+            erro = 1;
+        } else {
+            try {
+                codcid = cbCid.getSelectionModel().getSelectedItem().getCid_cod();
+            } catch (Exception e) {
+                codcid = 0;
+            }
         }
         if (chkAtivo.isSelected()) {
             ativo = "Ativo";
+        }
+
+        if (txnome.getText().isEmpty()) {
+            msg.campoVazio(txnome);
+            erro = 1;
+        }
+
+        if (txrazao.getText().isEmpty()) {
+            msg.campoVazio(txrazao);
+            erro = 1;
+        }
+
+        if (txcnpj.getText().isEmpty()) {
+            msg.campoVazio(txcnpj);
+            erro = 1;
+        } else {
+            if (!valida.isValid(txcnpj.getText())) {
+                lbErroCNPJ.setVisible(true);
+                lbErroCNPJ.setText("CNPJ inválido! Digite o CNPJ novamente");
+                txcnpj.requestFocus();
+                erro = 1;
+            }
+        }
+
+        if (tabelaCat.getItems().isEmpty()) {
+            msg.Error("Apollo Informa", "Nenhuma categoria de produto foi selecionada!");
+            erro = 1;
         }
 
         if (erro == 0) {
@@ -306,7 +339,7 @@ public class TelaFornecedorCadastroController implements Initializable {
             } else {
                 if (control.alterar(cod, txnome.getText(), txrazao.getText(), txendereco.getText(), txnum.getText(),
                         txbairro.getText(), codcid, txcep.getText(), txtelefone.getText(), txcnpj.getText(), txemail.getText(),
-                        ativo,itensCategoria)) {
+                        ativo, itensCategoria)) {
                     msg.Affirmation("Apollo Informa:", "Alteração feita com sucesso");
                     estadoInicial();
                 } else {
@@ -392,6 +425,9 @@ public class TelaFornecedorCadastroController implements Initializable {
 
     @FXML
     private void PesqProd(ActionEvent event) {
+        cbCid.setItems(FXCollections.observableArrayList(control.CarregarCidUFPesq(txtPesqProd.getText())));
+        cbCid.setDisable(false);
+        cbCid.getSelectionModel().select(0);
     }
 
 }

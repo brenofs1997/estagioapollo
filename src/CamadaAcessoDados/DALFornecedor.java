@@ -41,7 +41,7 @@ public class DALFornecedor {
 
     public boolean alterar(Fornecedor f) {
         String sql = "update fornecedor set nomefantasia='#A',cnpj='#B',ativo='#C',endereco='#D',bairro='#E',"
-                + "numero='#F',cod_cidade=#G,cep='#H',razaosocial='#J',telefone='#M',email='#N' where codigo = "+f.getCodigo();
+                + "numero='#F',cod_cidade=#G,cep='#H',razaosocial='#J',telefone='#M',email='#N' where codigo = " + f.getCodigo();
 
         sql = sql.replace("#A", f.getNomefantasia());
         sql = sql.replace("#B", f.getCnpj());
@@ -90,7 +90,7 @@ public class DALFornecedor {
         String SQL = "select * from fornecedor ";
         List<Fornecedor> l = new ArrayList();
         if (!filtro.isEmpty()) {
-            SQL += "where nomefantasia ILIKE '%"+filtro+"%'" ;
+            SQL += "where " + filtro;
         }
         SQL += " order by nomefantasia";
         Cidade c = new Cidade();

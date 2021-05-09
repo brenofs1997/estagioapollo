@@ -23,7 +23,7 @@ public class Ajuda {
             try {
 
                 //Runtime.getRuntime().exec("cmd /c start relatorios/help.chm");
-              Runtime.getRuntime().exec("cmd /c start " + System.getProperty("user.dir") + "/dist/help.chm");
+              Runtime.getRuntime().exec("cmd /c start " + System.getProperty("user.dir") + "\\src\\relatorios\\help.chm");
             } catch (IOException ex) {
                 Logger.getLogger(Ajuda.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -155,32 +155,33 @@ public class EmpresaParametrosController {
         txemail.setText("" + ep.getEmail());
         txsite.setText("" + ep.getSite());
         logoIcon.setVisible(false);
-        InputStream is = ep.getFoto(ep);
-        Image imgaux = null;
-        if (is != null) {
+        if (ep.getFoto(ep) != null) {
+            InputStream is = ep.getFoto(ep);
+            Image imgaux = null;
+            if (is != null) {
 
-            try {
-
-                BufferedImage bimage = ImageIO.read(is);
-                logo.setImage(SwingFXUtils.toFXImage(bimage, null));
                 try {
-                    setImageGarcon(null, null, arquivoaux, logo, null, null);
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(EmpresaParametrosController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+                    BufferedImage bimage = ImageIO.read(is);
+                    logo.setImage(SwingFXUtils.toFXImage(bimage, null));
+                    try {
+                        setImageGarcon(null, null, arquivoaux, logo, null, null);
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(EmpresaParametrosController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 //                arquivoaux = new File("");//alterar
 //                arquivoaux.createNewFile();
-                ImageIO.write(bimage, "jpg", arquivoaux);
+                    ImageIO.write(bimage, "jpg", arquivoaux);
 
-            } catch (IOException ex) {
-                Logger.getLogger(EmpresaParametrosController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(EmpresaParametrosController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                logo.setImage(imgaux);
+                arquivoaux = new File("");//alterar
             }
-
-        } else {
-            logo.setImage(imgaux);
-            arquivoaux = new File("");//alterar
         }
-
     }
 
     public void cancelar(Pane pnpesquisa, Pane pndados, Pane pnlogo, JFXButton btconfirmar, JFXButton btcancelar,

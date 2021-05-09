@@ -9,7 +9,6 @@ import CamadaAcessoDados.Banco;
 import Erros.Erros;
 import Models.Categoria;
 import Models.Cidade;
-import Models.Cliente;
 import Models.Estado;
 import Models.Fornecedor;
 import static View.TelaFornecedorCadastroController.itensCategoria;
@@ -63,6 +62,13 @@ public class FornecedorController {
         List<Cidade> Lista = c.getCidUf(coduf);
         return Lista;
     }
+     public List<Cidade> CarregarCidUFPesq(String cid){
+        Cidade c = new Cidade();
+        c = c.getPorNome(cid);
+  
+        List<Cidade> Lista = c.getPorNomeList(cid);
+        return Lista;
+     }
 
     public int procLista(List<Categoria> lista, int codCat) {
         int index = -1;
@@ -98,10 +104,10 @@ public class FornecedorController {
     public void Pesquisar(JFXTextField txpesquisar, JFXRadioButton rbnome, JFXRadioButton rbcpf, TableView<Fornecedor> tabela) {
         if (!txpesquisar.getText().isEmpty()) {
             if (rbnome.isSelected()) {
-                carregaTabela("upper(nomefantasia) like '%" + txpesquisar.getText().toUpperCase() + "%'", tabela);
+                carregaTabela(" upper(nomefantasia) like '%" + txpesquisar.getText().toUpperCase() + "%'", tabela);
             } else {
                 if (rbcpf.isSelected()) {
-                    carregaTabela("upper(cnpj) like '%" + txpesquisar.getText().toUpperCase() + "%'", tabela);
+                    carregaTabela(" cnpj like '" + txpesquisar.getText().toUpperCase() + "'", tabela);
                 }
             }
         } else {
@@ -111,6 +117,8 @@ public class FornecedorController {
 
     public boolean gravar(int cod, String nome, String razao, String txendereco, String numero, String bairro, int codcid,
             String cep, String telefone, String cnpj, String email, String ativo, List<Categoria> itensCategoria) {
+        
+       
         Fornecedor f = new Fornecedor(cod, nome, cnpj, ativo.toUpperCase(), txendereco, bairro, numero, new Cidade(codcid), email, razao, cep, telefone);
         boolean aux = false;
         if (f.salvar(f)) {
@@ -130,6 +138,7 @@ public class FornecedorController {
 
     public boolean alterar(int cod, String nome, String razao, String txendereco, String numero, String bairro, int codcid,
             String cep, String telefone, String cnpj, String email, String ativo, List<Categoria> itensCategoria) {
+        
         Fornecedor f = new Fornecedor(cod, nome, cnpj, ativo.toUpperCase(), txendereco, bairro, numero, new Cidade(codcid), email, razao, cep, telefone);
         boolean aux = false;
         if (f.alterar(f) && f.apagarCats(cod)) {

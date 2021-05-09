@@ -70,6 +70,11 @@ public class Cidade {
         DALCidade dal = new DALCidade();
         return dal.getCidUf(coduf);
     }
+    
+    public List<Cidade> getPorNomeList(String cid) {
+        DALCidade dal = new DALCidade();
+        return dal.getPorNomeList(cid);
+    }
 
     public Cidade getPorNome(String filtro) {
         DALCidade dal = new DALCidade();

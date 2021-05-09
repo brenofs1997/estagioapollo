@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import Models.Cidade;
 import Models.Cliente;
 import Models.Produto;
+import com.jfoenix.controls.JFXTextArea;
 
 /**
  *
@@ -53,7 +54,19 @@ public class Erros {
         });
         campo.validate();
     }
+ public void campoVazio(JFXTextArea campo) {
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        validator.setMessage("Campo vazio!");
+        campo.resetValidation();
+        campo.getValidators().add(validator);
 
+        campo.focusedProperty().addListener((o, oldVal, newVal) -> {
+            if (!newVal) {
+                campo.validate();
+            }
+        });
+        campo.validate();
+    }
     public void campoVazioCbx(JFXComboBox campo) {
         RequiredFieldValidator validator = new RequiredFieldValidator();
         campo.resetValidation();

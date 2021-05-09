@@ -55,7 +55,7 @@ public class FuncionarioController {
         cbnivel.getSelectionModel().select(0);
     }
 
-    public void estadoInicial(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone,JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, Label lbErroCPF) {
+    public void estadoInicial(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, Label lbErroCPF) {
         pnpesquisa.setDisable(false);
         pndados.setDisable(true);
         btconfirmar.setDisable(true);
@@ -91,9 +91,9 @@ public class FuncionarioController {
         carregaTabela(tabela, "");
     }
 
-    public void estadoEdicao(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar, 
-            JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, 
-            JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone,JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, boolean primeiro_acesso, JFXCheckBox chkAtivo) {
+    public void estadoEdicao(Pane pnpesquisa, Pane pndados, JFXButton btconfirmar, JFXButton btcancelar, JFXButton btapagar,
+            JFXButton btalterar, JFXButton btnovo, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco,
+            JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, JFXComboBox<NivelFuncionario> cbnivel, JFXTextField txlogin, JFXPasswordField txsenha, TableView<Funcionario> tabela, boolean primeiro_acesso, JFXCheckBox chkAtivo) {
         pnpesquisa.setDisable(true);
         pndados.setDisable(false);
         btconfirmar.setDisable(false);
@@ -121,18 +121,7 @@ public class FuncionarioController {
         cbnivel.resetValidation();
         txlogin.resetValidation();
         txsenha.resetValidation();
-//        msg.campoVazio(txnome, "");
-//        msg.campoVazio(txcpf, "");
-//        msg.campoVazio(txendereco, "");
-//        msg.campoVazio(txnum, "");
-//        msg.campoVazio(txbairro, "");
-//        msg.campoVazio(txtelefone, "");
-//        msg.campoVazio(txcid, "");
-//        msg.campoVazio(txcep, "");
-//        msg.campoVazio(txemail, "");
-//        msg.campoVazioCbx(cbnivel, "");
-//        msg.campoVazio(txlogin, "");
-//        msg.campoVazio(txsenha, "");
+
     }
 
     public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum,
@@ -157,9 +146,6 @@ public class FuncionarioController {
         }
         txbairro.setText("" + f.getBairro());
         txnum.setText("" + f.getNumero());
- 
-          
-      
 
         Estado e = new Estado();
         e = e.getPorCid(cidade.getCid_cod());
@@ -251,7 +237,7 @@ public class FuncionarioController {
                 carregaTabela(tabela, "upper(nome) like '%" + txpesquisar.getText().toUpperCase() + "%'");
             } else {
                 if (rbcpf.isSelected()) {
-                    carregaTabela(tabela, "upper(cpf) like '%" + txpesquisar.getText().toUpperCase() + "%'");
+                    carregaTabela(tabela, " cpf like '" + txpesquisar.getText().toUpperCase() + "'");
                 }
             }
         } else {
@@ -297,6 +283,7 @@ public class FuncionarioController {
         } else {
             cidade = new Cidade(codcid);
         }
+        
         nivel = cbnivel.valueProperty().getValue();
         Funcionario f = new Funcionario(cod, txnome.getText(), txcpf.getText(), txendereco.getText(),
                 txnum.getText(), txtelefone.getText(), txemail.getText(), txlogin.getText(),
@@ -330,19 +317,28 @@ public class FuncionarioController {
                     txsenha,
                     tabela, lbErroCPF);
         } else {
-            aux = f.getDiferenteFunc(f.getCodigo());
-            if (aux.size() == 0) {
-                if (f.getNivel().getDescricao().equals("Administrador") || f.getNivel().getDescricao().equals("administrador")) {
-                    cont = 1;
-                }
+
+            if (f.getNivel().getDescricao().toLowerCase().equals("administrador") && f.getAtivo().toLowerCase().equals("ativo")) {
+                cont = 1;
             } else {
-                for (Funcionario funcionario : aux) {
-                    n = n.get(funcionario.getNivel().getCodigo());
-                    if (n.getDescricao().equals("Administrador") || n.getDescricao().equals("administrador")) {
+                aux = f.getDiferenteFunc(f.getCodigo());
+                if (aux.size() == 0) {
+                    if (f.getNivel().getDescricao().toLowerCase().equals("administrador") && f.getAtivo().toLowerCase().equals("ativo")) {
                         cont = 1;
+                    } else {
+                        cont = 0;
+                    }
+                } else {
+                    for (Funcionario funcionario : aux) {
+                        n = n.get(funcionario.getNivel().getCodigo());
+                        if (n.getDescricao().toLowerCase().equals("administrador") && funcionario.getAtivo().toLowerCase().equals("ativo")) {
+                            cont = 1;
+                        }
                     }
                 }
+
             }
+
             if (cont >= 1) {
                 if (f.alterar(f)) {
                     msg.Confirmation("Gravação concluida", "Alterado com Sucesso");
@@ -369,33 +365,7 @@ public class FuncionarioController {
                         txsenha,
                         tabela, lbErroCPF);
             } else {
-                msg.Error("Erro ao alterar!", "É necessario ter pelo menos um administrador, nivel de acesso foi alterado para administrador!");
-                n = n.getA("Administrador");
-                f.setNivel(n);
-                if (f.alterar(f)) {
-                    msg.Confirmation("Gravação concluida", "Alterado com Sucesso");
-                } else {
-                    msg.Error("Erro ao alterar!", "Problemas ao Alterar");
-                }
-                estadoInicial(pnpesquisa,
-                        pndados,
-                        btconfirmar,
-                        btcancelar,
-                        btapagar,
-                        btalterar,
-                        btnovo,
-                        txnome,
-                        txcpf,
-                        txendereco,
-                        txnum,
-                        txbairro,
-                        txtelefone,
-                        txcep,
-                        txemail,
-                        cbnivel,
-                        txlogin,
-                        txsenha,
-                        tabela, lbErroCPF);
+                msg.Error("Erro ao alterar!", "É necessario ter pelo menos um administrador e ativo!");
 
             }
         }

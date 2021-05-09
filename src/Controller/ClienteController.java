@@ -16,6 +16,8 @@ import com.jfoenix.controls.JFXComboBox;
 
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -55,12 +57,14 @@ public class ClienteController {
         return c.gravar(c);
     }
 
-    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro, JFXTextField txtelefone, JFXCheckBox chkAtivo, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep, JFXTextField txemail, DatePicker dtCadastro, TableView<Cliente> tabela) {
+    public void alterar(JFXTextField txcod, JFXTextField txnome, JFXTextField txcpf, JFXTextField txendereco, JFXTextField txnum, JFXTextField txbairro,
+            JFXTextField txtelefone, JFXCheckBox chkAtivo, JFXComboBox<Estado> cbUf, JFXComboBox<Cidade> cbCid, JFXTextField txcep,
+            JFXTextField txemail, DatePicker dtCadastro, JFXTextField txlimiteFiado, TableView<Cliente> tabela) {
         Cidade cidade = new Cidade();
         Cliente c = tabela.getSelectionModel().getSelectedItem();
         c = c.get(c.getCodigo());
         txcod.setText("" + c.getCodigo());
-       
+
         cidade = cidade.get(c.getCidade().getCid_cod());
 
         Estado e = new Estado();
@@ -71,7 +75,7 @@ public class ClienteController {
 
         cbCid.getSelectionModel().select(0);
         cbCid.getSelectionModel().select(cidade);
-        
+
         txnome.setText("" + c.getNome());
         txcpf.setText("" + c.getCpf());
         txendereco.setText("" + c.getEndereco());
@@ -85,9 +89,9 @@ public class ClienteController {
         }
         txbairro.setText("" + c.getBairro());
         txnum.setText("" + c.getNumero());
-       
+
         txcep.setText("" + c.getCep());
-         int ano = c.getData_cadastro().getYear() + 1900;
+        int ano = c.getData_cadastro().getYear() + 1900;
         int mes = c.getData_cadastro().getMonth() + 1;
         int dia = c.getData_cadastro().getDate();
         dtCadastro.setValue(LocalDate.of(ano, mes, dia));
@@ -117,6 +121,8 @@ public class ClienteController {
         };
         dtCadastro.setConverter(converter);
         txemail.setText("" + c.getEmail());
+        NumberFormat nf = new DecimalFormat("#,###.00");
+        txlimiteFiado.setText(nf.format(c.getLimite_fiado()));
     }
 
     public void evtTabela(TableView<Cliente> tabela, JFXButton btalterar, JFXButton btapagar) {
@@ -157,7 +163,7 @@ public class ClienteController {
                 carregaTabela("upper(nome) like '%" + txpesquisar.getText().toUpperCase() + "%'", tabela);
             } else {
                 if (rbcpf.isSelected()) {
-                    carregaTabela("upper(cpf) like '%" + txpesquisar.getText().toUpperCase() + "%'", tabela);
+                    carregaTabela(" cpf like '" + txpesquisar.getText().toUpperCase() + "'", tabela);
                 }
             }
         } else {

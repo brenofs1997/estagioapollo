@@ -238,5 +238,10 @@ public class Funcionario {
         DALFuncionario dal = new DALFuncionario();
         return dal.getLogin(usuario);
     }
+
+    public Funcionario getporSenha(String senha) {
+        DALFuncionario dal = new DALFuncionario();
+        return dal.getporSenha(senha);
+    }
     
 }

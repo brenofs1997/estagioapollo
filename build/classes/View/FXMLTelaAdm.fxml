@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="261.0" prefWidth="565.0" style="-fx-background-color: #f1f2f6;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.FXMLTelaAdmController">
+   <children>
+      <JFXPasswordField fx:id="txsenha" labelFloat="true" layoutX="91.0" layoutY="90.0" prefHeight="35.0" prefWidth="383.0" promptText="Digite a senha do administrador*" style="-fx-background-color: white;">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </JFXPasswordField>
+      <JFXButton fx:id="btconfirmar" layoutX="210.0" layoutY="168.0" onAction="#clkconfirmar" prefHeight="55.0" prefWidth="145.0" ripplerFill="#26d157" style="-fx-background-color: F52F00;" text="Confirmar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

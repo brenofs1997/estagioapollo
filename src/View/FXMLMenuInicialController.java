@@ -451,22 +451,44 @@ public class FXMLMenuInicialController implements Initializable {
 
     @FXML
     private void abreCaixa(MouseEvent event) {
-        if (c.isAberto()) {
-            c.atualizarStatus("F");
-            lbcaixa.setText(c.isStatus());
-            iconcaixa.setIconName("LOCK");
+        if (funcionario.getNivel().getDescricao().toLowerCase().equals("administrador")) {
+            if (c.isAberto()) {
+                c.atualizarStatus("F");
+                lbcaixa.setText(c.isStatus());
+                iconcaixa.setIconName("LOCK");
+            } else {
+                c.atualizarStatus("A");
+                lbcaixa.setText(c.isStatus());
+                iconcaixa.setIconName("UNLOCK_ALT");
+            }
         } else {
-            c.atualizarStatus("A");
-            lbcaixa.setText(c.isStatus());
-            iconcaixa.setIconName("UNLOCK_ALT");
+            try {
+                Parent inicial = FXMLLoader.load(getClass().getResource("FXMLTelaAdm.fxml"));
+                Scene scene = new Scene(inicial);
+
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("BEM-VINDO: ABRIR CAIXA");
+                // stage.setMaximized(true);
+
+                //Close authentication Window
+                //Show main Window
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setResizable(false);
+                stage.showAndWait();
+                mctrl.atualizaTextoCaixa(lbcaixa, iconcaixa);
+
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLMenuInicialController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }
 
     public void atualizaSaldo() {
-        
+
         lbcaixasaldo.setText(nf.format(c.getSaldoInicio()));
     }
-
 
     @FXML
     private void ContasPagar(ActionEvent event) {
@@ -694,10 +716,10 @@ public class FXMLMenuInicialController implements Initializable {
             r.close();
             process.waitFor();
             process.destroy();
-            
+
             return true;
         } catch (Exception e) {
-           
+
             return false;
         }
     }
@@ -730,10 +752,10 @@ public class FXMLMenuInicialController implements Initializable {
             r.close();
             process.waitFor();
             process.destroy();
-           
+
             return true;
         } catch (Exception e) {
-         
+
             return false;
         }
 
@@ -743,15 +765,14 @@ public class FXMLMenuInicialController implements Initializable {
     private void Backup(ActionEvent event) {
         String caminho = "";
 
-       // caminho = btnArquivo();
-
+        // caminho = btnArquivo();
         if (caminho.isEmpty()) {
             caminho = System.getProperty("user.dir") + "/src/backup/backup.sql";
         }
 
-        if(Backup(caminho)){
-            msg.Affirmation("Apollo informa", "Backup realizado com sucesso!\nLocalizado em:\n"+caminho);
-        }else{
+        if (Backup(caminho)) {
+            msg.Affirmation("Apollo informa", "Backup realizado com sucesso!\nLocalizado em:\n" + caminho);
+        } else {
             msg.Error("Apollo informa", "Erro na realização do backup.");
         }
     }
@@ -766,9 +787,9 @@ public class FXMLMenuInicialController implements Initializable {
             caminho = System.getProperty("user.dir") + "/src/backup/backup.sql";
         }
 
-        if(Restore(caminho)){
+        if (Restore(caminho)) {
             msg.Affirmation("Apollo informa", "Restore realizado com sucesso!");
-        }else{
+        } else {
             msg.Error("Apollo informa", "Erro na realização do restore.");
         }
     }
@@ -778,7 +799,7 @@ public class FXMLMenuInicialController implements Initializable {
         FileChooser.ExtensionFilter extFilter4 = new FileChooser.ExtensionFilter("Todos os arquivos (*.)", "*");
         fc.getExtensionFilters().add(extFilter4);
         String arq = System.getProperty("user.dir") + "/src/backup";
-        File arquivo2= new File(arq) ;
+        File arquivo2 = new File(arq);
         fc.setInitialDirectory(arquivo2);
         File arquivo = fc.showOpenDialog(null);
         if (arquivo != null) {
